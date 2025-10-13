@@ -38,4 +38,7 @@ public class Student {
 
   @OneToMany(mappedBy = "student")
   private List<StudentSubject> studentSubjects;
+
+  @OneToMany(mappedBy = "student")
+  private List<ExamRegistration> examRegistrations;
 }

@@ -1,34 +1,33 @@
 package com.examreg.examreg.models;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
-import jakarta.persistence.Column;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import lombok.Data;
 
 @Data
 @Entity
-public class Admin {
+public class ImportLog {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(nullable = false)
-  private String email;
+  private String fileName;
+  private String filePath;
+  private String importType;
 
-  @Column(nullable = false)
-  private String password;
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  private LocalDateTime importedAt;
 
   @ManyToOne
-  @JoinColumn(name = "role_id", nullable = false)
-  private Role role;
-
-  @OneToMany(mappedBy = "admin")
-  private List<ImportLog> importLogs;
+  @JoinColumn(name = "admin_id")
+  private Admin admin;
 }
