@@ -31,4 +31,7 @@ public class Admin {
 
   @OneToMany(mappedBy = "admin")
   private List<ImportLog> importLogs;
+
+  @OneToMany(mappedBy = "admin")
+  private List<Notification> notifications;
 }
