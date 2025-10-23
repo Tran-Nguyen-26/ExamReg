@@ -1,0 +1,60 @@
+.screen {
+  width: 100%;
+  height: 10vh;
+  padding: 10px;
+  border-bottom: 2px solid gray;
+}
+
+.header-left {
+  margin-left: 20px;
+}
+
+.logo_uni {
+  width: 100px;
+  padding: 10px;
+}
+
+.hl2 {
+  padding: 10px;
+}
+
+.hl2 .exam-name {
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 0px;
+}
+
+.hl2 .student {
+  font-size: 20px;
+}
+
+.header-right {
+  margin-right: 20px;
+}
+
+.schedule {
+  width: auto;
+  background-color: #CAE3FF;
+  color: #1D6DBD;
+  padding: 5px;
+  border-radius: 10px;
+}
+
+.schedule img {
+  padding: 5px;
+}
+
+.schedule span {
+  padding-left: 10px;
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+.header-right svg {
+  padding: 10px;
+  width: 80px;
+  height: 80px;
+  margin-left: 10px;
+  margin-right: 8px;
+}
+

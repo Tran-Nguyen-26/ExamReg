@@ -1,0 +1,14 @@
+.notification {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 20px;
+  width: 95vw;
+  height: auto;
+  border: 1px solid rgb(229, 226, 226);
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+  border-radius: 20px;
+}
+
+.notification p {
+  margin-bottom: 0px;
+}

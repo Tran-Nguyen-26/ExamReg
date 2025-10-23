@@ -1,0 +1,13 @@
+.notification-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.subjects {
+  width: 95%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
