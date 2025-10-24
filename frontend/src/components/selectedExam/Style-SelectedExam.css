@@ -1,0 +1,27 @@
+.selected-exam {
+  width: 95vw;
+  border: 2px dashed #1D6DBD;
+  margin: 0 auto;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+  padding: 10px 20px;
+}
+
+.selected-exam img {
+  width: 40px;
+}
+
+.selected-exam span {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.selected-exam h4 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.selected-exam p {
+  margin-top: 0px;
+  margin-bottom: 5px;
+}
+

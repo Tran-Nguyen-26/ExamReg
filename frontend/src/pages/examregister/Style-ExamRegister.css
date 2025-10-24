@@ -1,0 +1,44 @@
+.exam-register a {
+  display: inline-block;
+  text-decoration: none;
+  font-size: 20px;
+  padding-left: 40px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.pos {
+  padding-left: 40px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.pos img {
+  width: 30px;
+}
+
+.pos span {
+  font-size: 20px;
+  font-weight: 500;
+  margin-left: 10px;
+}
+
+.locations {
+  width: 80%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.exam-register button {
+  display: block;
+  margin: 40px auto;
+  padding: 10px 20px;
+  background-color: #2A8DFF;
+  color: white;
+  border: none;
+  border-radius: 10px;
+}
