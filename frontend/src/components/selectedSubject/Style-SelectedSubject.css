@@ -4,15 +4,23 @@
   margin: 0 auto;
   box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
   padding: 10px 20px;
+  position: relative;
+  margin-top: 20px;
+}
+
+.selected-exam div {
+  display: flex;
+  align-items: center;
 }
 
 .selected-exam img {
-  width: 40px;
+  width: 30px;
 }
 
 .selected-exam span {
   font-size: 20px;
-  font-weight: 600;
+  font-weight: 500;
+  margin-left: 10px;
 }
 
 .selected-exam h4 {
@@ -23,5 +31,16 @@
 .selected-exam p {
   margin-top: 0px;
   margin-bottom: 5px;
+}
+
+.selected-exam .change-subject {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+}
+
+.selected-exam .change-subject img {
+  width: 20px;
 }
 

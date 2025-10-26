@@ -1,8 +1,12 @@
 import './Style-Subject.css'
 import logo_subject from '../../assets/logo_subject.png'
 import regis_btn from '../../assets/register-btn.png'
+import { useNavigate } from 'react-router-dom'
 
 const Subject = () => {
+
+  const navigate = useNavigate()
+
   return (
     <div className='subject'>
       <div className='title'>
@@ -10,7 +14,7 @@ const Subject = () => {
           <img src={logo_subject} alt="" />
           <span className='subject-name'>Cơ sở dữ liệu</span>
         </div>
-        <div className='register'>
+        <div className='register' onClick={() => navigate('/register')}>
           <span>Đăng ký</span>
           <img src={regis_btn} alt="" />
         </div>

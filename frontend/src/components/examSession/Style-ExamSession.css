@@ -1,0 +1,18 @@
+.exam-session {
+  padding: 20px 30px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+  border-radius: 20px;
+}
+
+.exam-session .session-info {
+  display: flex;
+  justify-content: space-between;
+}
+
+.exam-session .status {
+  background-color: #2A8DFF;
+  padding: 2px 10px;
+  border: 1px solid #1D6DBD;
+  color: white;
+}
