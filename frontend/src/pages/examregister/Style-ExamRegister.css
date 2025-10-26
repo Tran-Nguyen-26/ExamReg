@@ -35,4 +35,9 @@
   color: white;
   border: none;
   border-radius: 10px;
+  transition: transform 0.3s ease;
+}
+
+.exam-register button:hover {
+  transform: scale(1.2);
 }

@@ -3,6 +3,13 @@
   border: 1px solid rgba(0, 0, 0, 0.3);
   box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
   border-radius: 20px;
+  transition: transform 0.3s ease;
+}
+
+.exam-session:hover {
+  transform: scale(1.05);
+  border: 1px solid #2A8DFF;
+  box-shadow: 2px 2px 8px #5ea0eb;
 }
 
 .exam-session .session-info {
