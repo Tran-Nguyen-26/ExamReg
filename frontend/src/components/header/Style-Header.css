@@ -38,6 +38,8 @@
   color: #1D6DBD;
   padding: 5px;
   border-radius: 10px;
+  margin-right: 20px;
+  cursor: pointer;
 }
 
 .schedule img {
@@ -50,11 +52,8 @@
   margin-right: 10px;
 }
 
-.header-right svg {
-  padding: 10px;
-  width: 80px;
-  height: 80px;
-  margin-left: 10px;
-  margin-right: 8px;
+.header-right img {
+  width: 50px;
+  cursor: pointer;
 }
 

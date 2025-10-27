@@ -6,8 +6,12 @@ import logo_reminder_ticket from '../../assets/logo_reminder_ticket.png'
 import logo_schedule from '../../assets/logo_schedule.png'
 import logo_download from '../../assets/logo_download.png'
 import logo_print from '../../assets/logo_print.png'
+import { useNavigate } from 'react-router-dom'
 
 const ExamTicket = () => {
+
+  const navigate = useNavigate()
+
   return (
     <div>
       <Header/>
@@ -65,7 +69,7 @@ const ExamTicket = () => {
           </div>
         </div>
         <div className='options'>
-          <div className='option option-schedule'>
+          <div className='option option-schedule' onClick={() => navigate('/exam-schedule')}>
             <img src={logo_schedule} alt="" />
             <span>Lịch thi của tôi</span>
           </div>

@@ -9,10 +9,12 @@ import { useState } from 'react';
 import SelectedLocation from '../../components/selectedLocation/SelectedLocation';
 import SelectExamSession from '../../components/selectedExamSession/SelectedExamSession';
 import Reminder from '../../components/reminder/Reminder';
+import { useNavigate } from 'react-router-dom';
 
 const ExamRegister = () => {
 
   const [step, setStep] = useState(1)
+  const navigate = useNavigate()
 
   return (
     <div className='exam-register'>
@@ -36,15 +38,14 @@ const ExamRegister = () => {
               </div>
             </div>
             <button onClick={() => setStep(prev => prev + 1)}>Tiếp theo</button>
-          </>
-          
+          </>      
         )
       }
   
       {
         step === 2 && (
           <>
-            <SelectedLocation/>
+            <SelectedLocation setStep={setStep}/>
             <div className='select-exam-session'>
               <div className='session'>
                 <img src={logo_exam_session} alt="" />
@@ -65,10 +66,10 @@ const ExamRegister = () => {
       {
         step === 3 && (
           <>
-            <SelectedLocation/>
-            <SelectExamSession/>
+            <SelectedLocation setStep={setStep}/>
+            <SelectExamSession setStep={setStep}/>
             <Reminder/>
-            <button onClick={() => setStep(prev => prev + 1)}>Xác nhận và đăng kí</button>
+            <button onClick={() => navigate('/ticket')}>Xác nhận và đăng kí</button>
           </>
         )
       }

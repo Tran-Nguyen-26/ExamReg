@@ -113,6 +113,11 @@
   padding: 10px 20px;
   border-radius: 10px;
   color: white;
+  transition: transform 0.3s ease;
+}
+
+.option:hover {
+  transform: scale(1.05);
 }
 
 .option-schedule {

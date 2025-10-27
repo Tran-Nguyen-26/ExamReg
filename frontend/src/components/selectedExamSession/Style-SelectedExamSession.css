@@ -37,6 +37,7 @@
   position: absolute;
   top: 20px;
   right: 20px;
+  cursor: pointer;
 }
 
 .selected-exam-session .change-session img {
