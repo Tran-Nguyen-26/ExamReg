@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "name": "Giảng đường 1",
+    "address": "Xuân Thủy, Cầu Giấy"
+  },
+  {
+    "id": 2,
+    "name": "Giảng đường 2",
+    "address": "Xuân Thủy, Cầu Giấy"
+  },
+  {
+    "id": 3,
+    "name": "Giảng đường 3",
+    "address": "Tôn Thất Thuyết, Nam Từ Liêm"
+  },
+  {
+    "id": 4,
+    "name": "Giảng đường 4",
+    "address": "Kiều Mai, Phúc Diễn"
+  }
+]

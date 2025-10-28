@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "Cơ sở dữ liệu",
+    "subject_code": "PHI1001",
+    "credit_hour": 3
+  },
+  {
+    "id": 2,
+    "name" : "Kiến trúc máy tính",
+    "subject_code": "PHI1002",
+    "credit_hour": 4
+  },
+  {
+    "id": 3,
+    "name": "Cấu trúc dữ liệu và giải thuật",
+    "subject_code": "PHI1003",
+    "credit_hour": 4
+  },
+  {
+    "id": 4,
+    "name": "Trí tuệ nhân tạo",
+    "subject_code": "PHI1004",
+    "credit_hour": 3
+  }
+]

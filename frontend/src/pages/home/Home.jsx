@@ -2,8 +2,13 @@ import Header from "../../components/header/Header";
 import Notification from "../../components/notification/Notification";
 import Subject from "../../components/subject/Subject";
 import './Style-Home.css'
+import { useContext } from "react";
+import MyContext from "../../context/MyContext";
 
 const Home = () => {
+
+  const {subjects} = useContext(MyContext)
+
   return (
     <div className="home-container">
       <Header/>
@@ -11,10 +16,11 @@ const Home = () => {
         <Notification/>
       </div>
       <div className="subjects">
-        <Subject/>
-        <Subject/>
-        <Subject/>
-        <Subject/>
+        {
+          subjects.map(subject => (
+            <Subject key={subject.id} data={subject} />
+          ))
+        }
       </div>
     </div>
   )

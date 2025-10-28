@@ -7,10 +7,20 @@ import logo_schedule from '../../assets/logo_schedule.png'
 import logo_download from '../../assets/logo_download.png'
 import logo_print from '../../assets/logo_print.png'
 import { useNavigate } from 'react-router-dom'
+import { useContext } from 'react'
+import MyContext from '../../context/MyContext'
 
 const ExamTicket = () => {
 
   const navigate = useNavigate()
+
+  const {
+    selectedSubject,
+    selectedLocation, 
+    setSelectedLocation,
+    selectedExamSession,
+    setSelectedExamSession
+  } = useContext(MyContext)
 
   return (
     <div>
@@ -36,27 +46,27 @@ const ExamTicket = () => {
             </div>
             <div className='ticket-sub-info'>
               <label>Học phần</label>
-              <span>Cơ sở dữ liệu</span>
+              <span>{selectedSubject.name}</span>
             </div>
             <div className='ticket-sub-info'>
               <label>Mã học phần:</label>
-              <span>PHI1001</span>
+              <span>{selectedSubject.subject_code}</span>
             </div>
             <div className='ticket-sub-info'>
               <label>Ngày thi:</label>
-              <span>01/01/2025</span>
+              <span>{selectedExamSession.date}</span>
             </div>
             <div className='ticket-sub-info'>
               <label>Ca thi:</label>
-              <span>Ca 1 - 7:00</span>
+              <span>{selectedExamSession.time}</span>
             </div>
             <div className='ticket-sub-info'>
               <label>Phòng thi:</label>
-              <span>101</span>
+              <span>{selectedExamSession.room}</span>
             </div>
             <div className='ticket-sub-info'>
               <label>Địa điểm thi:</label>
-              <span>Giảng đường 1</span>
+              <span>{selectedLocation.name}</span>
             </div>
             <div className='ticket-sub-info'>
               <label>Thời lượng bài thi:</label>
