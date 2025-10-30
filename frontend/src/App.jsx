@@ -1,4 +1,4 @@
-import { BrowserRouter, Router, Routes, Route } from "react-router-dom"
+import { BrowserRouter, Router, Routes, Route, Navigate } from "react-router-dom"
 import Home from "./pages/home/Home";
 import ExamRegister from "./pages/examregister/ExamRegister";
 import ExamTicket from "./pages/examTicket/ExamTicket";
@@ -11,6 +11,7 @@ const App = () => {
     <Provider>
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<Navigate to="/home"/>}></Route>
           <Route path="/home" element={<Home/>}></Route>
           <Route path="/register" element={<ExamRegister/>}></Route>
           <Route path="/ticket" element={<ExamTicket/>}></Route>

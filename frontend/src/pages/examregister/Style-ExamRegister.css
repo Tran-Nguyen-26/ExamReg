@@ -29,7 +29,7 @@
 
 .exam-register button {
   display: block;
-  margin: 40px auto;
+  margin: 40px auto 20px;
   padding: 10px 20px;
   background-color: #2A8DFF;
   color: white;
@@ -38,6 +38,19 @@
   transition: transform 0.3s ease;
 }
 
+.exam-register button:active {
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2) inset;
+}
+
 .exam-register button:hover {
   transform: scale(1.2);
+}
+
+.exam-register .location-warning,
+.exam-register .exam-session-warning {
+  margin-top: 0px;
+  width: fit-content;
+  margin: 0 auto;
+  color: red;
+  transition: opacity 0.3s ease;
 }

@@ -2,7 +2,15 @@ import Header from "../../components/header/Header"
 import Schedule from "../../components/schedule/Schedule"
 import './Style-ExamSchedule.css'
 
+//fake data
+import examRegistrationData from '../../data/ExamRegistrationData.json'
+
 const ExamSchedule = () => {
+
+
+  //fake data
+  const examSchedules = examRegistrationData
+
   return (
     <div className="exam-schedule">
       <Header/>
@@ -12,17 +20,19 @@ const ExamSchedule = () => {
           <p>Danh sách các ca thi bạn đã đăng ký</p>
         </div>
         <div className="part2">
-          <h1>6</h1>
+          <h1>{examSchedules.length}</h1>
           <p>Môn thi</p>
         </div>
       </div>
       <div className="main-card">
-        <Schedule/>
-        <Schedule/>
-        <Schedule/>
-        <Schedule/>
-        <Schedule/>
-        <Schedule/>
+        {
+          examSchedules.map((examSchedule) => (
+            <Schedule
+              key={examSchedule.id}
+              data={examSchedule}
+            />
+          ))
+        }
       </div>
     </div>
   )

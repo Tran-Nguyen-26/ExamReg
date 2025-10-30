@@ -20,6 +20,8 @@ const ExamRegister = () => {
 
   const [step, setStep] = useState(1)
   const navigate = useNavigate()
+  const [showLocationWarning, setShowLocationWarning] = useState(false)
+  const [showExamSessionWarning, setShowExamSessionWarning] = useState(false)
   const {
     selectedSubject,
     selectedLocation, 
@@ -34,12 +36,20 @@ const ExamRegister = () => {
 
 
   const toggleLocation = (loc) => {
-    selectedLocation?.id == loc.id ? setSelectedLocation(null) : setSelectedLocation(loc)
+    if (loc.status === "Còn chỗ") {
+      selectedLocation?.id == loc.id ? setSelectedLocation(null) : setSelectedLocation(loc)
+    }
   }
 
   const handleSelectLocationButton = () => {
     if (selectedLocation !== null) {
       setStep(step + 1)
+    } else {
+      setShowLocationWarning(true)
+      setTimeout(() => {
+        setShowLocationWarning(false)
+      }, 1000)
+      return
     }
   }
 
@@ -48,12 +58,20 @@ const ExamRegister = () => {
   const examSessions = examSessionData
 
   const toggleExamSession = (examSession) => {
-    selectedExamSession?.id == examSession.id ? setSelectedExamSession(null) : setSelectedExamSession(examSession)
+    if (examSession.status === "Còn chỗ") {
+      selectedExamSession?.id == examSession.id ? setSelectedExamSession(null) : setSelectedExamSession(examSession)
+    }
   }
 
   const handleSelectExamSessionButton = () => {
     if (selectedExamSession !== null) {
       setStep(step + 1)
+    } else {
+      setShowExamSessionWarning(true)
+      setTimeout(() => {
+        setShowExamSessionWarning(false)
+      }, 1000)
+      return 
     }
   }
 
@@ -86,6 +104,11 @@ const ExamRegister = () => {
               </div>
             </div>
             <button onClick={() => handleSelectLocationButton()}>Tiếp theo</button>
+            {
+              showLocationWarning && (
+                <div className='location-warning'>Vui lòng chọn địa điểm thi</div>
+              )
+            }
           </>      
         )
       }
@@ -113,6 +136,11 @@ const ExamRegister = () => {
               </div>
             </div>
             <button onClick={() => handleSelectExamSessionButton()}>Tiếp theo</button>
+            {
+              showExamSessionWarning && (
+                <div className='exam-session-warning'>Vui lòng chọn ca thi</div>
+              )
+            }
           </>
         )
       }

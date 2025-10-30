@@ -1,6 +1,6 @@
 .register-success {
-  width: 60vw;
-  margin: 0 auto;
+  width: 60%;
+  margin: 0 auto 60px;
   border: 1px solid rgb(229, 226, 226);
   box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
   border-radius: 20px;
@@ -37,7 +37,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 1px solid rgb(229, 226, 226);
+  border: 1px solid #F6F8FF;
   box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
   border-radius: 20px;
   padding: 20px 40px;
@@ -85,7 +85,7 @@
 
 .reminder-ticket {
   margin-top: 50px;
-  margin-bottom: -10px;
+  margin-bottom: 10px;
   display: flex;
   align-items: center;
 }
@@ -114,6 +114,7 @@
   border-radius: 10px;
   color: white;
   transition: transform 0.3s ease;
+  cursor: pointer;
 }
 
 .option:hover {

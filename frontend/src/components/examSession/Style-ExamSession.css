@@ -17,10 +17,15 @@
 }
 
 .exam-session .status {
-  background-color: #2A8DFF;
+  background-color: #CAE3FF;
   padding: 2px 10px;
-  border: 1px solid #1D6DBD;
-  color: white;
+  color: #1D6DBD;
+  font-weight: bold;
+}
+
+.exam-session .status.full {
+  background-color: #FFD0D0;
+  color: #EC3E3E;
 }
 
 .exam-session.selected {

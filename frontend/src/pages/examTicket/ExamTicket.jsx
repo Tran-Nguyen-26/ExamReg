@@ -9,6 +9,9 @@ import logo_print from '../../assets/logo_print.png'
 import { useNavigate } from 'react-router-dom'
 import { useContext } from 'react'
 import MyContext from '../../context/MyContext'
+import html2pdf from 'html2pdf.js'
+import printJS from 'print-js'
+
 
 const ExamTicket = () => {
 
@@ -22,6 +25,22 @@ const ExamTicket = () => {
     setSelectedExamSession
   } = useContext(MyContext)
 
+  const handleDownload = () => {
+    const element = document.querySelector('.ticket')
+    const subject_name = selectedSubject.name.split(" ").join("-")
+    const file_name = `phiếu-báo-dự-thi-môn-${subject_name}.pdf`
+    html2pdf().from(element).save(file_name)
+  }
+
+  const handlePrint = () => {
+    printJS({
+      printable: 'ticket',
+      type: 'html',
+      scanStyles: true,
+      style: '',
+    })
+  }
+
   return (
     <div>
       <Header/>
@@ -31,7 +50,7 @@ const ExamTicket = () => {
         </div>
         <p className='p1'>Đăng ký thành công</p>
         <p className='p2'>Phiếu báo dự thi của bạn</p>
-        <div className='ticket'>
+        <div id='ticket' className='ticket'>
           <img src={logo_university} alt="" />
           <p className='p3'>Trường đại học Công Nghệ</p>
           <p className='p4'>Phiếu báo dự thi</p>
@@ -83,11 +102,11 @@ const ExamTicket = () => {
             <img src={logo_schedule} alt="" />
             <span>Lịch thi của tôi</span>
           </div>
-          <div className='option option-download'>
+          <div className='option option-download' onClick={handleDownload}>
             <img src={logo_download} alt="" />
             <span>Tải xuống</span>
           </div>
-          <div className='option option-print'>
+          <div className='option option-print' onClick={handlePrint}>
             <img src={logo_print} alt="" />
             <span>In phiếu</span>
           </div>
