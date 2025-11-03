@@ -5,6 +5,7 @@ import ExamTicket from "./pages/examTicket/ExamTicket";
 import ExamSchedule from "./pages/examSchedule/ExamSchedule";
 import { Provider } from "./context/MyContext";
 import StudentAccount from "./pages/studentAccount/StudentAccount";
+import Login from "./pages/login/Login";
 
 
 const App = () => {
@@ -12,7 +13,8 @@ const App = () => {
     <Provider> 
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Navigate to="/home"/>}></Route>
+          <Route path="/" element={<Navigate to="/login"/>}></Route>
+          <Route path="/login" element={<Login/>}></Route>
           <Route path="/home" element={<Home/>}></Route>
           <Route path="/register" element={<ExamRegister/>}></Route>
           <Route path="/ticket" element={<ExamTicket/>}></Route>

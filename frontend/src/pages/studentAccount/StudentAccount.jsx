@@ -5,8 +5,11 @@ import { IoIosLogOut } from "react-icons/io";
 import { MdAccountCircle } from "react-icons/md";
 import { MdChangeCircle } from "react-icons/md";
 import { FaCheck } from "react-icons/fa6";
+import { useNavigate } from 'react-router-dom';
 
 const StudentAccount = () => {
+
+  const navigate = useNavigate()
 
   const [tabContent, setTabContent] = useState('password')
 
@@ -29,7 +32,7 @@ const StudentAccount = () => {
               <span>Đổi mật khẩu</span>
             </div>
           </div>
-          <div className='tab-logout'>
+          <div className='tab-logout' onClick={() => navigate('/login')}>
             <IoIosLogOut/>
             <span>Đăng xuất</span>
           </div>
