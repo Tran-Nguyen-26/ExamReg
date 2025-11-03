@@ -1,0 +1,145 @@
+.student-account {
+  width: 95%;
+  height: 700px;
+  margin: 20px auto 20px;
+  display: flex;
+  border: 1px solid rgb(229, 226, 226);
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.account-tabs {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right:  2px solid rgb(229, 226, 226);
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.tab-top div, .tab-logout {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px 10px 20px;
+  cursor: pointer;
+}
+
+.tab-top div:hover, .tab-logout:hover {
+}
+
+.account-tabs svg {
+  font-size: 26px;
+}
+
+.tab-top span, .tab-logout span {
+  margin-left: 10px;
+}
+
+.tab-info-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  row-gap: 40px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  margin-left: 60px;
+  font-size: 16px;
+}
+
+
+.tab-info-content div label {
+  width: 200px;
+}
+
+.tab-info-content div span {
+  font-weight: 500;
+}
+
+.tab-change-password-content {
+  width: 50%;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  row-gap: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  margin-left: 60px;
+  font-size: 16px;
+}
+
+form div {
+  display: flex;
+  flex-direction: column;
+}
+
+form div label {
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+form div input {
+  color: gray;
+  padding: 5px 10px;
+  border: 1px solid rgba(0,0,0,0.5);
+  border-radius: 10px;
+  width: 70%;
+}
+
+form .form-actions {
+  display: flex;
+  flex-direction: row;
+}
+
+.form-actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.form-actions .btn-change {
+  margin-right: 20px;
+  background-color: #dc3b3b;
+  color: white;
+}
+
+.form-actions .btn-change:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.form-actions .btn-cancel:hover {
+  background-color: rgb(186, 185, 185);
+}
+
+.active {
+  background-color: #CAE3FF;
+  color: #1D6DBD;
+  border-right: 2px solid #1D6DBD;
+}
+
+.tab-change-password-content ul {
+  margin-top: 50px;
+  padding: 20px;
+  width: 70%;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  border-left: 4px solid #667eea;
+  list-style: none;
+}
+
+.tab-change-password-content ul li {
+  display: flex;
+  align-items: center;
+}
+
+.tab-change-password-content ul li svg {
+  color: gray;
+}
+
+.tab-change-password-content ul li span {
+  margin-left: 10px;
+}

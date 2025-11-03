@@ -38,7 +38,7 @@ const Header = () => {
             </div>
           )
         }
-        <img src={logo_avatar} alt="" />
+        <img src={logo_avatar} alt="" onClick={() => navigate('/student-account')}/>
       </div>
     </div>
   )
