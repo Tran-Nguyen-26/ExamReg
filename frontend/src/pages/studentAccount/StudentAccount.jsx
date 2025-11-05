@@ -6,6 +6,7 @@ import { MdAccountCircle } from "react-icons/md";
 import { MdChangeCircle } from "react-icons/md";
 import { FaCheck } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence, color } from 'framer-motion';
 
 const StudentAccount = () => {
 
@@ -17,10 +18,14 @@ const StudentAccount = () => {
 
   const navigate = useNavigate()
 
-  const [tabContent, setTabContent] = useState('password')
+  const tabs = [
+    {key: "info", label: "Thông tin cá nhân", icon: <MdAccountCircle/>},
+    {key: "password", label: "Đổi mật khẩu", icon: <MdChangeCircle/>}
+  ]
+  const [tabContent, setTabContent] = useState('info')
 
-  const handleSelectTab = (tabName) => {
-    setTabContent(tabName)
+  const handleSelectTab = (tabKey) => {
+    setTabContent(tabKey)
   }
 
   const handleFocusChangePassword = (e, classname) => {
@@ -41,19 +46,39 @@ const StudentAccount = () => {
   }
 
   return (
-    <div>
+    <AnimatePresence mode='wait'>
+    <motion.div
+      initial={{ opacity: 0, x: 100 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -50 }}
+      transition={{ duration: 0.4 }}
+    >
+    <div className='page-account'>
       <Header/>
       <div className='student-account'>
         <div className='account-tabs'>
           <div className='tab-top'>
-            <div className={`tab-info ${tabContent==="info" ? 'active' : ''}`} onClick={() => handleSelectTab('info')}>
-              <MdAccountCircle/>
-              <span>Thông tin cá nhân</span>
-            </div>
-            <div className={`tab-change-password ${tabContent==='password' ? 'active': ''}`} onClick={() => handleSelectTab('password')}>
-              <MdChangeCircle/>
-              <span>Đổi mật khẩu</span>
-            </div>
+            {
+              tabs.map((tab) => (
+                <div
+                  key={tab.key}
+                  className={`tab-item ${tabContent === tab.key ? 'active' : ''}`}
+                  onClick={() => handleSelectTab(tab.key)}
+                >
+                  {tab.icon}
+                  <span>{tab.label}</span>
+                  {
+                    tabContent === tab.key && (
+                      <motion.div
+                        layoutId='tab-border'
+                        className='tab-border'
+                        transition={{type: "spring", stiffness: 1000, damping: 50}}
+                      />
+                    )
+                  }
+                </div>
+              ))
+            }
           </div>
           <div className='tab-logout' onClick={() => navigate('/login')}>
             <IoIosLogOut/>
@@ -159,6 +184,8 @@ const StudentAccount = () => {
         }
       </div>
     </div>
+    </motion.div>
+    </AnimatePresence>
   )
 }
 

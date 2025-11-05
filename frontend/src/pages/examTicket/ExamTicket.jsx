@@ -11,6 +11,7 @@ import { useContext } from 'react'
 import MyContext from '../../context/MyContext'
 import html2pdf from 'html2pdf.js'
 import printJS from 'print-js'
+import { motion } from 'framer-motion'
 
 
 const ExamTicket = () => {
@@ -42,77 +43,84 @@ const ExamTicket = () => {
   }
 
   return (
-    <div>
-      <Header/>
-      <div className='register-success'>
-        <div className='frame-success'>
-          <img src={logo_success} alt="" />
-        </div>
-        <p className='p1'>Đăng ký thành công</p>
-        <p className='p2'>Phiếu báo dự thi của bạn</p>
-        <div id='ticket' className='ticket'>
-          <img src={logo_university} alt="" />
-          <p className='p3'>Trường đại học Công Nghệ</p>
-          <p className='p4'>Phiếu báo dự thi</p>
-          <div className='ticket-info'>
-            <div className='ticket-sub-info'>
-              <label>Họ và tên:</label>
-              <span>Nguyễn Văn A</span>
+    <motion.div
+      initial={{ opacity: 0, x: 100 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -1000 }}
+      transition={{ duration: 0.4 }}
+    >
+      <div className='page-ticket'>
+        <Header/>
+        <div className='register-success'>
+          <div className='frame-success'>
+            <img src={logo_success} alt="" />
+          </div>
+          <p className='p1'>Đăng ký thành công</p>
+          <p className='p2'>Phiếu báo dự thi của bạn</p>
+          <div id='ticket' className='ticket'>
+            <img src={logo_university} alt="" />
+            <p className='p3'>Trường đại học Công Nghệ</p>
+            <p className='p4'>Phiếu báo dự thi</p>
+            <div className='ticket-info'>
+              <div className='ticket-sub-info'>
+                <label>Họ và tên:</label>
+                <span>Nguyễn Văn A</span>
+              </div>
+              <div className='ticket-sub-info'>
+                <label>Mã sinh viên:</label>
+                <span>23021651</span>
+              </div>
+              <div className='ticket-sub-info'>
+                <label>Học phần</label>
+                <span>{selectedSubject.name}</span>
+              </div>
+              <div className='ticket-sub-info'>
+                <label>Mã học phần:</label>
+                <span>{selectedSubject.subject_code}</span>
+              </div>
+              <div className='ticket-sub-info'>
+                <label>Ngày thi:</label>
+                <span>{selectedExamSession.date}</span>
+              </div>
+              <div className='ticket-sub-info'>
+                <label>Ca thi:</label>
+                <span>{selectedExamSession.time}</span>
+              </div>
+              <div className='ticket-sub-info'>
+                <label>Phòng thi:</label>
+                <span>{selectedExamSession.room}</span>
+              </div>
+              <div className='ticket-sub-info'>
+                <label>Địa điểm thi:</label>
+                <span>{selectedLocation.name}</span>
+              </div>
+              <div className='ticket-sub-info'>
+                <label>Thời lượng bài thi:</label>
+                <span>60 phút</span>
+              </div>
             </div>
-            <div className='ticket-sub-info'>
-              <label>Mã sinh viên:</label>
-              <span>23021651</span>
-            </div>
-            <div className='ticket-sub-info'>
-              <label>Học phần</label>
-              <span>{selectedSubject.name}</span>
-            </div>
-            <div className='ticket-sub-info'>
-              <label>Mã học phần:</label>
-              <span>{selectedSubject.subject_code}</span>
-            </div>
-            <div className='ticket-sub-info'>
-              <label>Ngày thi:</label>
-              <span>{selectedExamSession.date}</span>
-            </div>
-            <div className='ticket-sub-info'>
-              <label>Ca thi:</label>
-              <span>{selectedExamSession.time}</span>
-            </div>
-            <div className='ticket-sub-info'>
-              <label>Phòng thi:</label>
-              <span>{selectedExamSession.room}</span>
-            </div>
-            <div className='ticket-sub-info'>
-              <label>Địa điểm thi:</label>
-              <span>{selectedLocation.name}</span>
-            </div>
-            <div className='ticket-sub-info'>
-              <label>Thời lượng bài thi:</label>
-              <span>60 phút</span>
+            <div className='reminder-ticket'>
+              <img src={logo_reminder_ticket} alt="" />
+              <span>Lưu ý: Sinh viên mang theo phiếu này và thẻ sinh viên khi đi thi</span>
             </div>
           </div>
-          <div className='reminder-ticket'>
-            <img src={logo_reminder_ticket} alt="" />
-            <span>Lưu ý: Sinh viên mang theo phiếu này và thẻ sinh viên khi đi thi</span>
-          </div>
-        </div>
-        <div className='options'>
-          <div className='option option-schedule' onClick={() => navigate('/exam-schedule')}>
-            <img src={logo_schedule} alt="" />
-            <span>Lịch thi của tôi</span>
-          </div>
-          <div className='option option-download' onClick={handleDownload}>
-            <img src={logo_download} alt="" />
-            <span>Tải xuống</span>
-          </div>
-          <div className='option option-print' onClick={handlePrint}>
-            <img src={logo_print} alt="" />
-            <span>In phiếu</span>
+          <div className='options'>
+            <div className='option option-schedule' onClick={() => navigate('/exam-schedule')}>
+              <img src={logo_schedule} alt="" />
+              <span>Lịch thi của tôi</span>
+            </div>
+            <div className='option option-download' onClick={handleDownload}>
+              <img src={logo_download} alt="" />
+              <span>Tải xuống</span>
+            </div>
+            <div className='option option-print' onClick={handlePrint}>
+              <img src={logo_print} alt="" />
+              <span>In phiếu</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }
 

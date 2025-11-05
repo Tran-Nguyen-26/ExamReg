@@ -1,6 +1,7 @@
 import Header from "../../components/header/Header"
 import Schedule from "../../components/schedule/Schedule"
 import './Style-ExamSchedule.css'
+import { motion } from "framer-motion"
 
 //fake data
 import examRegistrationData from '../../data/ExamRegistrationData.json'
@@ -12,6 +13,12 @@ const ExamSchedule = () => {
   const examSchedules = examRegistrationData
 
   return (
+    <motion.div
+      initial={{ opacity: 0, x: 100 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -50 }}
+      transition={{ duration: 0.4 }}
+    >
     <div className="exam-schedule">
       <Header/>
       <div className="schedule-header">
@@ -35,6 +42,7 @@ const ExamSchedule = () => {
         }
       </div>
     </div>
+    </motion.div>
   )
 }
 

@@ -11,6 +11,7 @@ import SelectExamSession from '../../components/selectedExamSession/SelectedExam
 import Reminder from '../../components/reminder/Reminder';
 import { useNavigate } from 'react-router-dom';
 import MyContext from '../../context/MyContext';
+import { motion, AnimatePresence } from 'framer-motion'
 
 //fake data
 import locationData from '../../data/LocationData.json'
@@ -77,85 +78,130 @@ const ExamRegister = () => {
 
 
   return (
-    <div className='exam-register'>
-      <Header/>
-      <SelectedSubject subject={selectedSubject}/>
+    <motion.div
+      initial={{ opacity: 0, x: window.innerWidth }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -50 }}
+      transition={{ duration: 0.4 }}
+    >
+      <div className='exam-register'>
+        <Header/>
+        <SelectedSubject subject={selectedSubject}/>
 
-      {
-        step === 1 && (
-          <>
-            <div className='select-location'>
-              <div className='pos'>
-                <img src={logo_location} alt="" />
-                <span>Lựa chọn địa điểm thi</span>
+        <AnimatePresence mode='wait'>
+        {
+          step === 1 && (
+            <motion.div
+              initial={{ opacity: 0, x: window.innerWidth }}
+              animate={{ opacity: 1, x: 0, transition: {duration: 0.4, delay: 0.4} }}
+              exit={{ opacity: 1, x: -window.innerWidth, transition: {duration: 0.4, delay: 0}}}
+            >
+              <div className='select-location'>
+                <div className='pos'>
+                  <img src={logo_location} alt="" />
+                  <span>Lựa chọn địa điểm thi</span>
+                </div>
+
+                <div className='locations'>
+                  {
+                    locs.map((loc) => (
+                      <Location
+                        key={loc.id} 
+                        data={loc}
+                        isSelected={selectedLocation?.id === loc.id}
+                        onSelect={() => toggleLocation(loc)}
+                      />
+                    ))
+                  }
+                </div>
               </div>
+              <button onClick={() => handleSelectLocationButton()}>Tiếp theo</button>
+              {
+                showLocationWarning && (
+                  <div className='location-warning'>Vui lòng chọn địa điểm thi</div>
+                )
+              }
+            </motion.div>      
+          )
+        }
+        </AnimatePresence>
+        
+        <AnimatePresence mode='wait'>
+        {
+          step === 2 && (
+            <>
+              <motion.div
+                initial={{ opacity: 0, y: 1000 }}
+                animate={{ opacity: 1, y: 0 }}
+                // exit={{ opacity: 0, x: -2000 }}
+                transition={{ duration: 0.4, delay: 0.4}}
+              >
+                <SelectedLocation setStep={setStep} location={selectedLocation}/>
+              </motion.div>
 
-              <div className='locations'>
+              <motion.div
+                initial={{ opacity: 0, y: window.innerHeight }}
+                animate={{ opacity: 1, y: 0, transition: {duration: 0.4, delay: 1}}}
+                exit={{ opacity: 0, x: -window.innerWidth, transition: {duration: 0.4}}}
+              >
+                <div className='select-exam-session'>
+                  <div className='session'>
+                    <img src={logo_exam_session} alt="" />
+                    <span>Lựa chọn ca thi</span>
+                  </div>
+                  <div className='exam-sessions'>
+                    {
+                      examSessions.map((e) => (
+                        <ExamSession
+                          key={e.id}
+                          data={e}
+                          isSelected={selectedExamSession?.id === e.id}
+                          onSelect={() => toggleExamSession(e)}
+                        />
+                      ))
+                    }
+                  </div>
+                </div>
+                <button onClick={() => handleSelectExamSessionButton()}>Tiếp theo</button>
                 {
-                  locs.map((loc) => (
-                    <Location
-                      key={loc.id} 
-                      data={loc}
-                      isSelected={selectedLocation?.id === loc.id}
-                      onSelect={() => toggleLocation(loc)}
-                    />
-                  ))
+                  showExamSessionWarning && (
+                    <div className='exam-session-warning'>Vui lòng chọn ca thi</div>
+                  )
                 }
-              </div>
-            </div>
-            <button onClick={() => handleSelectLocationButton()}>Tiếp theo</button>
-            {
-              showLocationWarning && (
-                <div className='location-warning'>Vui lòng chọn địa điểm thi</div>
-              )
-            }
-          </>      
-        )
-      }
-  
-      {
-        step === 2 && (
-          <>
-            <SelectedLocation setStep={setStep} location={selectedLocation}/>
-            <div className='select-exam-session'>
-              <div className='session'>
-                <img src={logo_exam_session} alt="" />
-                <span>Lựa chọn ca thi</span>
-              </div>
-              <div className='exam-sessions'>
-                {
-                  examSessions.map((e) => (
-                    <ExamSession
-                      key={e.id}
-                      data={e}
-                      isSelected={selectedExamSession?.id === e.id}
-                      onSelect={() => toggleExamSession(e)}
-                    />
-                  ))
-                }
-              </div>
-            </div>
-            <button onClick={() => handleSelectExamSessionButton()}>Tiếp theo</button>
-            {
-              showExamSessionWarning && (
-                <div className='exam-session-warning'>Vui lòng chọn ca thi</div>
-              )
-            }
-          </>
-        )
-      }
+              </motion.div>
+            </>
+          )
+        }
+        </AnimatePresence>
 
-      {
-        step === 3 && (
-          <>
-            <SelectedLocation setStep={setStep} location={selectedLocation}/>
-            <SelectExamSession setStep={setStep} examSession={selectedExamSession}/>
-            <Reminder/>
-            <button onClick={() => navigate('/ticket')}>Xác nhận và đăng kí</button>
-          </>
-        )
-      }
-    </div>
+        <AnimatePresence mode='wait'>
+        {
+          step === 3 && (
+            <>
+              <SelectedLocation setStep={setStep} location={selectedLocation}/>
+              <motion.div
+                initial={{ opacity: 0, y: window.innerHeight }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.4, delay: 0.4}}
+              >
+                <SelectExamSession setStep={setStep} examSession={selectedExamSession}/>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: window.innerHeight }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.4, delay: 0.8}}
+              >
+                <Reminder/>
+                <button onClick={() => navigate('/ticket')}>Xác nhận và đăng kí</button>
+              </motion.div>
+            </>
+          )
+        }
+        </AnimatePresence>
+      </div>
+    </motion.div>
   )
 }
 

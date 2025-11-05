@@ -1,3 +1,7 @@
+.page-account {
+  padding-top: 120px;
+}
+
 .student-account {
   width: 95%;
   height: 700px;
@@ -16,20 +20,33 @@
   border-right:  2px solid rgb(229, 226, 226);
   font-size: 20px;
   font-weight: 500;
+  width: 16%;
 }
 
-.tab-top div, .tab-logout {
+.tab-top .tab-item, .tab-logout {
   display: flex;
   align-items: center;
   padding: 10px 20px 10px 20px;
   cursor: pointer;
 }
 
-.tab-top div:hover, .tab-logout:hover {
-}
-
 .account-tabs svg {
   font-size: 26px;
+}
+
+.tab-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.tab-border {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 3px !important;
+  height: 100%;
+  background-color: #1D6DBD;
 }
 
 .tab-top span, .tab-logout span {
@@ -118,7 +135,6 @@ form .form-actions {
 .active {
   background-color: #CAE3FF;
   color: #1D6DBD;
-  border-right: 2px solid #1D6DBD;
 }
 
 .tab-change-password-content ul {
