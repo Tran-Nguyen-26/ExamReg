@@ -1,6 +1,6 @@
 import './Style-SelectedExamSession.css'
 import logo_exam_session from '../../assets/logo_exam_session.png'
-import logo_change from '../../assets/logo_change.png'
+import { MdOutlineChangeCircle } from "react-icons/md"
 
 const SelectExamSession = ({setStep, examSession}) => {
   return (
@@ -13,7 +13,7 @@ const SelectExamSession = ({setStep, examSession}) => {
       <p>{`Thời gian thi: ${examSession.time}`}</p>
       <p>{`Phòng thi: ${examSession.room}`}</p>
       <div className='change-session' onClick={() => setStep(2)}>
-        <img src={logo_change} alt="" />
+        <MdOutlineChangeCircle/>
         <span>Thay đổi ca thi</span>
       </div>
     </div>

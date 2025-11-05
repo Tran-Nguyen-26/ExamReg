@@ -1,7 +1,7 @@
 import './Style-SelectedSubject.css'
 import logo_subject from '../../assets/logo_subject.png'
-import logo_change from '../../assets/logo_change.png'
 import { useNavigate } from 'react-router-dom'
+import { MdOutlineChangeCircle } from "react-icons/md"
 
 const SelectedSubject = ({subject}) => {
 
@@ -17,7 +17,7 @@ const SelectedSubject = ({subject}) => {
       <p>Kiểm tra cuối kì học kì I năm học 2025-2026</p>
       <p>Thời lượng bài thi: 60 phút</p>
       <div className='change-subject' onClick={() => navigate('/home')}>
-        <img src={logo_change} alt="" />
+        <MdOutlineChangeCircle/>
         <span>Thay đổi môn thi</span>
       </div>
     </div>

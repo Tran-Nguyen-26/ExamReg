@@ -1,9 +1,10 @@
 import './Style-Header.css'
 import logo_university from '../../assets/logo_university.png'
 import logo_schedule from '../../assets/logo_schedule.png'
-import logo_avatar from '../../assets/logo_avatar.png'
 import { useLocation, useNavigate } from 'react-router-dom'
 import logo_home from '../../assets/logo_home.png'
+import { MdAccountCircle } from "react-icons/md"
+import { HiHome } from "react-icons/hi2"
 
 const Header = () => {
 
@@ -27,9 +28,9 @@ const Header = () => {
       <div className='header-right d-flex'>
         {
           showExamSchedule ? (
-            <div className='schedule' onClick={() => navigate('/home')}>
-              <img src={logo_home} alt="" />
-              <span className='text-dark'>Trang chủ</span>
+            <div className='home' onClick={() => navigate('/home')}>
+              <HiHome/>
+              <span>Trang chủ</span>
             </div>
           ) : (
             <div className='schedule' onClick={() => navigate('/exam-schedule')}>
@@ -38,7 +39,7 @@ const Header = () => {
             </div>
           )
         }
-        <img src={logo_avatar} alt="" onClick={() => navigate('/student-account')}/>
+        <MdAccountCircle onClick={() => navigate('/student-account')}/>
       </div>
     </div>
   )

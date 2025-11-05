@@ -37,10 +37,14 @@
   position: absolute;
   top: 20px;
   right: 20px;
-  cursor: pointer;
+  left: 85%;
 }
 
-.selected-exam .change-subject img {
-  width: 20px;
+.change-subject svg {
+  font-size: 24px;
+}
+
+.change-subject:hover {
+  color: #1D6DBD;
 }
 

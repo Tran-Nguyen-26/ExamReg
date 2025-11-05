@@ -9,12 +9,35 @@ import { useNavigate } from 'react-router-dom';
 
 const StudentAccount = () => {
 
+  //fake data
+  const fakeAccount = {
+    email: 'test@vnu.edu.vn',
+    password: '111'
+  }
+
   const navigate = useNavigate()
 
   const [tabContent, setTabContent] = useState('password')
 
   const handleSelectTab = (tabName) => {
     setTabContent(tabName)
+  }
+
+  const handleFocusChangePassword = (e, classname) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      document.querySelector(classname).focus()
+    }
+  }
+
+  const handleCancel = () => {
+    document.querySelector('.present-password').value = ''
+    document.querySelector('.new-password').value = ''
+    document.querySelector('.confirm-new-password').value = ''
+  }
+
+  const handleSubmitChangePassword = () => {
+    
   }
 
   return (
@@ -84,19 +107,34 @@ const StudentAccount = () => {
             <form>
               <div>
                 <label>Mật khẩu hiện tại</label>
-                <input type="password" placeholder='Nhập mật khẩu hiện tại'/>
+                <input 
+                  className='present-password' 
+                  type="password" 
+                  placeholder='Nhập mật khẩu hiện tại'
+                  onKeyDown={(e) => handleFocusChangePassword(e, '.new-password')}
+                />
               </div>
               <div>
                 <label>Mật khẩu mới</label>
-                <input type="password" placeholder='Nhập mật khẩu mới'/>
+                <input 
+                  className='new-password' 
+                  type="password" 
+                  placeholder='Nhập mật khẩu mới'
+                  onKeyDown={(e) => handleFocusChangePassword(e, '.confirm-new-password')}
+                />
               </div>
               <div>
                 <label>Xác nhận mật khẩu mới</label>
-                <input type="password" placeholder='Xác nhận mật khẩu mới'/>
+                <input 
+                  className='confirm-new-password' 
+                  type="password" 
+                  placeholder='Xác nhận mật khẩu mới'
+                  onKeyDown={(e) => handleFocusChangePassword(e, '.btn-change')}
+                />
               </div>
               <div className='form-actions'>
                 <button className='btn-change'>Đổi mật khẩu</button>
-                <button className='btn-cancel'>Hủy</button>
+                <button type='button' className='btn-cancel' onClick={handleCancel}>Hủy</button>
               </div>
               <ul>
                 <li>

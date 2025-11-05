@@ -48,12 +48,44 @@
   border-color: #0072BC;
 }
 
-.right-panel form p {
+.right-panel form .forgot-password {
   text-align: right;
   font-size: 14px;
+}
+
+.right-panel form .forgot-password span {
+  cursor: pointer;
+}
+
+.right-panel form .forgot-password span:hover {
+  color: red;
 }
 
 
 .right-panel form button {
   display: none;
+}
+
+.right-panel .password-login {
+  position: relative;
+}
+
+.right-panel .invalid {
+  position: absolute;
+  left: 5px;
+  margin-top: 5px;
+  top: 100%;
+  color: red;
+  font-size: 14px;
+
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+.right-panel .invalid.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: none;
 }
