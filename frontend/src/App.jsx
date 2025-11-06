@@ -4,8 +4,10 @@ import ExamRegister from "./pages/student/examregister/ExamRegister";
 import ExamTicket from "./pages/student/examTicket/ExamTicket";
 import ExamSchedule from "./pages/student/examSchedule/ExamSchedule";
 import StudentManagement from "./pages/admin/studentmanagement/StudentManagement";
+import CourseManagement from "./pages/admin/coursemanagement/coursemanagement";
 import { Navigate } from "react-router-dom";
 import { Provider } from "./context/MyContext";
+
 
 
 const App = () => {
@@ -19,6 +21,7 @@ const App = () => {
           <Route path="/student/ticket" element={<ExamTicket/>}></Route>
           <Route path="/student/exam-schedule" element={<ExamSchedule/>}></Route>
           <Route path="/admin/student-management" element={<StudentManagement/>}></Route>
+          <Route path="/admin/course-management" element={<CourseManagement/>}></Route>
         </Routes>
       </BrowserRouter>
     </Provider>

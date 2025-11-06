@@ -3,11 +3,18 @@ import { TbReportAnalytics } from "react-icons/tb";
 import { LuGraduationCap } from "react-icons/lu";
 import { FaSwatchbook } from "react-icons/fa";
 import { MdAssessment } from "react-icons/md";
-const Sidebar = ({ activeMenu, onMenuChange }) => {
+import { useLocation, useNavigate } from 'react-router-dom';
+import CourseManagement from '../../../pages/admin/coursemanagement/coursemanagement';
+import StudentManagement from '../../../pages/admin/studentmanagement/StudentManagement';
+
+const Sidebar = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const menuItems = [
     { id: 'exam', icon: <TbReportAnalytics size={24}/>, label: 'Quản lý kỳ thi' },
-    { id: 'student', icon: <LuGraduationCap size={24}/>, label: 'Quản lý học sinh', active: true },
-    { id: 'course', icon: <FaSwatchbook size={21}/>, label: 'Quản lý học phần' },
+    { id: 'student', icon: <LuGraduationCap size={24}/>, label: 'Quản lý học sinh', path: '/admin/student-management'},
+    { id: 'course', icon: <FaSwatchbook size={21}/>, label: 'Quản lý học phần', path: '/admin/course-management'},
     { id: 'report', icon: <MdAssessment size={24}/>, label: 'Báo cáo' }
   ];
 
@@ -16,16 +23,21 @@ const Sidebar = ({ activeMenu, onMenuChange }) => {
       <div className="sidebar-header">
       </div>
       <nav className="sidebar-nav">
-        {menuItems.map(item => (
-          <button
-            key={item.id}
-            onClick={() => onMenuChange(item.id)}
-            className={`sidebar-menu-item ${item.active ? 'active' : ''}`}
-          >
-            <span className="menu-icon">{item.icon}</span>
-            <span className="menu-label">{item.label}</span>
-          </button>
-        ))}
+        {menuItems.map(item => {
+          const isActive = location.pathname === item.path;
+
+          return (
+            <button
+              key={item.id}
+              onClick={() => navigate(item.path)}
+              className={`sidebar-menu-item ${isActive ? 'active' : ''}`}
+            >
+              <span className="menu-icon">{item.icon}</span>
+              <span className="menu-label">{item.label}</span>
+            </button>
+          );
+        })
+      }
       </nav>
     </div>
   );

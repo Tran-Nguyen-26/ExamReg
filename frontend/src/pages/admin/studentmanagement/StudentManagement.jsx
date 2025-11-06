@@ -5,7 +5,6 @@ import Searchbar from "../../../components/admin/searchbar/Searchbar";
 import StudentTable from "../../../components/admin/studentTable/StudentTable";
 import './Style-StudentManagement.css'
 const StudentManagement = () => {
-    const [activeMenu, setActiveMenu] = useState('student');
     const handleSearch = (query) => {
         console.log('Searching:', query);
     };
@@ -57,10 +56,7 @@ const StudentManagement = () => {
         <div className="page">
             <Header/>
             <div className="main">
-                <Sidebar 
-                activeMenu={activeMenu}
-                onMenuChange={setActiveMenu}
-                />
+                <Sidebar/>
                 <div className="content">
                     <Searchbar
                     onSearch={handleSearch}

@@ -1,5 +1,6 @@
 import './Style-Header.css';
 import logo_university from '../../../assets/logo_university.png'; 
+import { LuLogOut } from "react-icons/lu";
 
 const Header = () => (
   <div className="header">
