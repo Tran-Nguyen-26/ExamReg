@@ -16,6 +16,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 //fake data
 import locationData from '../../data/LocationData.json'
 import examSessionData from '../../data/ExamSession.json'
+import Ticket from '../../components/ticket/Ticket';
 
 const ExamRegister = () => {
 
@@ -23,6 +24,9 @@ const ExamRegister = () => {
   const navigate = useNavigate()
   const [showLocationWarning, setShowLocationWarning] = useState(false)
   const [showExamSessionWarning, setShowExamSessionWarning] = useState(false)
+  const [showTicket, setShowTicket] = useState(false)
+
+
   const {
     selectedSubject,
     selectedLocation, 
@@ -76,6 +80,9 @@ const ExamRegister = () => {
     }
   }
 
+  const handleBtnRegister = () => {
+  }
+
 
   return (
     <motion.div
@@ -84,7 +91,7 @@ const ExamRegister = () => {
       exit={{ opacity: 0, x: -50 }}
       transition={{ duration: 0.4 }}
     >
-      <div className='exam-register'>
+      <div className={`exam-register ${showTicket ? 'blurred' : ''}`}>
         <Header/>
         <SelectedSubject subject={selectedSubject}/>
 
@@ -194,13 +201,17 @@ const ExamRegister = () => {
                 transition={{ duration: 0.4, delay: 0.8}}
               >
                 <Reminder/>
-                <button onClick={() => navigate('/ticket')}>Xác nhận và đăng kí</button>
+                <button onClick={() => setShowTicket(true)}>Xác nhận và đăng kí</button>
               </motion.div>
             </>
           )
         }
         </AnimatePresence>
       </div>
+      {
+        showTicket &&
+        <Ticket/>
+      }
     </motion.div>
   )
 }

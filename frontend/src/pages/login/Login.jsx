@@ -2,7 +2,6 @@ import './Style-Login.css'
 import logo_university from '../../assets/logo_uet.webp'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
-import { motion } from 'framer-motion'
 
 
 const Login = () => {
@@ -36,12 +35,6 @@ const Login = () => {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, x: 100 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -50 }}
-      transition={{ duration: 0.4 }}
-    >
     <div className="login">
       <div className='left-panel'>
         <img src={logo_university} alt="" />
@@ -69,7 +62,6 @@ const Login = () => {
         </form>
       </div>
     </div>
-    </motion.div>
   )
 }
 

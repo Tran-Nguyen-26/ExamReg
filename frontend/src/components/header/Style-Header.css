@@ -3,8 +3,8 @@
   height: fit-content;
   padding: 0px 10px;
   background-color: white;
-  border-bottom: 2px solid gray;
-  box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+  border-bottom: 2px solid rgb(164, 161, 161);
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
   position: fixed;
   top: 0;
   left: 0;

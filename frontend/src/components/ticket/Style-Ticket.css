@@ -1,42 +1,24 @@
-.page-ticket {
-  padding-top: 120px;
-}
-
-.register-success {
-  width: 60%;
-  margin: 0 auto 60px;
-  border: 1px solid rgb(229, 226, 226);
-  box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
-  border-radius: 20px;
-  padding: 30px 40px;
-  margin-top: 40px;
+.dialog-ticket {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: fit-content;
+  width: 50%;
+  background-color: white;
+  z-index: 1000;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding-top: 40px;
+  padding-bottom: 20px;
+  border: 1px solid #F6F8FF;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+  min-width: 600px;
 }
 
-.register-success .frame-success {
-  padding: 5px 20px;
-  background-color: #D4FFBC;
-  border-radius: 20px;
-}
-
-.register-success .frame-success img {
-  width: 40px;
-}
-
-.register-success .p1 {
-  font-size: 30px;
-  font-weight: bold;
-  margin-bottom: 0px;
-}
-
-.register-success .p2 {
-  margin-bottom: 10px;
-}
-
-.register-success .ticket {
+.dialog-ticket .ticket {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -45,7 +27,7 @@
   box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
   border-radius: 20px;
   padding: 20px 40px;
-  width: 70%;
+  width: 80%;
 }
 
 .ticket img {
@@ -88,8 +70,8 @@
 }
 
 .reminder-ticket {
-  margin-top: 50px;
-  margin-bottom: 10px;
+  margin-top: 40px;
+  margin-bottom: 0px;
   display: flex;
   align-items: center;
 }
@@ -104,11 +86,11 @@
 }
 
 .options {
-  width: 70%;
+  width: 80%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 40px;
+  margin-top: 20px;
 }
 
 .option {
@@ -139,10 +121,10 @@
 }
 
 .options img {
-  width: 30px;
+  width: 24px;
 }
 
 .options span {
-  font-size: 20px;
+  font-size: 14px;
   margin-left: 5px;
 }
