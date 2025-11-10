@@ -23,6 +23,8 @@ public class Subject {
 
   private int creditHour;
 
+  private int duration;
+
   @OneToMany(mappedBy = "subject")
   private List<StudentSubject> studentSubjects;
 

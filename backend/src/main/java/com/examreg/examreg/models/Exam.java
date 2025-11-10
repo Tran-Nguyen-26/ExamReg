@@ -19,6 +19,8 @@ public class Exam {
 
   private String examCode;
 
+  private String examName;
+
   private String examType;
 
   @OneToMany(mappedBy = "exam")
