@@ -38,13 +38,13 @@ const StudentManagement = () => {
         alert('Thêm sinh viên mới');
     };
 
-    const handleView = (student) => {
-        alert(`Xem thông tin: ${student.name}`);
-    };
+    // const handleView = (student) => {
+    //     alert(`Xem thông tin: ${student.name}`);
+    // };
 
-    const handleEdit = (student) => {
-        alert(`Chỉnh sửa: ${student.name}`);
-    };
+    // const handleEdit = (student) => {
+    //     alert(`Chỉnh sửa: ${student.name}`);
+    // };
 
     const handleDelete = (student) => {
         if (confirm(`Bạn có chắc muốn xóa sinh viên ${student.name}?`)) {
@@ -64,8 +64,6 @@ const StudentManagement = () => {
                     onAdd={handleAdd}/>
                     <StudentTable
                     students={students}
-                    onView={handleView}
-                    onEdit={handleEdit}
                     onDelete={handleDelete}
                     />
                 </div>

@@ -18,11 +18,11 @@ const Searchbar = ({onSearch, onImport, onAdd}) => (
       </div>
       <div className="buttons">
         <button onClick={onImport} className="btn-import">
-          <TfiImport className="btn-icon" />
+          <TfiImport className="btn-icon-student" />
           <span>Import Excel</span>
         </button>
-        <button onClick={onAdd} className="btn-add">
-          <IoMdAdd className="btn-icon" />
+        <button onClick={onAdd} className="btn-add-student">
+          <IoMdAdd className="btn-icon-student" />
           <span>Thêm sinh viên</span>
         </button>      
       </div>
