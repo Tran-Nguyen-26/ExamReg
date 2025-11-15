@@ -1,7 +1,7 @@
 import './Style-Sidebar.css';
 import { TbReportAnalytics } from "react-icons/tb";
 import { LuGraduationCap } from "react-icons/lu";
-import { FaSwatchbook } from "react-icons/fa";
+import { FaSwatchbook, FaBook, FaClipboardList } from "react-icons/fa";
 import { MdAssessment } from "react-icons/md";
 import { useLocation, useNavigate } from 'react-router-dom';
 import CourseManagement from '../../../pages/admin/coursemanagement/coursemanagement';
@@ -12,10 +12,11 @@ const Sidebar = () => {
   const location = useLocation();
 
   const menuItems = [
-    { id: 'exam', icon: <TbReportAnalytics size={24}/>, label: 'Quản lý kỳ thi' },
+    { id: 'exam', icon: <TbReportAnalytics size={24}/>, label: 'Quản lý kỳ thi', path: '/admin/report' },
     { id: 'student', icon: <LuGraduationCap size={24}/>, label: 'Quản lý học sinh', path: '/admin/student-management'},
     { id: 'course', icon: <FaSwatchbook size={21}/>, label: 'Quản lý học phần', path: '/admin/course-management'},
-    { id: 'report', icon: <MdAssessment size={24}/>, label: 'Báo cáo', path: '/admin/report'}
+    { id: 'eligibility', icon: <FaClipboardList size={21}/>, label: 'Quản lý điều kiện dự thi', path: '/admin/exam-eligibility' },
+    { id: 'report', icon: <MdAssessment size={24}/>, label: 'Báo cáo', path: '/admin/report' }
   ];
 
   return (
