@@ -1,5 +1,11 @@
 .page-account {
   padding-top: 120px;
+  position: relative;
+}
+
+.page-account.blr {
+  filter: blur(4px);
+  pointer-events: none;
 }
 
 .student-account {
@@ -8,7 +14,7 @@
   margin: 20px auto 20px;
   display: flex;
   border: 1px solid rgb(229, 226, 226);
-  box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
   border-radius: 20px;
   overflow: hidden;
 }
@@ -158,4 +164,57 @@ form .form-actions {
 
 .tab-change-password-content ul li span {
   margin-left: 10px;
+}
+
+.change-password-first-time {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: fit-content;
+  width: 30%;
+  background-color: whitesmoke;
+  padding: 20px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.change-password-first-time > p {
+  text-align: center;
+  margin: 0px;
+}
+
+.change-password-first-time div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.change-password-first-time div p {
+  position: absolute;
+  left: 190px;
+  top: 40px;
+  font-size: 14px;
+  color: red;
+}
+
+.change-password-first-time div span {
+  width: 200px;
+}
+
+.change-password-first-time button {
+  border: none;
+  font-size: 18px;
+  background-color: rgb(253, 8, 8);
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.change-password-first-time button:hover {
+  background-color: #dc3b3b;
 }

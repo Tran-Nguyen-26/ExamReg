@@ -3,9 +3,13 @@ package com.examreg.examreg.service.impl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import com.examreg.examreg.dto.request.ChangePasswordFirstimeRequest;
 import com.examreg.examreg.dto.request.UserLoginRequest;
 import com.examreg.examreg.dto.response.AdminReponse;
 import com.examreg.examreg.dto.response.AuthResponse;
@@ -33,6 +37,7 @@ public class AuthService implements IAuthService {
   private final AdminRepositoty adminRepositoty;
   private final StudentMapper studentMapper;
   private final AdminMapper adminMapper;
+  private final PasswordEncoder passwordEncoder;
   
   @Override
   public AuthResponse<?> login(UserLoginRequest request) {
@@ -62,6 +67,22 @@ public class AuthService implements IAuthService {
     } else {
       throw new IllegalStateException("Unknown role: " + role);
     }
+  }
+
+  @Override
+  public void changePasswordFirstTime(Long studentId, ChangePasswordFirstimeRequest request) {
+
+    Student student = studentRepository.findById(studentId)
+      .orElseThrow(() -> new ResourceNotFoundException("Student not found: " + studentId));
+    
+    if (student.isFirstLogin()) {
+      student.setPassword(passwordEncoder.encode(request.getPassword()));
+      student.setFirstLogin(false);
+      studentRepository.save(student);
+    } else {
+      throw new IllegalStateException("Password change not allowed: user has already logged in before");
+    }
+    
   }
   
 }

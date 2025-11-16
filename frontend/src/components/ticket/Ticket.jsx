@@ -15,6 +15,7 @@ const Ticket = () => {
   const navigate = useNavigate()
 
   const {
+    user,
     selectedSubject,
     selectedLocation, 
     setSelectedLocation,
@@ -47,11 +48,11 @@ const Ticket = () => {
         <div className='ticket-info'>
           <div className='ticket-sub-info'>
             <label>Họ và tên:</label>
-            <span>Nguyễn Văn A</span>
+            <span>{user.fullname}</span>
           </div>
           <div className='ticket-sub-info'>
             <label>Mã sinh viên:</label>
-            <span>23021651</span>
+            <span>{user.studentCode}</span>
           </div>
           <div className='ticket-sub-info'>
             <label>Học phần</label>

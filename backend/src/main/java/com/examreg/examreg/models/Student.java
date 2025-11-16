@@ -40,6 +40,8 @@ public class Student extends User{
 
   private String faculty;
 
+  private boolean firstLogin = true;
+
   @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<RegistrationSession> registrationSessions;
 

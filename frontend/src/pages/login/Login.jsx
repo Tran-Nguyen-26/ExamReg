@@ -2,18 +2,17 @@ import './Style-Login.css'
 import logo_university from '../../assets/logo_uet.webp'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import { useAuth } from '../../hooks/useAuth'
 
 
 const Login = () => {
 
-  //fake data
-  const fakeAccount = {
-    email: 'test@vnu.edu.vn',
-    password: '111'
-  }
-
-  const navigate = useNavigate()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [showError, setShowError] = useState(false)
+  const navigate = useNavigate()
+  const { login } = useAuth() 
+  
 
   const handleFocusPassword = (e) => {
     if (e.key === 'Enter') {
@@ -22,14 +21,12 @@ const Login = () => {
     }
   }
 
-  const handleSubmitLogin = (e) => {
+  const handleSubmitLogin = async (e) => {
     e.preventDefault()
-    const email = e.target.email.value
-    const password = e.target.password.value
-
-    if (email === fakeAccount.email && password === fakeAccount.password) {
-      navigate('/home')
-    } else {
+    try {
+      await login(email, password)
+    } catch (err) {
+      console.error('Login failed', err)
       setShowError(true)
     }
   }
@@ -46,11 +43,24 @@ const Login = () => {
           <h1>Đăng nhập</h1>
           <div>
             <label>Email</label>
-            <input type="text" placeholder='Nhập email' name='email' onKeyDown={handleFocusPassword}/>
+            <input 
+              type="text" 
+              placeholder='Nhập email' 
+              name='email'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onKeyDown={handleFocusPassword}
+            />
           </div>
           <div className='password-login'>
             <label>Mật khẩu</label>
-            <input type="password" placeholder='Nhập mật khẩu' name='password'/>
+            <input 
+              type="password" 
+              placeholder='Nhập mật khẩu' 
+              name='password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
             <p className={`invalid ${showError ? 'show': ''}`}>
               Email hoặc mật khẩu không đúng. Vui lòng thử lại.
             </p>

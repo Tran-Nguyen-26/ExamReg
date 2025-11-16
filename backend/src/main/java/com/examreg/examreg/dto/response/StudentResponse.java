@@ -1,6 +1,7 @@
 package com.examreg.examreg.dto.response;
 
 import com.examreg.examreg.enums.Gender;
+import com.examreg.examreg.enums.Role;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,4 +21,6 @@ public class StudentResponse {
   private String className;
   private String major;
   private String faculty;
+  private Role role;
+  private boolean firstLogin;
 }

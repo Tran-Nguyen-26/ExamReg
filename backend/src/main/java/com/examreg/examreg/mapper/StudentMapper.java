@@ -17,6 +17,8 @@ public class StudentMapper {
       .className(student.getClassName())
       .major(student.getMajor())
       .faculty(student.getFaculty())
+      .role(student.getRole())
+      .firstLogin(student.isFirstLogin())
       .build();
   }
 }

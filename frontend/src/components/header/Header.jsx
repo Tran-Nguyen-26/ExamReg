@@ -5,8 +5,12 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import logo_home from '../../assets/logo_home.png'
 import { MdAccountCircle } from "react-icons/md"
 import { HiHome } from "react-icons/hi2"
+import { useContext } from 'react'
+import MyContext from '../../context/MyContext'
 
 const Header = () => {
+
+  const { user } = useContext(MyContext)
 
   const navigate = useNavigate()
   const location = useLocation()
@@ -21,7 +25,7 @@ const Header = () => {
         </div>
         <div className='hl2'>
           <p className='exam-name'>UET Exam</p>
-          <span className='student'>Trần Thành Nguyên - 23021651</span>
+          <span className='student'>{`${user.fullname} - ${user.studentCode}`}</span>
         </div>
       </div>
 

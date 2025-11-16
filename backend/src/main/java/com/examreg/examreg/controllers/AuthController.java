@@ -1,14 +1,17 @@
 package com.examreg.examreg.controllers;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.examreg.examreg.dto.request.ChangePasswordFirstimeRequest;
 import com.examreg.examreg.dto.request.UserLoginRequest;
 import com.examreg.examreg.dto.response.ApiResponse;
 import com.examreg.examreg.dto.response.AuthResponse;
+import com.examreg.examreg.security.user.AppUserDetails;
 import com.examreg.examreg.service.IAuthService;
 
 import jakarta.validation.Valid;
@@ -27,4 +30,12 @@ public class AuthController {
     return ResponseEntity.ok(ApiResponse.success("Login successful", authResponse));
   }
 
+  @PostMapping("/change-password-first-time")
+  public ResponseEntity<ApiResponse<?>> changePasswordFirstTime(
+    @AuthenticationPrincipal AppUserDetails studentDetails,
+    @RequestBody @Valid ChangePasswordFirstimeRequest request
+  ) {
+    authService.changePasswordFirstTime(studentDetails.getId(), request);
+    return ResponseEntity.ok(ApiResponse.success("Password changed successfully"));
+  }
 }

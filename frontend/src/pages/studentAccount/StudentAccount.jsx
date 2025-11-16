@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { use, useContext, useState } from 'react';
 import Header from '../../components/header/Header'
 import './Style-StudentAccount.css'
 import { IoIosLogOut } from "react-icons/io";
@@ -7,14 +7,13 @@ import { MdChangeCircle } from "react-icons/md";
 import { FaCheck } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, color } from 'framer-motion';
+import MyContext from '../../context/MyContext';
+import { useAuth } from '../../hooks/useAuth';
 
 const StudentAccount = () => {
 
-  //fake data
-  const fakeAccount = {
-    email: 'test@vnu.edu.vn',
-    password: '111'
-  }
+  const { user, setUser } = useContext(MyContext)
+  const { changePasswordFirstTime } = useAuth()
 
   const navigate = useNavigate()
 
@@ -22,7 +21,9 @@ const StudentAccount = () => {
     {key: "info", label: "Thông tin cá nhân", icon: <MdAccountCircle/>},
     {key: "password", label: "Đổi mật khẩu", icon: <MdChangeCircle/>}
   ]
+
   const [tabContent, setTabContent] = useState('info')
+  const [showChangePasswordFirstTime, setShowChangePasswordFirstTime] = useState(user.firstLogin)
 
   const handleSelectTab = (tabKey) => {
     setTabContent(tabKey)
@@ -45,6 +46,43 @@ const StudentAccount = () => {
     
   }
 
+  const [passwordFt, setPasswordFt] = useState('')
+  const [confirmPasswordFt, setConfirmPasswordFt] = useState('')
+  const [errorPasswordFt, setErrorPasswordFt] = useState(false)
+  const [errorConfirmFt, setErrorConfirmFt] = useState(false)
+  const [errorMissMatch, setErrorMissMatch] = useState(false)
+
+  const handleChangePasswordFirstTime = async (e) => {
+    e.preventDefault()
+    if (!passwordFt.trim()) {
+      setErrorPasswordFt(true)
+      return
+    }
+    if (!confirmPasswordFt.trim()) {
+      setErrorConfirmFt(true)
+      setErrorMissMatch(false)
+      return
+    }
+    if (passwordFt !== confirmPasswordFt) {
+      setErrorMissMatch(true)
+      setErrorConfirmFt(false)
+      return
+    } else {
+      setErrorPasswordFt(false)
+      setErrorMissMatch(false)
+      setErrorConfirmFt(false)
+    }
+    try {
+      await changePasswordFirstTime(confirmPasswordFt)
+      const updateUser = {...user, firstLogin: false}
+      setUser(updateUser)
+      localStorage.setItem('user', JSON.stringify(updateUser))
+      setShowChangePasswordFirstTime(false)
+    } catch (error) {
+      console.error("Change password failed", error)
+    }
+  }
+
   return (
     <AnimatePresence mode='wait'>
     <motion.div
@@ -53,7 +91,7 @@ const StudentAccount = () => {
       exit={{ opacity: 0, x: -50 }}
       transition={{ duration: 0.4 }}
     >
-    <div className='page-account'>
+    <div className={`page-account ${showChangePasswordFirstTime ? 'blr' : ''}`}>
       <Header/>
       <div className='student-account'>
         <div className='account-tabs'>
@@ -90,11 +128,11 @@ const StudentAccount = () => {
           <div className='tab-info-content info'>
             <div>
               <label>Họ và tên:</label>
-              <span>Nguyễn Văn A</span>
+              <span>{user.fullname}</span>
             </div>
             <div>
               <label>Mã sinh viên:</label>
-              <span>23021651</span>
+              <span>{user.studentCode}</span>
             </div>
             <div>
               <label>Ngày sinh:</label>
@@ -102,11 +140,11 @@ const StudentAccount = () => {
             </div>
             <div>
               <label>Giới tính:</label>
-              <span>Nam</span>
+              <span>{`${user.gender === 'MALE' ? 'Nam' : 'Nữ'}`}</span>
             </div>
             <div>
               <label>Email:</label>
-              <span>nguyenvana@gmail.com</span>
+              <span>{user.email}</span>
             </div>
             <div>
               <label>Số điện thoại:</label>
@@ -114,15 +152,15 @@ const StudentAccount = () => {
             </div>
             <div>
               <label>Lớp:</label>
-              <span>CSI-2</span>
+              <span>{user.className}</span>
             </div>
             <div>
               <label>Ngành học:</label>
-              <span>Khoa học máy tính</span>
+              <span>{user.major}</span>
             </div>
             <div>
               <label>Khoa:</label>
-              <span>Công nghệ thông tin</span>
+              <span>{user.faculty}</span>
             </div>
           </div>
         }
@@ -184,6 +222,49 @@ const StudentAccount = () => {
         }
       </div>
     </div>
+    {
+      showChangePasswordFirstTime && 
+      <form 
+        className='change-password-first-time' 
+        onSubmit={handleChangePasswordFirstTime}
+      >
+        <p>
+          Bạn đang đăng nhập lần đầu.<br />
+          Vui lòng đổi mật khẩu để đảm bảo an toàn.
+        </p>
+        <div>
+          <span>Mật khẩu mới :</span>
+          <input 
+            type="password" 
+            name='passwordFt'
+            value={passwordFt}
+            onChange={(e) => setPasswordFt(e.target.value)}
+          />
+          {
+            errorPasswordFt && 
+            <p>Vui lòng nhập mật khẩu mới</p>
+          }
+        </div>
+        <div>
+          <span>Xác nhận mật khẩu :</span>
+          <input 
+            type="password" 
+            name='passwordFt'
+            value={confirmPasswordFt}
+            onChange={(e) => setConfirmPasswordFt(e.target.value)}
+          />
+          {
+            errorConfirmFt && 
+            <p>Vui lòng xác nhận lại mật khẩu</p>
+          }
+          {
+            errorMissMatch &&
+            <p>Mật khẩu không khớp</p>
+          }
+        </div>
+        <button type='submit'>Xác nhận</button>
+      </form>
+    }
     </motion.div>
     </AnimatePresence>
   )
