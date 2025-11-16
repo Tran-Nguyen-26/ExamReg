@@ -26,7 +26,7 @@ const Login = () => {
     try {
       await login(email, password)
     } catch (err) {
-      console.error('Login failed', err)
+      console.error('Login failed', err.error, err.status)
       setShowError(true)
     }
   }

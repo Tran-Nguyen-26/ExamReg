@@ -13,7 +13,7 @@ import { useAuth } from '../../hooks/useAuth';
 const StudentAccount = () => {
 
   const { user, setUser } = useContext(MyContext)
-  const { changePasswordFirstTime } = useAuth()
+  const { changePasswordFirstTime, logout } = useAuth()
 
   const navigate = useNavigate()
 
@@ -83,6 +83,14 @@ const StudentAccount = () => {
     }
   }
 
+  const handleLogout = async () => {
+    try {
+      await logout()
+    } catch (error) {
+      throw error
+    }
+  }
+
   return (
     <AnimatePresence mode='wait'>
     <motion.div
@@ -118,7 +126,7 @@ const StudentAccount = () => {
               ))
             }
           </div>
-          <div className='tab-logout' onClick={() => navigate('/login')}>
+          <div className='tab-logout' onClick={handleLogout}>
             <IoIosLogOut/>
             <span>Đăng xuất</span>
           </div>

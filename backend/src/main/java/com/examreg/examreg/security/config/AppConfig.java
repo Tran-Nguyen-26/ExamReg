@@ -26,6 +26,7 @@ import com.examreg.examreg.security.jwt.AuthTokenFilter;
 import com.examreg.examreg.security.jwt.JwtAuthEntryPoint;
 import com.examreg.examreg.security.jwt.JwtUtils;
 import com.examreg.examreg.security.user.AppUserDetailsService;
+import com.examreg.examreg.service.IBlacklistService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -38,6 +39,7 @@ public class AppConfig {
   private final AppUserDetailsService userDetailsService;
   private final JwtAuthEntryPoint authEntryPoint;
   private final JwtUtils jwtUtils;
+  private final IBlacklistService blacklistService;
 
   @Bean
   public PasswordEncoder passwordEncoder() {
@@ -46,7 +48,7 @@ public class AppConfig {
 
   @Bean
   public AuthTokenFilter authTokenFilter() {
-    return new AuthTokenFilter(jwtUtils, userDetailsService);
+    return new AuthTokenFilter(jwtUtils, userDetailsService, blacklistService);
   }
 
   @Bean

@@ -10,6 +10,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.examreg.examreg.security.user.AppUserDetailsService;
+import com.examreg.examreg.service.IBlacklistService;
 
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
@@ -23,13 +24,20 @@ public class AuthTokenFilter extends OncePerRequestFilter {
   
   private JwtUtils jwtUtils;
   private AppUserDetailsService userDetailsService;
+  private final IBlacklistService blacklistService;
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
     try {
       String jwt = parseJwt(request);
-      if (StringUtils.hasText(jwt) && jwtUtils.validatedToken(jwt)) {
+      if (StringUtils.hasText(jwt)) {
+        if (!jwtUtils.validatedToken(jwt)) {
+          throw new JwtException("Invalid token");
+        }
+        if (blacklistService.isBlacklisted(jwtUtils.getJtiFromToken(jwt))) {
+          throw new JwtException("Token has been revoked");
+        }
         String email = jwtUtils.getEmailFromToken(jwt);
         UserDetails userDetails = userDetailsService.loadUserByUsername(email);
         var auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
@@ -38,14 +46,16 @@ public class AuthTokenFilter extends OncePerRequestFilter {
       }
     } catch (JwtException e){
       if (!response.isCommitted()) {
-        response.setStatus(401);
-        response.getWriter().write(e.getMessage() + " : Invalid or expired token");
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().write("{\"error\": \"" + e.getMessage() + "\"}");
       }
       return;
     } catch (Exception e) {
       if (!response.isCommitted()) {
-        response.setStatus(500);
-        response.getWriter().write(e.getMessage());
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().write("{\"error\": \"" + e.getMessage() + "\"}");
       }
       return;
     }

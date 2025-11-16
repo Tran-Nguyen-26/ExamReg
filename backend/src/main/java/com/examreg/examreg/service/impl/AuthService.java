@@ -1,13 +1,13 @@
 package com.examreg.examreg.service.impl;
 
+import java.util.Date;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.examreg.examreg.dto.request.ChangePasswordFirstimeRequest;
 import com.examreg.examreg.dto.request.UserLoginRequest;
@@ -24,6 +24,7 @@ import com.examreg.examreg.repository.StudentRepository;
 import com.examreg.examreg.security.jwt.JwtUtils;
 import com.examreg.examreg.security.user.AppUserDetails;
 import com.examreg.examreg.service.IAuthService;
+import com.examreg.examreg.service.IBlacklistService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -38,6 +39,7 @@ public class AuthService implements IAuthService {
   private final StudentMapper studentMapper;
   private final AdminMapper adminMapper;
   private final PasswordEncoder passwordEncoder;
+  private final IBlacklistService blacklistService;
   
   @Override
   public AuthResponse<?> login(UserLoginRequest request) {
@@ -83,6 +85,18 @@ public class AuthService implements IAuthService {
       throw new IllegalStateException("Password change not allowed: user has already logged in before");
     }
     
+  }
+
+  @Override
+  public void logout(String token) {
+    String jti = jwtUtils.getJtiFromToken(token);
+    Date expirationDate = jwtUtils.getExpirationTimeFromToken(token);
+
+    long remainingMs = expirationDate.getTime() - System.currentTimeMillis();
+
+    if (remainingMs > 0) {
+      blacklistService.addToBlacklist(jti, remainingMs);
+    }
   }
   
 }

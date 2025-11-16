@@ -12,8 +12,9 @@ export const useAuth = () => {
     try {
       const authResponse = await authService.login(email, password)
       setUser(authResponse.user)
-      if (user.role === 'STUDENT') {
-        if (user.firstLogin) navigate('/student-account')
+      const u = authResponse.user
+      if (u.role === 'STUDENT') {
+        if (u.firstLogin) navigate('/student-account')
         else navigate('/exam-schedule')
       }
       return authResponse
@@ -30,5 +31,15 @@ export const useAuth = () => {
       throw e
     }
   }
-  return {login, changePasswordFirstTime}
+
+  const logout = async () => {
+    try {
+      await authService.logout()
+      setUser(null)
+    } catch (e) {
+      throw e
+    }
+  }
+
+  return {login, changePasswordFirstTime, logout}
 }

@@ -1,6 +1,7 @@
 package com.examreg.examreg.security.jwt;
 
 import java.util.Date;
+import java.util.UUID;
 
 import javax.crypto.SecretKey;
 
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.examreg.examreg.security.user.AppUserDetails;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -31,6 +33,7 @@ public class JwtUtils {
       .subject(userPrincipal.getEmail())
       .claim("id", userPrincipal.getId())
       .claim("role", role)
+      .id(UUID.randomUUID().toString())
       .issuedAt(new Date())
       .expiration(new Date(System.currentTimeMillis() + expirationTime))
       .signWith(key(), Jwts.SIG.HS256)
@@ -57,5 +60,23 @@ public class JwtUtils {
     } catch (JwtException | IllegalArgumentException e) {
       return false;
     }
+  }
+
+  public String getJtiFromToken(String token) {
+    Claims claims = Jwts.parser()
+      .verifyWith(key())
+      .build()
+      .parseSignedClaims(token)
+      .getPayload();
+    return claims.getId();
+  }
+
+  public Date getExpirationTimeFromToken(String token) {
+    Claims claims = Jwts.parser()
+      .verifyWith(key())
+      .build()
+      .parseSignedClaims(token)
+      .getPayload();
+    return claims.getExpiration();
   }
 }

@@ -9,4 +9,6 @@ public interface IAuthService {
   public AuthResponse<?> login(UserLoginRequest request);
 
   public void changePasswordFirstTime(Long studentId, ChangePasswordFirstimeRequest request);
+
+  public void logout(String token);
 }

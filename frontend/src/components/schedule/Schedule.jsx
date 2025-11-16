@@ -9,7 +9,7 @@ import logo_remove from '../../assets/logo_remove.png'
 
 const Schedule = ({data}) => {
   return (
-    <div div className='exam-session-schedule'>
+    <div className='exam-session-schedule'>
       <div className='subject-header'>
         <img src={icon_book} alt="" />
         <div>
