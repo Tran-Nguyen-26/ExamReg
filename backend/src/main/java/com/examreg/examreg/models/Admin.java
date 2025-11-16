@@ -6,7 +6,15 @@ import com.examreg.examreg.enums.Role;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
 @Entity
 public class Admin extends User {
 
