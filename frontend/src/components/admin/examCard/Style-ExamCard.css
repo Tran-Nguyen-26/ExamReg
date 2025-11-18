@@ -18,6 +18,9 @@
 .exam-management-card.upcoming {
   border-top: 6px solid #f59e0b;
 }
+.exam-management-card.closed {
+  border-top: 6px solid #a2a1a1;
+}
 
 /* Card Header */
 .exam-management-card-header {
@@ -65,6 +68,11 @@
 .exam-management-status.upcoming {
   background-color: #fef3c7;
   color: #92400e;
+}
+
+.exam-management-status.closed {
+  background-color: #cececa;
+  color: #353535;
 }
 
 /* Statistics */
@@ -203,4 +211,20 @@
 
 .exam-management-btn-close:hover {
   background-color: #d42626;
+}
+.exam-management-btn-delete {
+  background-color: #7c2d12;
+  color: white;
+}
+
+.exam-management-btn-delete:hover {
+  background-color: #5c1e0a;
+}
+.exam-management-btn-open {
+  background-color: #bb18c7;
+  color: white;
+}
+
+.exam-management-btn-open:hover {
+  background-color: #811288;
 }

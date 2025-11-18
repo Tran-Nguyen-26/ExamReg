@@ -1,15 +1,15 @@
 export class User {
   constructor(data) {
-    this.id = data.id;
-    this.email = data.email;
-    this.studentCode = data.studentCode;
-    this.fullname = data.fullname;
-    this.gender = data.gender;
-    this.className = data.className;
-    this.major = data.major;
-    this.faculty = data.faculty;
-    this.role = data.role;
-    this.firstLogin = data.firstLogin;
+    this.id = data?.id ?? null;
+    this.email = data?.email ?? null;
+    this.studentCode = data?.studentCode ?? null;
+    this.fullname = data?.fullname ?? null;
+    this.gender = data?.gender ?? null;
+    this.className = data?.className ?? null;
+    this.major = data?.major ?? null;
+    this.faculty = data?.faculty ?? null;
+    this.role = data?.role ?? null;
+    this.firstLogin = data?.firstLogin ?? false;
   }
   
   isStudent() {

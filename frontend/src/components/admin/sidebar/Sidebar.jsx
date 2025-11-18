@@ -13,7 +13,7 @@ const Sidebar = () => {
     { id: 'exam', icon: <TbReportAnalytics size={24}/>, label: 'Quản lý kỳ thi', path: '/admin/exam-management'},
     { id: 'student', icon: <LuGraduationCap size={24}/>, label: 'Quản lý học sinh', path: '/admin/student-management'},
     { id: 'course', icon: <FaSwatchbook size={21}/>, label: 'Quản lý học phần', path: '/admin/course-management'},
-    { id: 'report', icon: <MdAssessment size={24}/>, label: 'Báo cáo', }
+    { id: 'report', icon: <MdAssessment size={24}/>, label: 'Báo cáo', path: '/admin/report'}
   ];
 
   return (

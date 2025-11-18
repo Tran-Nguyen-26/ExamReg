@@ -1,12 +1,13 @@
 import { CiCalendar } from "react-icons/ci";
 import { IoEyeOutline } from "react-icons/io5";
 import { IoMdAdd } from "react-icons/io";
-import { MdEdit } from "react-icons/md";
+import { MdEdit, MdDelete } from "react-icons/md";
 import { IoLockClosedOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+import { IoLockOpenOutline } from "react-icons/io5";
 import "./Style-ExamCard.css"
 
-const ExamCard = ({ exam, onViewDetail, onAddSubject, onEdit, onClose }) => {
+const ExamCard = ({ exam, onViewDetail, onAddSubject, onEdit, onClose, onOpen, onDelete }) => {
 
   const navigate = useNavigate();
   
@@ -31,7 +32,7 @@ const ExamCard = ({ exam, onViewDetail, onAddSubject, onEdit, onClose }) => {
           </div>
         </div>
         <span className={`exam-management-status ${exam.status}`}>
-          {exam.status === 'active' ? 'Đang mở' : 'Sắp mở'}
+          {exam.status === 'active' ? 'Đang mở' : exam.status === 'upcoming' ? 'Sắp mở' : 'Đã đóng'}
         </span>
       </div>
 
@@ -63,6 +64,7 @@ const ExamCard = ({ exam, onViewDetail, onAddSubject, onEdit, onClose }) => {
           <IoEyeOutline className="exam-management-action-icon" />
           <span>Xem chi tiết</span>
         </button>
+        {exam.status !== 'closed' && (
         <button 
           className="exam-mangement-btn-action exam-management-btn-add"
           onClick={(e) => handleButtonClick(e, onAddSubject)}
@@ -70,6 +72,8 @@ const ExamCard = ({ exam, onViewDetail, onAddSubject, onEdit, onClose }) => {
           <IoMdAdd className="exam-management-action-icon" />
           <span>Thêm môn thi</span>
         </button>
+        )}
+        {exam.status !== 'closed' && (
         <button 
           className="exam-mangement-btn-action exam-management-btn-edit"
           onClick={(e) => handleButtonClick(e, onEdit)}
@@ -77,12 +81,39 @@ const ExamCard = ({ exam, onViewDetail, onAddSubject, onEdit, onClose }) => {
           <MdEdit className="exam-management-action-icon" />
           <span>Chỉnh sửa</span>
         </button>
+        )}
+        {exam.status !== 'closed' && (
+          <button 
+            className={`exam-mangement-btn-action ${
+              exam.status === 'upcoming' 
+                ? 'exam-management-btn-open' 
+                : 'exam-management-btn-close'
+            }`}
+            onClick={(e) => 
+              exam.status === 'upcoming'
+                ? handleButtonClick(e, onOpen)
+                : handleButtonClick(e, onClose)
+            }
+          >
+            {exam.status === 'upcoming' ? (
+              <>
+                <IoLockOpenOutline className="exam-management-action-icon"/>
+                <span>Mở kỳ thi</span>
+              </>
+            ) : (
+              <>
+                <IoLockClosedOutline className="exam-management-action-icon"/>
+                <span>Khóa kỳ thi</span>
+              </>
+            )}
+          </button>
+        )}
         <button 
-          className="exam-mangement-btn-action exam-management-btn-close"
-          onClick={() => handleButtonClick(e, onClose)}
+          className="exam-mangement-btn-action exam-management-btn-delete"
+          onClick={(e) => handleButtonClick(e, onDelete)}
         >
-          <IoLockClosedOutline className="exam-management-action-icon"/>
-          <span>Khóa kỳ thi</span>
+          <MdDelete className="exam-management-action-icon"/>
+          <span>Xóa</span>
         </button>
       </div>
     </div>
