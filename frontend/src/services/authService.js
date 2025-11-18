@@ -1,4 +1,4 @@
-import { AuthResponse } from '../pages/models/AuthResponse'
+import { AuthResponse } from '../models/AuthResponse'
 import apiCall from '../utils/api'
 
 export const authService = {
