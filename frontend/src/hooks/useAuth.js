@@ -14,8 +14,8 @@ export const useAuth = () => {
       setUser(authResponse.user)
       const u = authResponse.user
       if (u.role === 'STUDENT') {
-        if (u.firstLogin) navigate('/student-account')
-        else navigate('/exam-schedule')
+        if (u.firstLogin) navigate('/student/student-account')
+        else navigate('/student/exam-schedule')
       }
       return authResponse
     } catch (e) {
