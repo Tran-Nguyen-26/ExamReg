@@ -1,5 +1,5 @@
 import './Style-StudentTable.css';
-import StudentDetailModal from '../studenDetailModal/studentDetailModal';
+import StudentDetailModal from '../studenDetailModal/StudentDetailModal';
 import EditStudentModal from '../editStudentModal/EditStudentModal';
 import { FaEye } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";

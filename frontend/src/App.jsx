@@ -6,7 +6,7 @@ import ExamTicket from "./pages/student/examTicket/ExamTicket";
 import ExamSchedule from "./pages/student/examSchedule/ExamSchedule";
 import StudentManagement from "./pages/admin/studentmanagement/StudentManagement";
 import CourseManagement from "./pages/admin/coursemanagement/CourseManagement";
-import ExamManagement from "./pages/admin/exammanagement/ExamManagement";
+import ExamManagement from "./pages/admin/examManagement/ExamManagement";
 import ExamInformation from "./pages/admin/examInformation/ExamInformation";
 import SubjectSessions from "./pages/admin/subjectSessions/SubjectSessions";
 import Report from "./pages/admin/report/Report";
