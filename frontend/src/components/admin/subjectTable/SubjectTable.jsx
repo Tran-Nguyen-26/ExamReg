@@ -4,7 +4,11 @@ import { MdEdit } from "react-icons/md";
 import { FaTrashAlt } from "react-icons/fa";
 import React, { useState } from 'react';
 
-const SubjectTable = ({ subjects, onView, onEdit, onDelete }) => {
+// props:
+// - showView: boolean (default true) to control rendering of the View button
+// - instructorLabel: string to label the instructor column (default 'Giảng viên')
+// - instructorKey: string key in subject objects to display in that column (default 'instructor')
+const SubjectTable = ({ subjects, onView, onEdit, onDelete, showView = true, instructorLabel = 'Giảng viên', instructorKey = 'instructor' }) => {
   const [selectedSubject, setSelectedSubject] = useState(null);
 
   const handleViewClick = (subject) => {
@@ -27,7 +31,7 @@ const SubjectTable = ({ subjects, onView, onEdit, onDelete }) => {
               <th className="table-header">Mã môn</th>
               <th className="table-header">Tên môn học</th>
               <th className="table-header">Số tín chỉ</th>
-              <th className="table-header">Giảng viên</th>
+              <th className="table-header">{instructorLabel}</th>
               <th className="table-header table-header-center">Thao tác</th>
             </tr>
           </thead>
@@ -38,16 +42,18 @@ const SubjectTable = ({ subjects, onView, onEdit, onDelete }) => {
                 <td className="table-cell table-cell-code table-cell-center">{subject.code}</td>
                 <td className="table-cell">{subject.name}</td>
                 <td className="table-cell table-cell-center">{subject.credits}</td>
-                <td className="table-cell">{subject.instructor}</td>
+                <td className="table-cell">{subject[instructorKey]}</td>
                 <td className="table-cell">
                   <div className="buttons">
-                    <button
-                      onClick={() => handleViewClick(subject)}
-                      className="action-btn action-btn-view"
-                      title="Xem"
-                    >
-                      <FaEye className="action-icon" />
-                    </button>
+                    {showView && (
+                      <button
+                        onClick={() => handleViewClick(subject)}
+                        className="action-btn action-btn-view"
+                        title="Xem"
+                      >
+                        <FaEye className="action-icon" />
+                      </button>
+                    )}
                     <button
                       onClick={() => handleEditClick(subject)}
                       className="action-btn action-btn-edit"

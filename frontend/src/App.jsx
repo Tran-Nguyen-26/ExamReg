@@ -15,6 +15,7 @@ import { Provider } from "./context/MyContext";
 import StudentAccount from "./pages/student/studentAccount/StudentAccount";
 import Login from "./pages/login/Login";
 import { AnimatePresence } from "framer-motion";
+import ExamTicket from "./pages/student/examTicket/ExamTicket";
 
 
 const AnimatedRoutes = () => {

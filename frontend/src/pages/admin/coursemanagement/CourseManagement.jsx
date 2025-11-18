@@ -4,6 +4,8 @@ import Sidebar from "../../../components/admin/sidebar/Sidebar";
 import CourseSearchbar from "../../../components/admin/searchbar/CourseSearchbar";
 import SubjectTable from "../../../components/admin/subjectTable/SubjectTable";
 import './Style-CourseManagement.css'
+import { IoMdAdd } from "react-icons/io";
+import CreateCourseModal from "../../../components/admin/createCourseModal/CreateCourseModal";
 
 const CourseManagement = () => {
     const handleSearch = (query) => {
@@ -17,7 +19,7 @@ const CourseManagement = () => {
             name: 'Nhập môn lập trình',
             credits: 3,
             semester: 1,
-            instructor: 'TS. Nguyễn Văn A',
+            duration: '90 phút',
             status: 'Active'
         },
         {
@@ -26,13 +28,34 @@ const CourseManagement = () => {
             name: 'Cấu trúc dữ liệu',
             credits: 4,
             semester: 2,
-            instructor: 'TS. Trần Thị B',
+            duration: '120 phút',
             status: 'Active'
         }
     ]);
 
+    const [isCreateCourseModal, setIsCreateCourseModal] = useState(false);
+    const [subjectsState, setSubjectsState] = useState(subjects);
+
     const handleAdd = () => {
-        alert('Thêm môn học mới');
+        setIsCreateCourseModal(true);
+    };
+
+    const closeCreateCourseModal = () => {
+        setIsCreateCourseModal(false);
+    };
+
+    const handleSubmitCourse = (course) => {
+        const newCourse = {
+            id: subjectsState.length + 1,
+            code: course.code,
+            name: course.name,
+            credits: course.credits,
+            semester: course.semester,
+            duration: course.duration,
+            status: course.status || 'Active'
+        };
+        setSubjectsState([...subjectsState, newCourse]);
+        alert('Thêm môn học thành công!');
     };
 
     const handleView = (subject) => {
@@ -55,15 +78,21 @@ const CourseManagement = () => {
             <div className="main">
                 <Sidebar/>
                 <div className="content">
-                    <CourseSearchbar
-                        onSearch={handleSearch}
-                        onAdd={handleAdd}/>
+                    <div className="course-management-header">
+                        <CourseSearchbar onSearch={handleSearch} onAdd={handleAdd} />
+                    </div>
                     <SubjectTable
-                        subjects={subjects}
+                        subjects={subjectsState}
                         onView={handleView}
                         onEdit={handleEdit}
                         onDelete={handleDelete}
+                        showView={false}
+                        instructorLabel="Thời lượng thi"
+                        instructorKey="duration"
                     />
+                    {isCreateCourseModal && (
+                        <CreateCourseModal onClose={closeCreateCourseModal} onSubmit={handleSubmitCourse} />
+                    )}
                 </div>
             </div>
         </div>
