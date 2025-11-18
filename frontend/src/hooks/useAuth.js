@@ -16,6 +16,8 @@ export const useAuth = () => {
       if (u.role === 'STUDENT') {
         if (u.firstLogin) navigate('/student/student-account')
         else navigate('/student/exam-schedule')
+      } else if (u.role === 'ADMIN') {
+        navigate('/admin/student-management')
       }
       return authResponse
     } catch (e) {

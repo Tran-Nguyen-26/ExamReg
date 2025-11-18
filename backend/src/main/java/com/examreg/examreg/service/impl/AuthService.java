@@ -58,7 +58,7 @@ public class AuthService implements IAuthService {
         .token(token)
         .user(studentResponse)
         .build();
-    } else if ("ROLE_AMDIN".equals(role)) {
+    } else if ("ROLE_ADMIN".equals(role)) {
       Admin admin = adminRepositoty.findById(userDetails.getId())
         .orElseThrow(() -> new ResourceNotFoundException("Admin not found: " + userDetails.getId()));
       AdminReponse adminReponse = adminMapper.buildAdminReponse(admin);
