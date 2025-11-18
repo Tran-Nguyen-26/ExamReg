@@ -1,7 +1,10 @@
 package com.examreg.examreg.models;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,6 +29,9 @@ public class ExamSession {
 
   private int capacity;
 
+  @JsonFormat(pattern = "hh:mm")
+  private LocalTime starTime;
+
   @ManyToOne
   @JoinColumn(name = "exam_id")
   private Exam exam;
@@ -37,10 +43,6 @@ public class ExamSession {
   @ManyToOne
   @JoinColumn(name = "subject_id")
   private Subject subject;
-
-  @ManyToOne
-  @JoinColumn(name = "period_id")
-  private Period period;
 
   @OneToMany(mappedBy = "examSession")
   private List<ExamRegistration> examRegistrations;

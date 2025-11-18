@@ -64,9 +64,7 @@
   gap: 1rem;
 }
 
-
-
-.btn-icon {
+.btn-icon-student {
   width: 1.25rem;
   height: 1.25rem;
 }
@@ -86,7 +84,7 @@
 .btn-import:hover {
   background-color: #15803d;
 }
-.btn-add {
+.btn-add-student {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -100,6 +98,6 @@
   background-color: #2563eb;
 }
 
-.btn-add:hover {
+.btn-add-student:hover {
   background-color: #1d4ed8;
 }

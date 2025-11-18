@@ -1,6 +1,6 @@
 import './Style-SelectedLocation.css'
+import { MdOutlineChangeCircle } from "react-icons/md"
 import logo_location from '../../../assets/logo_location.png'
-import logo_change from '../../../assets/logo_change.png'
 
 const SelectedLocation = ({setStep, location}) => {
   return (
@@ -12,7 +12,7 @@ const SelectedLocation = ({setStep, location}) => {
       <h4>{location.name}</h4>
       <p>{`Địa chỉ: ${location.address}`}</p>
       <div className='change-location' onClick={() => setStep(1)}>
-        <img src={logo_change} alt="" />
+        <MdOutlineChangeCircle/>
         <span>Thay đổi địa điểm thi</span>
       </div>
     </div>

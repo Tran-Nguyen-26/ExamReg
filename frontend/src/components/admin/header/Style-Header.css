@@ -6,9 +6,11 @@
   align-items: center;
   justify-content: space-between;
   height: 5rem;
-  position:sticky;
+  position:fixed;
   top:0;
   z-index: 10;
+  flex-shrink: 0;
+  width: 100%;
 }
 .logo-container {
   position: absolute;
@@ -20,6 +22,7 @@
   justify-content: center;
   border-right: 1px solid #e5e7eb;
   background-color: white;
+  cursor: pointer;
 }
 
 .logo-image {
@@ -28,7 +31,6 @@
   object-fit: contain;
   border-radius: 0.5rem;
 }
-
 .logout-btn {
   display: flex;
   align-items: center;
@@ -49,7 +51,7 @@
   justify-content: flex-end; 
 }
 .logout-btn:hover {
-  background-color: #f9fafb;
+  background-color: #e1e0e0;
 }
 
 .logout-icon {
@@ -63,5 +65,4 @@
   font-weight: 700;
   color: #1e3a8a;
   letter-spacing: 0.5px;
-  fonnt
 }

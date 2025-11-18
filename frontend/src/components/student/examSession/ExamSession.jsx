@@ -18,7 +18,9 @@ const ExamSession = ({data, isSelected, onSelect}) => {
       </div>
       <div className='session-info'>
         <span>Trạng thái:</span>
-        <span className='status'>Còn chỗ</span>
+        <span className={`status ${data.status === "Còn chỗ" ? 'available' : "full"}`}>
+          {data.status}
+        </span>
       </div>
       <img src={logo_tick} alt="" className={`${isSelected ? "ticked" : ''}`}/>
     </div>

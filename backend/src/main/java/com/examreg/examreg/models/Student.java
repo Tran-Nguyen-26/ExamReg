@@ -2,23 +2,28 @@ package com.examreg.examreg.models;
 
 import java.util.List;
 
+import com.examreg.examreg.enums.Gender;
+import com.examreg.examreg.enums.Role;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.OneToMany;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@AllArgsConstructor
+@Getter
+@Setter
 @Entity
-public class Student {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+public class Student extends User{
+
+  public Student() {
+    this.setRole(Role.STUDENT);
+  }
 
   @Column(nullable = false)
   private String studentCode;
@@ -26,12 +31,16 @@ public class Student {
   @Column(nullable = false)
   private String fullname;
 
-  @Column(nullable = false)
-  private String password;
+  @Enumerated(EnumType.STRING)
+  private Gender gender;
 
-  @ManyToOne
-  @JoinColumn(name = "role_id", nullable = false)
-  private Role role;
+  private String className;
+
+  private String major;
+
+  private String faculty;
+
+  private boolean firstLogin = true;
 
   @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<RegistrationSession> registrationSessions;

@@ -4,8 +4,6 @@ import { LuGraduationCap } from "react-icons/lu";
 import { FaSwatchbook, FaBook, FaClipboardList } from "react-icons/fa";
 import { MdAssessment } from "react-icons/md";
 import { useLocation, useNavigate } from 'react-router-dom';
-import CourseManagement from '../../../pages/admin/coursemanagement/coursemanagement';
-import StudentManagement from '../../../pages/admin/studentmanagement/StudentManagement';
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -13,6 +11,7 @@ const Sidebar = () => {
 
   const menuItems = [
     { id: 'exam', icon: <TbReportAnalytics size={24}/>, label: 'Quản lý kỳ thi', path: '/admin/report' },
+    { id: 'exam', icon: <TbReportAnalytics size={24}/>, label: 'Quản lý kỳ thi', path: '/admin/exam-management'},
     { id: 'student', icon: <LuGraduationCap size={24}/>, label: 'Quản lý học sinh', path: '/admin/student-management'},
     { id: 'course', icon: <FaSwatchbook size={21}/>, label: 'Quản lý học phần', path: '/admin/course-management'},
     { id: 'eligibility', icon: <FaClipboardList size={21}/>, label: 'Quản lý điều kiện dự thi', path: '/admin/exam-eligibility' },
@@ -25,8 +24,8 @@ const Sidebar = () => {
       </div>
       <nav className="sidebar-nav">
         {menuItems.map(item => {
-          const isActive = location.pathname === item.path;
-
+          const isActive = location.pathname.startsWith(item.path);
+          
           return (
             <button
               key={item.id}

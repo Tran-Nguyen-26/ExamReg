@@ -4,12 +4,19 @@ import Subject from "../../../components/student/subject/Subject";
 import './Style-Home.css'
 import { useContext } from "react";
 import MyContext from "../../../context/MyContext";
+import { motion } from 'framer-motion'
 
 const Home = () => {
 
   const {subjects} = useContext(MyContext)
 
   return (
+    <motion.div
+      initial={{ opacity: 0, x: 100 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -200 }}
+      transition={{ duration: 0.4 }}
+    >
     <div className="home-container">
       <Header/>
       <div className="notification-wrapper">
@@ -23,6 +30,7 @@ const Home = () => {
         }
       </div>
     </div>
+    </motion.div>
   )
 }
 

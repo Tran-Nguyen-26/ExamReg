@@ -1,6 +1,6 @@
 .exam-session-schedule {
   border: 1px solid rgba(0, 0, 0, 0.3);
-  box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+  /* box-shadow: 2px 2px 8px rgba(0,0,0,0.1); */
   padding: 20px 40px;
   border-radius: 20px;
   transition: transform 0.3s ease;

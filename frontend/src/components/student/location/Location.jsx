@@ -10,7 +10,9 @@ const Location = ({data, isSelected, onSelect}) => {
       <h4>{data.name}</h4>
       <div className='location-info'>
         <span>Trạng thái:</span>
-        <span className='status'>Còn chỗ</span>
+        <span className={`status ${data.status === "Còn chỗ" ? 'available' : "full"}`}>
+          {data.status}
+        </span>
       </div>
       <div className='location-info'>
         <span>Địa chỉ:</span>

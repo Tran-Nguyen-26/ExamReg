@@ -3,24 +3,28 @@
     "id": 1,
     "date": "01/01/2025",
     "time": "Ca1 - 7:00",
-    "room": "102"
+    "room": "102",
+    "status": "Còn chỗ"
   },
   {
     "id": 2,
     "date": "01/01/2025",
     "time": "Ca1 - 7:00",
-    "room": "204"
+    "room": "204",
+    "status": "Còn chỗ"
   },
   {
     "id": 3,
     "date": "04/01/2025",
     "time": "Ca2 - 8:00",
-    "room": "405"
+    "room": "405",
+    "status": "Hết chỗ"
   },
   {
     "id": 4,
     "date": "04/01/2025",
     "time": "Ca2 - 8:00",
-    "room": "406"
+    "room": "406",
+    "status": "Còn chỗ"
   }
 ]

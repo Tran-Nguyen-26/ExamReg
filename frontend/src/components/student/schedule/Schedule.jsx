@@ -7,14 +7,14 @@ import logo_download from '../../../assets/logo_download.png'
 import logo_print from '../../../assets/logo_print.png'
 import logo_remove from '../../../assets/logo_remove.png'
 
-const Schedule = () => {
+const Schedule = ({data}) => {
   return (
-    <div div className='exam-session-schedule'>
+    <div className='exam-session-schedule'>
       <div className='subject-header'>
         <img src={icon_book} alt="" />
         <div>
-          <label>Cơ sở dữ liệu</label>
-          <span>Mã HP: CSI2321</span>
+          <label>{data.subject_name}</label>
+          <span>{`Mã HP: ${data.subject_code}`}</span>
         </div>
       </div>
       <div className='subject-body'>
@@ -22,21 +22,21 @@ const Schedule = () => {
           <img src={icon_schedule} alt="" />
           <div>
             <label>Ngày thi</label>
-            <span>01/01/2025</span>
+            <span>{data.date}</span>
           </div>
         </div>
         <div className='info time'>
           <img src={icon_clock} alt="" />
           <div>
             <label>Giờ thi</label>
-            <span>7:00 - 8:00</span>
+            <span>{data.time}</span>
           </div>
         </div>
         <div className='info loc'>
           <img src={icon_location} alt="" />
           <div>
             <label>Đia điểm thi</label>
-            <span>P101 - Giảng đường 1</span>
+            <span>{`P${data.room} - ${data.address}`}</span>
           </div>
         </div>
       </div>

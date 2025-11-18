@@ -1,16 +1,20 @@
 import './Style-Header.css'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { MdAccountCircle } from "react-icons/md"
+import { HiHome } from "react-icons/hi2"
+import { useContext } from 'react'
+import MyContext from '../../../context/MyContext'
 import logo_university from '../../../assets/logo_university.png'
 import logo_schedule from '../../../assets/logo_schedule.png'
-import logo_avatar from '../../../assets/logo_avatar.png'
-import { useLocation, useNavigate } from 'react-router-dom'
-import logo_home from '../../../assets/logo_home.png'
 
 const Header = () => {
+
+  const { user } = useContext(MyContext)
 
   const navigate = useNavigate()
   const location = useLocation()
 
-  const showExamSchedule = location.pathname === '/exam-schedule'
+  const showExamSchedule = location.pathname === '/student/exam-schedule'
 
   return (
     <div className='screen d-flex justify-content-between align-items-center'>
@@ -20,25 +24,25 @@ const Header = () => {
         </div>
         <div className='hl2'>
           <p className='exam-name'>UET Exam</p>
-          <span className='student'>Trần Thành Nguyên - 23021651</span>
+          <span className='student'>{`${user.fullname} - ${user.studentCode}`}</span>
         </div>
       </div>
 
       <div className='header-right d-flex'>
         {
           showExamSchedule ? (
-            <div className='schedule' onClick={() => navigate('/home')}>
-              <img src={logo_home} alt="" />
-              <span className='text-dark'>Trang chủ</span>
+            <div className='home' onClick={() => navigate('/student/home')}>
+              <HiHome/>
+              <span>Trang chủ</span>
             </div>
           ) : (
-            <div className='schedule' onClick={() => navigate('/exam-schedule')}>
+            <div className='schedule' onClick={() => navigate('/student/exam-schedule')}>
               <img src={logo_schedule} alt="" className='logo_sche'/>
               <span>Lịch thi của tôi</span>
             </div>
           )
         }
-        <img src={logo_avatar} alt="" />
+        <MdAccountCircle onClick={() => navigate('/student/student-account')}/>
       </div>
     </div>
   )

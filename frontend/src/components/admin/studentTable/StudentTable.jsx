@@ -1,12 +1,13 @@
 import './Style-StudentTable.css';
-import StudentDetailModal from '../studenDetailModal/studentDetailModal';
+import StudentDetailModal from '../studenDetailModal/StudentDetailModal';
 import EditStudentModal from '../editStudentModal/EditStudentModal';
 import { FaEye } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
 import { FaTrashAlt } from "react-icons/fa";
-import React, { useState } from 'react';
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { useState } from 'react';
 
-const StudentTable = ({ students, onView, onEdit, onDelete }) =>{
+const StudentTable = ({ students, onDelete }) =>{
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -34,55 +35,79 @@ const StudentTable = ({ students, onView, onEdit, onDelete }) =>{
     console.log('Updated student data:', updatedData);
     onEdit(updatedData);
   };
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  
+  const totalPages = Math.ceil(students.length / itemsPerPage); //làm tròn lên
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentStudents = students.slice(startIndex, endIndex); //slice() lấy một phần con của mảng subjects từ startIndex đến endIndex (không tính endIndex)
+  
+  // Xử lý chuyển trang
+  const goToPage = (page) => {
+      setCurrentPage(page); //khi currentPage thay đổi, render lại trang mới
+  };
+  
+  const goToPrevious = () => {
+      if (currentPage > 1) {
+          setCurrentPage(currentPage - 1); //lùi trang áp dụng từ trang 2
+      }
+  };
+  
+  const goToNext = () => {
+      if (currentPage < totalPages) {
+          setCurrentPage(currentPage + 1); //sang trang trừ trang cuối
+      }
+  };
   return (
     <>
-    <div className="table-container">
-      <div className="table-wrapper">
+    <div className="student-table-container">
+      <div className="student-table-wrapper">
         <table className="student-table">
           <thead>
-            <tr className="table-header-row">
-              <th className="table-header">STT</th>
-              <th className="table-header">Mã sinh viên</th>
-              <th className="table-header">Họ và tên</th>
-              <th className="table-header">Lớp</th>
-              <th className="table-header">Ngày sinh</th>
-              <th className="table-header">Email</th>
-              <th className="table-header">Số điện thoại</th>
-              <th className="table-header table-header-center">Thao tác</th>
+            <tr className="student-table-header-row">
+              <th className="student-table-header">STT</th>
+              <th className="student-table-header">Mã sinh viên</th>
+              <th className="student-table-header student-table-row-left">Họ và tên</th>
+              <th className="student-table-header">Lớp</th>
+              <th className="student-table-header">Ngày sinh</th>
+              <th className="student-table-header student-table-row-left">Email</th>
+              <th className="student-table-header">Số điện thoại</th>
+              <th className="student-table-header">Thao tác</th>
             </tr>
           </thead>
           <tbody>
-            {students.map((student, index) => (
-              <tr key={student.id} className="table-row">
-                <td className="table-cell table-cell-center">{index + 1}</td>
-                <td className="table-cell table-cell-code table-cell-center">{student.code}</td>
-                <td className="table-cell">{student.name}</td>
-                <td className="table-cell">{student.class}</td>
-                <td className="table-cell">{student.dob}</td>
-                <td className="table-cell table-cell-email">{student.email}</td>
-                <td className="table-cell">{student.phone}</td>
-                <td className="table-cell">
-                  <div className="buttons">
+            {currentStudents.map((student, index) => (
+              <tr key={student.id} className="student-table-row">
+                <td className="student-table-cell">{index + 1}</td>
+                <td className="student-table-cell student-code">{student.code}</td>
+                <td className="student-table-cell student-table-row-left">{student.name}</td>
+                <td className="student-table-cell">{student.class}</td>
+                <td className="student-table-cell">{student.dob}</td>
+                <td className="student-table-cell student-table-row-left">{student.email}</td>
+                <td className="student-table-cell">{student.phone}</td>
+                <td className="student-table-cell">
+                  <div className="student-table-buttons">
                     <button
                       onClick={() => handleViewClick(student)}
-                      className="action-btn action-btn-view"
+                      className="student-action-btn student-action-btn-view"
                       title="Xem"
                     >
-                      <FaEye className="action-icon" />
+                      <FaEye className="student-action-icon" />
                     </button>
                     <button
                       onClick={() => handleEditClick(student)}
-                      className="action-btn action-btn-edit"
+                      className="student-action-btn student-action-btn-edit"
                       title="Sửa"
                     >
-                      <MdEdit className="action-icon" />
+                      <MdEdit className="student-action-icon" />
                     </button>
                     <button
                       onClick={() => onDelete(student)}
-                      className="action-btn action-btn-delete"
+                      className="student-action-btn student-action-btn-delete"
                       title="Xóa"
                     >
-                      <FaTrashAlt className="action-icon" />
+                      <FaTrashAlt className="student-action-icon" />
                     </button>
                   </div>
                 </td>

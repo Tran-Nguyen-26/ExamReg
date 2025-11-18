@@ -1,8 +1,14 @@
 .screen {
   width: 100%;
-  height: 10vh;
-  padding: 10px;
-  border-bottom: 2px solid gray;
+  height: fit-content;
+  padding: 0px 10px;
+  background-color: white;
+  border-bottom: 1px solid rgb(229, 226, 226);
+  /* box-shadow: 2px 2px 8px rgba(0,0,0,0.1); */
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
 }
 
 .header-left {
@@ -32,28 +38,41 @@
   margin-right: 20px;
 }
 
-.schedule {
+.schedule, .home {
   width: auto;
   background-color: #CAE3FF;
   color: #1D6DBD;
-  padding: 5px;
+  padding: 0px 10px;
   border-radius: 10px;
   margin-right: 20px;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.schedule:hover, .home:hover {
+  scale: 1.05;
 }
 
 .schedule img {
   padding: 5px;
+  height: 60%;
 }
 
-.schedule span {
+.schedule span, .home span {
   padding-left: 10px;
   font-size: 20px;
   margin-right: 10px;
 }
 
-.header-right img {
-  width: 50px;
+.header-right svg {
+  font-size: 70px;
+  color: gray;
   cursor: pointer;
 }
 
+.home svg {
+  font-size: 30px;
+  color: #1D6DBD;;
+}

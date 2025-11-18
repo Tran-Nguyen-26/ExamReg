@@ -1,0 +1,91 @@
+.login {
+  width: 100vw;
+  height: 100vh;
+  background-image: url('/bg-login.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.left-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.left-panel img {
+  width: 150px;
+}
+
+.left-panel span {
+  font-size: 30px;
+  font-weight: bold;
+  color: #1D6DBD;
+}
+
+.right-panel {
+  width: 30%;
+  color: #0072BC;
+}
+
+.right-panel h1 {
+  text-align: center;
+}
+
+.right-panel form div input {
+  width: 100%;
+  border: none;
+  border-bottom: 2px solid #CAE3FF;
+  color: #0072BC;
+  outline: none;
+}
+
+.right-panel form div input:focus {
+  border-color: #0072BC;
+}
+
+.right-panel form .forgot-password {
+  text-align: right;
+  font-size: 14px;
+}
+
+.right-panel form .forgot-password span {
+  cursor: pointer;
+}
+
+.right-panel form .forgot-password span:hover {
+  color: red;
+}
+
+
+.right-panel form button {
+  display: none;
+}
+
+.right-panel .password-login {
+  position: relative;
+}
+
+.right-panel .invalid {
+  position: absolute;
+  left: 5px;
+  margin-top: 5px;
+  top: 100%;
+  color: red;
+  font-size: 14px;
+
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+.right-panel .invalid.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: none;
+}
