@@ -46,7 +46,7 @@ public class Student extends User{
   private List<RegistrationSession> registrationSessions;
 
   @OneToMany(mappedBy = "student")
-  private List<StudentSubject> studentSubjects;
+  private List<StudentSubjectStatus> studentSubjects;
 
   @OneToMany(mappedBy = "student")
   private List<ExamRegistration> examRegistrations;

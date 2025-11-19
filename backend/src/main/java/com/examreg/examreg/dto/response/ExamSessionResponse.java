@@ -1,0 +1,27 @@
+package com.examreg.examreg.dto.response;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+import com.examreg.examreg.enums.ExamSessionStatus;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Builder
+public class ExamSessionResponse {
+  private Long id;
+  private String examSessionCode;
+  private LocalDate date;
+  private int capacity;
+  private int registeredCount;
+  private LocalTime startTime;
+  private RoomResponse room;
+  private SubjectResponse subject;
+  private ExamSessionStatus status;
+}

@@ -115,28 +115,28 @@
   cursor: pointer;
 }
 
-.action-btn:hover {
+.exam-session-schedule .action-btn:hover {
   transform: scale(1.05);
 }
 
-.action-btn img {
+.exam-session-schedule .action-btn img {
   width: 20px;
 }
 
-.action-btn span {
+.exam-session-schedule .action-btn span {
   font-size: 12px;
   font-weight: bold;
   margin-left: 10px;
 }
 
-.btn-download {
+.exam-session-schedule .btn-download {
   background-color: #3FA84F;
 }
 
-.btn-print {
+.exam-session-schedule .btn-print {
   background-color: #34495e;;
 }
 
-.btn-remove {
+.exam-session-schedule .btn-remove {
   background-color: #f44336;
 }

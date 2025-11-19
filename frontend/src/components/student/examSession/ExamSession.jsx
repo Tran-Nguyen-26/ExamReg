@@ -10,16 +10,16 @@ const ExamSession = ({data, isSelected, onSelect}) => {
       <h4>{`Ngày thi ${data.date}`}</h4>
       <div className='session-info'>
         <span>Giờ thi:</span>
-        <span>{data.time}</span>
+        <span>{data.startTime}</span>
       </div>
       <div className='session-info'>
         <span>Phòng thi:</span>
-        <span>{data.room}</span>
+        <span>{data.room.name}</span>
       </div>
       <div className='session-info'>
         <span>Trạng thái:</span>
-        <span className={`status ${data.status === "Còn chỗ" ? 'available' : "full"}`}>
-          {data.status}
+        <span className={`status ${data.status === "AVAILABLE" ? 'available' : "full"}`}>
+          {data.status === 'AVAILABLE' ? 'Còn chỗ': 'Hết chỗ'}
         </span>
       </div>
       <img src={logo_tick} alt="" className={`${isSelected ? "ticked" : ''}`}/>

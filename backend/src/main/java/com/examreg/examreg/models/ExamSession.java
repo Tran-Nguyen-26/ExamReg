@@ -25,6 +25,7 @@ public class ExamSession {
 
   private String examSessionCode;
 
+  @JsonFormat(pattern = "dd/MM/yyyy")
   private LocalDate date;
 
   private int capacity;

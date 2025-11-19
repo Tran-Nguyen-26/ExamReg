@@ -1,0 +1,11 @@
+package com.examreg.examreg.service;
+
+import java.util.List;
+
+import com.examreg.examreg.dto.response.ExamSessionResponse;
+
+public interface IExamSessionService {
+  public List<ExamSessionResponse> getExamSessionResponses(Long studentId);
+
+  public List<ExamSessionResponse> getExamSessionResponsesBySubjectId(Long studentId, Long subjectId);
+}

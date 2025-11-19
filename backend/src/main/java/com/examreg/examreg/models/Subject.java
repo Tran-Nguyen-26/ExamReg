@@ -26,7 +26,7 @@ public class Subject {
   private int duration;
 
   @OneToMany(mappedBy = "subject")
-  private List<StudentSubject> studentSubjects;
+  private List<StudentSubjectStatus> studentSubjects;
 
   @OneToMany(mappedBy = "subject")
   private List<ExamSession> examSessions;

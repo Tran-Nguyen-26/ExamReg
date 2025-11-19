@@ -5,21 +5,22 @@ import logo_location from '../../../assets/logo_location.png'
 import Location from '../../../components/student/location/Location';
 import ExamSession from '../../../components/student/examSession/ExamSession';
 import logo_exam_session from '../../../assets/logo_exam_session.png'
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import SelectedLocation from '../../../components/student/selectedLocation/SelectedLocation';
 import SelectExamSession from '../../../components/student/selectedExamSession/SelectedExamSession';
 import Reminder from '../../../components/student/reminder/Reminder';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import MyContext from '../../../context/MyContext';
 import { motion, AnimatePresence } from 'framer-motion'
 import Ticket from '../../../components/student/ticket/Ticket';
-
-//fake data
-import locationData from '../../../data/LocationData.json'
-import examSessionData from '../../../data/ExamSession.json'
+import { useExamSession } from '../../../hooks/useExamSession';
 
 
 const ExamRegister = () => {
+
+  const { getExamSessionsBySubjectId } = useExamSession()
+  const {subjectId} = useParams()
+  const [examSessions, setExamSessions] = useState([])
 
   const [step, setStep] = useState(1)
   const navigate = useNavigate()
@@ -36,13 +37,30 @@ const ExamRegister = () => {
     setSelectedExamSession
   } = useContext(MyContext)
 
-  //fake data
-  const locs = locationData
+  
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const examSessionsBySubjectId = await getExamSessionsBySubjectId(subjectId)
+        setExamSessions(examSessionsBySubjectId)
+      } catch (error) {
+        console.error("Failed to load exam sessions", error)
+      }
+    }
+    fetchData()
+  }, [])
 
+  const locs = Array.from(
+      new Map(examSessions.map(es => [
+        es.room.location.id, 
+        { ...es.room.location, status: es.status}
+      ])
+    ).values()
+  )
 
   const toggleLocation = (loc) => {
-    if (loc.status === "Còn chỗ") {
+    if (loc.status === "AVAILABLE") {
       selectedLocation?.id == loc.id ? setSelectedLocation(null) : setSelectedLocation(loc)
     }
   }
@@ -59,12 +77,14 @@ const ExamRegister = () => {
     }
   }
 
+  const filteredSessionsBySelectedLocation = useMemo(() => {
+    return examSessions.filter(es => es.room.location.id === selectedLocation?.id)
+  }, [examSessions, selectedLocation])
 
-  //fake data
-  const examSessions = examSessionData
+  console.log(filteredSessionsBySelectedLocation)
 
   const toggleExamSession = (examSession) => {
-    if (examSession.status === "Còn chỗ") {
+    if (examSession.status === "AVAILABLE") {
       selectedExamSession?.id == examSession.id ? setSelectedExamSession(null) : setSelectedExamSession(examSession)
     }
   }
@@ -159,7 +179,7 @@ const ExamRegister = () => {
                   </div>
                   <div className='exam-sessions'>
                     {
-                      examSessions.map((e) => (
+                      filteredSessionsBySelectedLocation.map((e) => (
                         <ExamSession
                           key={e.id}
                           data={e}
@@ -191,7 +211,7 @@ const ExamRegister = () => {
                 initial={{ opacity: 0, y: window.innerHeight }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, x: -50 }}
-                transition={{ duration: 0.4, delay: 0.4}}
+                transition={{ duration: 0.4, delay: 0.6}}
               >
                 <SelectExamSession setStep={setStep} examSession={selectedExamSession}/>
               </motion.div>

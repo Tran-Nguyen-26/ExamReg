@@ -2,13 +2,36 @@ import Header from "../../../components/student/header/Header";
 import Notification from "../../../components/student/notification/Notification";
 import Subject from "../../../components/student/subject/Subject";
 import './Style-Home.css'
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import MyContext from "../../../context/MyContext";
 import { motion } from 'framer-motion'
+import { useExamSession } from "../../../hooks/useExamSession";
 
 const Home = () => {
 
-  const {subjects} = useContext(MyContext)
+  // const {subjects} = useContext(MyContext)
+  const { getExamSessions } = useExamSession()
+  const [examSessions, setExamSessions] = useState([])
+  const [subjects, setSubjects] = useState([])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const examSessions = await getExamSessions()
+        setExamSessions(examSessions)
+
+        const subjects = Array.from(
+          new Map(examSessions.map(s => [s.subject.id, s.subject])).values()
+        )
+        setSubjects(subjects)
+      } catch (error) {
+        console.error("Failed to load exam sessions", error)
+      }
+    }
+    fetchData()
+  }, [])
+
+
 
   return (
     <motion.div

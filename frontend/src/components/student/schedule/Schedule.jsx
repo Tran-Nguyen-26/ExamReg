@@ -13,8 +13,8 @@ const Schedule = ({data}) => {
       <div className='subject-header'>
         <img src={icon_book} alt="" />
         <div>
-          <label>{data.subject_name}</label>
-          <span>{`Mã HP: ${data.subject_code}`}</span>
+          <label>{data.examSession.subject.name}</label>
+          <span>{`Mã HP: ${data.examSession.subject.subjectCode}`}</span>
         </div>
       </div>
       <div className='subject-body'>
@@ -22,21 +22,21 @@ const Schedule = ({data}) => {
           <img src={icon_schedule} alt="" />
           <div>
             <label>Ngày thi</label>
-            <span>{data.date}</span>
+            <span>{data.examSession.date}</span>
           </div>
         </div>
         <div className='info time'>
           <img src={icon_clock} alt="" />
           <div>
             <label>Giờ thi</label>
-            <span>{data.time}</span>
+            <span>{data.examSession.startTime}</span>
           </div>
         </div>
         <div className='info loc'>
           <img src={icon_location} alt="" />
           <div>
             <label>Đia điểm thi</label>
-            <span>{`P${data.room} - ${data.address}`}</span>
+            <span>{`${data.examSession.room.name} - ${data.examSession.room.location.name}`}</span>
           </div>
         </div>
       </div>

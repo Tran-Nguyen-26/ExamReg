@@ -14,7 +14,7 @@ const Subject = ({data}) => {
 
   const handleSelectSubject = () => {
     setSelectedSubject(data)
-    navigate('/student/register')
+    navigate(`/student/register/${data.id}`)
   }
 
   return (
@@ -32,11 +32,15 @@ const Subject = ({data}) => {
       <div className='subject-info'>
         <div className='sub-info'>
           <span>Mã HP:</span>
-          <span>{data.subject_code}</span>
+          <span>{data.subjectCode}</span>
         </div>
         <div className='sub-info'>
           <span>Số tín chỉ:</span>
-          <span>{data.credit_hour}</span>
+          <span>{data.creditHour}</span>
+        </div>
+        <div className='sub-info'>
+          <span>Điều kiện thi:</span>
+          <span>{data.status === 'ELIGIBLE' ? 'Đủ điều kiện' : 'Không đủ điều kiện'}</span>
         </div>
       </div>
     </div>

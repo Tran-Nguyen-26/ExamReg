@@ -15,7 +15,7 @@ const SelectedSubject = ({subject}) => {
       </div>
       <h4>{subject.name}</h4>
       <p>Kiểm tra cuối kì học kì I năm học 2025-2026</p>
-      <p>Thời lượng bài thi: 60 phút</p>
+      <p>{`Thời lượng bài thi: ${subject.duration} phút`}</p>
       <div className='change-subject' onClick={() => navigate('/student/home')}>
         <MdOutlineChangeCircle/>
         <span>Thay đổi môn thi</span>
