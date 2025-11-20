@@ -30,7 +30,7 @@ public class ExamSession {
 
   private int capacity;
 
-  @JsonFormat(pattern = "hh:mm")
+  @JsonFormat(pattern = "HH:mm")
   private LocalTime starTime;
 
   @ManyToOne

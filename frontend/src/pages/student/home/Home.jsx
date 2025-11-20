@@ -2,14 +2,12 @@ import Header from "../../../components/student/header/Header";
 import Notification from "../../../components/student/notification/Notification";
 import Subject from "../../../components/student/subject/Subject";
 import './Style-Home.css'
-import { useContext, useEffect, useState } from "react";
-import MyContext from "../../../context/MyContext";
+import { useEffect, useState } from "react";
 import { motion } from 'framer-motion'
 import { useExamSession } from "../../../hooks/useExamSession";
 
 const Home = () => {
 
-  // const {subjects} = useContext(MyContext)
   const { getExamSessions } = useExamSession()
   const [examSessions, setExamSessions] = useState([])
   const [subjects, setSubjects] = useState([])

@@ -8,5 +8,12 @@ export const examRegistrationService = {
     })
     const examRegistrations = response.data.map(er => ExamRegistration.fromJSON(er))
     return examRegistrations
+  },
+
+  cancelExamRegistration: async (examRegistrationId) => {
+    const response = await apiCall(`/exam-registration/${examRegistrationId}`, {
+      method: 'DELETE'
+    })
+    return response.message
   }
 }

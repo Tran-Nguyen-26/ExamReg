@@ -3,15 +3,17 @@ import Schedule from "../../../components/student/schedule/Schedule"
 import './Style-ExamSchedule.css'
 import { motion } from "framer-motion"
 
-//fake data
-import examRegistrationData from '../../../data/ExamRegistrationData.json'
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useExamRegistration } from "../../../hooks/useExamRegistration"
+import MyContext from "../../../context/MyContext"
 
 const ExamSchedule = () => {
 
-  const { getExamRegistrations } = useExamRegistration()
-  const [examRegistrations, setExamRegistrations] = useState([])
+  const { getExamRegistrations, cancelExamRegistration } = useExamRegistration()
+  // const [examRegistrations, setExamRegistrations] = useState([])
+
+  const {examRegistrations, setExamRegistrations} = useContext(MyContext)
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,6 +26,16 @@ const ExamSchedule = () => {
     }
     fetchData()
   }, [])
+
+  const handleCancel = async (examRegistrationId) => {
+    try {
+      await cancelExamRegistration(examRegistrationId)
+      const updated = await getExamRegistrations()
+      setExamRegistrations(updated)
+    } catch (error) {
+      console.error('Failed to cancel exam registration', error)
+    }
+  }
 
   return (
     <motion.div
@@ -50,6 +62,7 @@ const ExamSchedule = () => {
             <Schedule
               key={examRegistration.id}
               data={examRegistration}
+              onCancel={handleCancel}
             />
           ))
         }

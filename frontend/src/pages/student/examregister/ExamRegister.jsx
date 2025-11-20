@@ -18,7 +18,7 @@ import { useExamSession } from '../../../hooks/useExamSession';
 
 const ExamRegister = () => {
 
-  const { getExamSessionsBySubjectId } = useExamSession()
+  const { getExamSessionsBySubjectId, registerExamSession } = useExamSession()
   const {subjectId} = useParams()
   const [examSessions, setExamSessions] = useState([])
 
@@ -101,7 +101,15 @@ const ExamRegister = () => {
     }
   }
 
-  const handleBtnRegister = () => {
+  const handleExamSessionRegister = async () => {
+    try {
+      await registerExamSession(selectedExamSession.id)
+      window.alert("Đăng kí ca thi thành công")
+      setShowTicket(true)
+    } catch(error) {
+      console.error("Failed to register: ", error)
+      window.alert("Đăng kí ca thi thất bại")
+    }
   }
 
 
@@ -222,7 +230,7 @@ const ExamRegister = () => {
                 transition={{ duration: 0.4, delay: 0.8}}
               >
                 <Reminder/>
-                <button onClick={() => setShowTicket(true)}>Xác nhận và đăng kí</button>
+                <button onClick={handleExamSessionRegister}>Xác nhận và đăng kí</button>
               </motion.div>
             </>
           )

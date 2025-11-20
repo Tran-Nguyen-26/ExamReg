@@ -12,10 +12,17 @@ export const examSessionService = {
   },
 
   getExamSessionsBySubjectId: async (subjectId) => {
-    const response = await apiCall(`/exam-sessions/${subjectId}`, {
+    const response = await apiCall(`/exam-sessions/by-subject/${subjectId}`, {
       method: 'GET'
     })
     const examSessions = response.data.map(es => ExamSession.fromJSON(es))
     return examSessions
+  },
+
+  registerExamSession: async (examSessionId) => {
+    const response = await apiCall(`/exam-sessions/${examSessionId}/register`, {
+      method: 'POST'
+    })
+    return response.message
   }
 }

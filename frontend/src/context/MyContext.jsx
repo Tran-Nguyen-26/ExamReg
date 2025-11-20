@@ -1,21 +1,16 @@
 import { createContext, useEffect, useState } from "react";
 
-//mockdata
-import subjectData from '../data/SubjectData.json'
-
 const MyContext = createContext();
 
 export const Provider = ({children}) => {
 
   const [user, setUser] = useState(null)
 
-  //fakedata
-  const [subjects] = useState(subjectData)
-  //
-
   const [selectedSubject, setSelectedSubject] = useState(null)
   const [selectedLocation, setSelectedLocation] = useState(null)
   const [selectedExamSession, setSelectedExamSession] = useState(null)
+
+  const [examRegistrations, setExamRegistrations] = useState([])
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user')
@@ -29,11 +24,12 @@ export const Provider = ({children}) => {
     setUser,
     selectedSubject,
     setSelectedSubject,
-    subjects,
     selectedLocation,
     setSelectedLocation,
     selectedExamSession,
-    setSelectedExamSession
+    setSelectedExamSession,
+    examRegistrations,
+    setExamRegistrations
   }
 
   return (

@@ -10,5 +10,14 @@ export const useExamRegistration = () => {
     }
   }
 
-  return { getExamRegistrations }
+  const cancelExamRegistration = async (examRegistrationId) => {
+    try {
+      const message = await examRegistrationService.cancelExamRegistration(examRegistrationId)
+      return message
+    } catch (error) {
+      throw error
+    }
+  }
+
+  return { getExamRegistrations, cancelExamRegistration }
 }

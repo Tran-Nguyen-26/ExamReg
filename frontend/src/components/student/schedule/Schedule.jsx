@@ -7,7 +7,7 @@ import logo_download from '../../../assets/logo_download.png'
 import logo_print from '../../../assets/logo_print.png'
 import logo_remove from '../../../assets/logo_remove.png'
 
-const Schedule = ({data}) => {
+const Schedule = ({ data, onCancel }) => {
   return (
     <div className='exam-session-schedule'>
       <div className='subject-header'>
@@ -41,15 +41,20 @@ const Schedule = ({data}) => {
         </div>
       </div>
       <div className='action-buttons'>
-        <div className='action-btn btn-download'>
+        <div className='action-button button-download'>
           <img src={logo_download} alt="" />
           <span>Tải phiếu</span>
         </div>
-        <div className='action-btn btn-print'>
+        <div className='action-button button-print'>
           <img src={logo_print} alt="" />
           <span>In phiếu</span>
         </div>
-        <div className='action-btn btn-remove'>
+        <div className='action-button button-remove' onClick={() => {
+          const confirmCancel = window.confirm("Xác nhận hủy đăng kí ca thi này")
+          if (confirmCancel) {
+            onCancel(data.id)
+          }
+        }}>
           <img src={logo_remove} alt="" />
           <span>Hủy đăng ký</span>
         </div>

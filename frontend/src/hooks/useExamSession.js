@@ -20,5 +20,14 @@ export const useExamSession = () => {
     }
   }
 
-  return { getExamSessions, getExamSessionsBySubjectId }
+  const registerExamSession = async (examSessionId) => {
+    try {
+      const response = await examSessionService.registerExamSession(examSessionId)
+      return response
+    } catch (error) {
+      throw error
+    }
+  }
+
+  return { getExamSessions, getExamSessionsBySubjectId, registerExamSession }
 }

@@ -7,6 +7,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,7 +36,7 @@ public class ExamSessionController {
       response));
   }
 
-  @GetMapping("/{subjectId}")
+  @GetMapping("/by-subject/{subjectId}")
   public ResponseEntity<ApiResponse<List<ExamSessionResponse>>> getExamSessionsBySubjectId(
     @AuthenticationPrincipal AppUserDetails studenDetails,
     @PathVariable Long subjectId
@@ -46,4 +47,14 @@ public class ExamSessionController {
       .success("Get examsessions by subject successful",
       response));
   }
+
+  @PostMapping("/{examSessionId}/register")
+  public ResponseEntity<ApiResponse<?>> registerExamSession(
+    @AuthenticationPrincipal AppUserDetails studentDetails,
+    @PathVariable Long examSessionId
+  ) {
+    examSessionService.registerExamSession(examSessionId, studentDetails.getId());
+    return ResponseEntity.ok(ApiResponse.success("Registered successfully"));
+  }
+
 }

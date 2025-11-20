@@ -8,4 +8,6 @@ public interface IExamSessionService {
   public List<ExamSessionResponse> getExamSessionResponses(Long studentId);
 
   public List<ExamSessionResponse> getExamSessionResponsesBySubjectId(Long studentId, Long subjectId);
+
+  public void registerExamSession(Long examSessionId, Long studentId);
 }
