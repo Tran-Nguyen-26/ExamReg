@@ -1,7 +1,9 @@
 package com.examreg.examreg.models;
 
+import java.time.LocalDate;
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,10 +19,23 @@ public class Exam {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+<<<<<<< Updated upstream
   private String examCode;
 
   private String examType;
+=======
+  private String examName;
+
+  private LocalDate startDate;
+
+  private LocalDate endDate;
+
+  private String examStatus;
+
+  @Column(columnDefinition = "TEXT")
+  private String description; 
+>>>>>>> Stashed changes
 
   @OneToMany(mappedBy = "exam")
-  private List<ExamSession> examSessions;
+  private List<Subject> subjects;
 }

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Header from "../../../components/admin/header/Header"
 import Sidebar from "../../../components/admin/sidebar/Sidebar"
 import ExamCard from "../../../components/admin/examCard/ExamCard";
@@ -6,13 +6,54 @@ import { IoMdAdd } from "react-icons/io";
 import CreateExamModal from "../../../components/admin/createExamModal/CreateExamModal";
 import EditExamModal from "../../../components/admin/editExamModal/EditExamModal";
 import './Style-ExamManagement.css'
+import {examService} from "../../../services/examService"
+import { FaClipboardList } from "react-icons/fa";
 
 const ExamManagement = () => {
     const [isCreateExamModal, setIsCreateExamModal] = useState(false);
     const [isEditExamModal, setIsEditExamModal] = useState(false);
     const [selectedExam, setSelectedExam] = useState(null);
+    const [exams, setExams] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const loadExams = async () => {
+        try {
+            setLoading(true);
+            const response = await examService.getAll();
+            
+            // Transform API data to match ExamCard format
+            const transformedExams = response.map(exam => ({
+                id: exam.id,
+                name: exam.examName,
+                startDate: formatDate(exam.startDate),
+                endDate: formatDate(exam.endDate),
+                status: exam.examSatus?.toLowerCase() || 'upcoming', // Lưu ý: examSatus có typo
+                description: exam.description,
+                totalSubjects: exam.totalSubjects || 0,
+                totalSessions: exam.totalSessions || 0,
+                totalRegistrations: exam.totalRegistrations || 0
+            }));
+            
+            setExams(transformedExams);
+        } catch (error) {
+            console.error('Error loading exams:', error);
+            alert('Lỗi khi tải danh sách kỳ thi!');
+        } finally {
+            setLoading(false);
+        }
+    };
 
+    const formatDate = (dateString) => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    };
 
+    useEffect(() => {
+        loadExams();
+    }, []);
     const handleCreateExam = () => {
         setIsCreateExamModal(true);
     }
@@ -31,96 +72,85 @@ const ExamManagement = () => {
     };
     
     // Handler để lưu thay đổi
-    const handleUpdateExam = (updatedExam) => {
-        setExams(exams.map(exam => 
-            exam.id === updatedExam.id ? updatedExam : exam
-        ));
-        alert('Cập nhật kỳ thi thành công!');
-    };
-    const handleSubmitExam = (formData) => {
-        console.log('Creating new exam:', formData);
-        
-        // Tạo exam mới
-        const newExam = {
-            id: exams.length + 1,
-            name: formData.name,
-            startDate: new Date(formData.startDate).toLocaleDateString('vi-VN'),
-            endDate: new Date(formData.endDate).toLocaleDateString('vi-VN'),
-            status: 'active',
-            subjects: [],
-            totalSubjects: 0,
-            totalSessions: 0,
-            totalRegistrations: 0,
-            description: formData.description
-        };
-
-        setExams([...exams, newExam]);
-        alert('Tạo kỳ thi mới thành công!');
-    };
-    const [exams, setExams] = useState([
-        {
-        id: 1,
-        name: 'Kỳ thi giữa kỳ - Học kỳ 1 (2024-2025)',
-        startDate: '10/11/2025',
-        endDate: '20/11/2025',
-        status: 'active',
-        subjects: [
-            { code: 'IT4001', name: 'Cơ sở dữ liệu' },
-            { code: 'IT4002', name: 'Lập trình hướng đối tượng' },
-            { code: 'IT4003', name: 'Mạng máy tính' }
-        ],
-        totalSubjects: 3,
-        totalSessions: 8,
-        totalRegistrations: 350
-        },
-        {
-        id: 2,
-        name: 'Kỳ thi cuối kỳ - Học kỳ 1 (2024-2025)',
-        startDate: '25/12/2025',
-        endDate: '10/01/2026',
-        status: 'upcoming',
-        subjects: [
-            { code: 'IT4001', name: 'Cơ sở dữ liệu' },
-            { code: 'IT4002', name: 'Lập trình hướng đối tượng' },
-            { code: 'IT4003', name: 'Mạng máy tính' },
-            { code: 'IT4004', name: 'Cấu trúc dữ liệu' },
-            { code: 'IT4005', name: 'Hệ điều hành' }
-        ],
-        totalSubjects: 5,
-        totalSessions: 15,
-        totalRegistrations: 0
-        },
-        {
-        id: 3,
-        name: 'Kỳ thi cuối kỳ - Học kỳ 1 (2024-2025)',
-        startDate: '25/12/2025',
-        endDate: '10/01/2026',
-        status: 'closed',
-        subjects: [
-            { code: 'IT4001', name: 'Cơ sở dữ liệu' },
-            { code: 'IT4002', name: 'Lập trình hướng đối tượng' },
-            { code: 'IT4003', name: 'Mạng máy tính' },
-            { code: 'IT4004', name: 'Cấu trúc dữ liệu' },
-            { code: 'IT4005', name: 'Hệ điều hành' }
-        ],
-        totalSubjects: 5,
-        totalSessions: 15,
-        totalRegistrations: 0
+    const handleUpdateExam = async (updatedExam) => {
+        try {
+            const startDate = updatedExam.startDate.split('/').reverse().join('-');
+            const endDate = updatedExam.endDate.split('/').reverse().join('-');
+            
+            await examService.update(updatedExam.id, {
+                name: updatedExam.name,
+                startDate: startDate,
+                endDate: endDate,
+                description: updatedExam.description
+            });
+            
+            await loadExams();
+            closeEditExamModal();
+            // alert('Cập nhật kỳ thi thành công!');
+        } catch (error) {
+            console.error('Error updating exam:', error);
+            alert('Lỗi khi cập nhật kỳ thi!');
         }
-    ]);
+    };
 
+    const handleSubmitExam = async (formData) => {
+        try {
+        await examService.add({
+        examName: formData.name,
+        startDate: formData.startDate,
+        endDate: formData.endDate,
+        description: formData.description
+        });
+
+        alert("Tạo kỳ thi thành công!");
+        await loadExams();
+        } catch (error) {
+        console.error(error);
+        alert("Lỗi khi tạo kỳ thi!");
+        }
+    };
+
+    const handleDelete = async (exam) => {
+        if (confirm(`Bạn có chắc muốn xóa kỳ thi "${exam.name}"? Hành động này không thể hoàn tác!`)) {
+            try {
+                await examService.delete(exam.id);
+                await loadExams();
+            } catch (error) {
+                console.error('Error deleting exam:', error);
+                alert('Lỗi khi xóa kỳ thi!');
+            }
+        }
+    };
+
+    const handleClose = async (exam) => {
+        if (confirm(`Bạn có chắc muốn đóng kỳ thi "${exam.name}"?`)) {
+            try {
+                await examService.close(exam.id);
+                await loadExams();;
+            } catch (error) {
+                console.error('Error closing exam:', error);
+                alert('Lỗi khi đóng kỳ thi!');
+            }
+        }
+    };
+
+    const handleOpen = async (exam) => {
+        if (confirm(`Bạn có chắc muốn mở kỳ thi "${exam.name}"?`)) {
+            try {
+                await examService.open(exam.id);
+                await loadExams();;
+            } catch (error) {
+                console.error('Error opening exam:', error);
+                alert('Lỗi khi đóng kỳ thi!');
+            }
+        }
+    };
     const handleViewDetail = (exam) => {
         alert(`Xem chi tiết: ${exam.name}`);
     };
 
     const handleAddSubject = (exam) => {
         alert(`Thêm môn thi cho: ${exam.name}`);
-    };
-
-    const handleClose = (exam) => {
-        if (confirm(`Bạn có chắc muốn đóng kỳ thi "${exam.name}"?`)) {
-        console.log('Closed exam:', exam);
-        }
     };
 
     return (
@@ -137,16 +167,27 @@ const ExamManagement = () => {
                         </button> 
                     </div>       
                     <div className="exam-management-list">
-                        {exams.map((exam) => (
-                            <ExamCard
-                            key={exam.id}
-                            exam={exam}
-                            onViewDetail={handleViewDetail}
-                            onAddSubject={handleAddSubject}
-                            onEdit={handleEdit}
-                            onClose={handleClose}
-                            />
-                        ))}
+                        {loading ? (
+                            <p>Đang tải...</p>
+                        ) : exams.length > 0 ? (
+                            exams.map((exam) => (
+                                <ExamCard
+                                    key={exam.id}
+                                    exam={exam}
+                                    onViewDetail={handleViewDetail}
+                                    onAddSubject={handleAddSubject}
+                                    onEdit={handleEdit}
+                                    onClose={handleClose}
+                                    onDelete={handleDelete}
+                                    onOpen={handleOpen}
+                                />
+                            ))
+                        ) : (
+                            <div className="empty-exam">
+                                <FaClipboardList className="empty-icon" />
+                                <h2>Chưa có kỳ thi nào</h2>
+                            </div>
+                        )}
                     </div>       
                 </div>
             </div>
