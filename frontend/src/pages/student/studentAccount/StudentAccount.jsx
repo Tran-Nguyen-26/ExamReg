@@ -108,7 +108,7 @@ const StudentAccount = () => {
               tabs.map((tab) => (
                 <div
                   key={tab.key}
-                  className={`tab-item ${tabContent === tab.key ? 'active' : ''}`}
+                  className={`tab-item ${tabContent === tab.key ? 'student-account-active' : ''}`}
                   onClick={() => handleSelectTab(tab.key)}
                 >
                   {tab.icon}
@@ -175,29 +175,29 @@ const StudentAccount = () => {
         {
           tabContent === 'password' &&
           <div className='tab-change-password-content password'>
-            <form>
-              <div>
-                <label>Mật khẩu hiện tại</label>
+            <form className='change-password-form'>
+              <div className='change-password-form-group'>
+                <label className='change-password-from-label'>Mật khẩu hiện tại</label>
                 <input 
-                  className='present-password' 
+                  className='change-password-input present-password' 
                   type="password" 
                   placeholder='Nhập mật khẩu hiện tại'
                   onKeyDown={(e) => handleFocusChangePassword(e, '.new-password')}
                 />
               </div>
-              <div>
-                <label>Mật khẩu mới</label>
+              <div className='change-password-form-group'>
+                <label className='change-password-from-label'>Mật khẩu mới</label>
                 <input 
-                  className='new-password' 
+                  className='change-password-input new-password' 
                   type="password" 
                   placeholder='Nhập mật khẩu mới'
                   onKeyDown={(e) => handleFocusChangePassword(e, '.confirm-new-password')}
                 />
               </div>
-              <div>
-                <label>Xác nhận mật khẩu mới</label>
+              <div className='change-password-form-group'>
+                <label className='change-password-from-label'>Xác nhận mật khẩu mới</label>
                 <input 
-                  className='confirm-new-password' 
+                  className='change-password-input confirm-new-password' 
                   type="password" 
                   placeholder='Xác nhận mật khẩu mới'
                   onKeyDown={(e) => handleFocusChangePassword(e, '.btn-change')}
