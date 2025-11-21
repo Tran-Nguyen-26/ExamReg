@@ -19,7 +19,10 @@ const Home = () => {
         setExamSessions(examSessions)
 
         const subjects = Array.from(
-          new Map(examSessions.map(s => [s.subject.id, s.subject])).values()
+          new Map(examSessions.map(s => [
+            s.subject.id, 
+            { ...s.subject, sessionStatus: s.status}
+          ])).values()
         )
         setSubjects(subjects)
       } catch (error) {

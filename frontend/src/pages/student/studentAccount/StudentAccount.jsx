@@ -9,11 +9,13 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, color } from 'framer-motion';
 import MyContext from '../../../context/MyContext';
 import { useAuth } from '../../../hooks/useAuth';
+import { useStudent } from '../../../hooks/useStudent';
 
 const StudentAccount = () => {
 
   const { user, setUser } = useContext(MyContext)
   const { changePasswordFirstTime, logout } = useAuth()
+  const { changePassword } = useStudent()
 
   const navigate = useNavigate()
 
@@ -42,8 +44,44 @@ const StudentAccount = () => {
     document.querySelector('.confirm-new-password').value = ''
   }
 
-  const handleSubmitChangePassword = () => {
-    
+  const [currentPassword, setCurrentPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmNewPassword, setConfirmNewPassword] = useState('')
+
+  const [errorsChangePassword, setErrorsChangePassword] = useState({})
+
+  const handleSubmitChangePassword = async (e) => {
+    e.preventDefault()
+    const newErrors = {}
+    if (!currentPassword.trim()) {
+      newErrors.currentPassword = 'Vui lòng điền mật khẩu hiện tại'
+    }
+    if (!newPassword.trim()) {
+      newErrors.newPassword = 'Vui lòng điền mật khẩu mới'
+    }
+    if (!confirmNewPassword.trim()) {
+      newErrors.confirmNewPassword = 'Vui lòng xác nhật mật khẩu'
+    } else if (confirmNewPassword.trim() !== newPassword.trim()) {
+      newErrors.confirmNewPassword = 'Mật khẩu không khớp'
+    }
+
+    setErrorsChangePassword(newErrors)
+    if (Object.keys(newErrors).length > 0) {
+      return
+    }
+    try {
+      await changePassword(currentPassword, newPassword)
+      window.alert('Đổi mật khẩu thành công')
+    } catch(error) {
+      const backendErrors = {}
+      if (error.message === 'Current password is incorrect') {
+        backendErrors.currentPassword = 'Mật khẩu hiện tại không đúng'
+      }
+      if (error.message === 'newPassword: Password must be at least 8 characters') {
+        backendErrors.newPassword = 'Mât khẩu mới phải có ít nhất 8 kí tự'
+      }
+      setErrorsChangePassword(backendErrors)
+    }
   }
 
   const [passwordFt, setPasswordFt] = useState('')
@@ -54,6 +92,7 @@ const StudentAccount = () => {
 
   const handleChangePasswordFirstTime = async (e) => {
     e.preventDefault()
+    setErrorsChangePassword({})
     if (!passwordFt.trim()) {
       setErrorPasswordFt(true)
       return
@@ -175,7 +214,7 @@ const StudentAccount = () => {
         {
           tabContent === 'password' &&
           <div className='tab-change-password-content password'>
-            <form>
+            <form onSubmit={handleSubmitChangePassword}>
               <div>
                 <label>Mật khẩu hiện tại</label>
                 <input 
@@ -183,7 +222,14 @@ const StudentAccount = () => {
                   type="password" 
                   placeholder='Nhập mật khẩu hiện tại'
                   onKeyDown={(e) => handleFocusChangePassword(e, '.new-password')}
+                  name='currentPassword'
+                  value={currentPassword}
+                  onChange={e => setCurrentPassword(e.target.value)}
                 />
+                {
+                  errorsChangePassword.currentPassword &&
+                  <p>{errorsChangePassword.currentPassword}</p>
+                }
               </div>
               <div>
                 <label>Mật khẩu mới</label>
@@ -192,8 +238,15 @@ const StudentAccount = () => {
                   type="password" 
                   placeholder='Nhập mật khẩu mới'
                   onKeyDown={(e) => handleFocusChangePassword(e, '.confirm-new-password')}
+                  name='newPassword'
+                  value={newPassword}
+                  onChange={e => setNewPassword(e.target.value)}
                 />
-              </div>
+                {
+                  errorsChangePassword.newPassword &&
+                  <p>{errorsChangePassword.newPassword}</p>
+                }
+              </div>    
               <div>
                 <label>Xác nhận mật khẩu mới</label>
                 <input 
@@ -201,10 +254,18 @@ const StudentAccount = () => {
                   type="password" 
                   placeholder='Xác nhận mật khẩu mới'
                   onKeyDown={(e) => handleFocusChangePassword(e, '.btn-change')}
+                  name='confirmNewPassword'
+                  value={confirmNewPassword}
+                  onChange={e => setConfirmNewPassword(e.target.value)}
                 />
+                {
+                  errorsChangePassword.confirmNewPassword &&
+                  <p>{errorsChangePassword.confirmNewPassword}</p>
+                }
               </div>
+              
               <div className='form-actions'>
-                <button className='btn-change'>Đổi mật khẩu</button>
+                <button className='btn-change' type='submit'>Đổi mật khẩu</button>
                 <button type='button' className='btn-cancel' onClick={handleCancel}>Hủy</button>
               </div>
               <ul>

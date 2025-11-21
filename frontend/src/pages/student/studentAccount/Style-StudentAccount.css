@@ -143,6 +143,18 @@ form .form-actions {
   color: #1D6DBD;
 }
 
+.tab-change-password-content div {
+  position: relative;
+}
+
+.tab-change-password-content div p {
+  position: absolute;
+  font-size: 16px;
+  color: red;
+  top: 75px;
+  left: 5px;
+}
+
 .tab-change-password-content ul {
   margin-top: 50px;
   padding: 20px;

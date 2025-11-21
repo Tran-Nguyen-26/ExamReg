@@ -4,6 +4,7 @@ import regis_btn from '../../../assets/register-btn.png'
 import { useNavigate } from 'react-router-dom'
 import { useContext } from 'react'
 import MyContext from '../../../context/MyContext'
+import { IoMdCheckboxOutline } from "react-icons/io"
 
 
 const Subject = ({data}) => {
@@ -24,19 +25,34 @@ const Subject = ({data}) => {
           <img src={logo_subject} alt="" />
           <span className='subject-name'>{data.name}</span>
         </div>
-        <div className='register' onClick={handleSelectSubject}>
-          <span>Đăng ký</span>
-          <img src={regis_btn} alt="" />
-        </div>
+        {
+          data.sessionStatus === 'REGISTERED' ? (
+            <div className='registered'>
+              <span>Đã đăng kí</span>
+              <IoMdCheckboxOutline/>
+            </div>
+          ) : data.sessionStatus === 'NOT_ELIGIBLE' ? (
+            <div></div>
+          ) : (
+            <div className='register' onClick={handleSelectSubject}>
+              <span>Đăng ký</span>
+              <img src={regis_btn} alt="" />
+            </div>
+          )
+        }
       </div>
       <div className='subject-info'>
+        <div className='sub-info'>
+          <span>Số tín chỉ:</span>
+          <span>{data.creditHour}</span>
+        </div>
         <div className='sub-info'>
           <span>Mã HP:</span>
           <span>{data.subjectCode}</span>
         </div>
         <div className='sub-info'>
-          <span>Số tín chỉ:</span>
-          <span>{data.creditHour}</span>
+          <span>Thời lượng thi:</span>
+          <span>{`${data.duration} phút`}</span>
         </div>
         <div className='sub-info'>
           <span>Điều kiện thi:</span>
