@@ -14,8 +14,8 @@ const Subject = ({data}) => {
   const {setSelectedSubject} = useContext(MyContext)
 
   const handleSelectSubject = () => {
-    setSelectedSubject(data)
-    navigate(`/student/register/${data.id}`)
+    setSelectedSubject(data.subject)
+    navigate(`/student/register/${data.subject.id}`)
   }
 
   return (
@@ -23,15 +23,15 @@ const Subject = ({data}) => {
       <div className='title'>
         <div>
           <img src={logo_subject} alt="" />
-          <span className='subject-name'>{data.name}</span>
+          <span className='subject-name'>{data.subject.name}</span>
         </div>
         {
-          data.sessionStatus === 'REGISTERED' ? (
+          data.registered ? (
             <div className='registered'>
               <span>Đã đăng kí</span>
               <IoMdCheckboxOutline/>
             </div>
-          ) : data.sessionStatus === 'NOT_ELIGIBLE' ? (
+          ) : data.status === 'INELIGIBLE' ? (
             <div></div>
           ) : (
             <div className='register' onClick={handleSelectSubject}>
@@ -44,15 +44,15 @@ const Subject = ({data}) => {
       <div className='subject-info'>
         <div className='sub-info'>
           <span>Số tín chỉ:</span>
-          <span>{data.creditHour}</span>
+          <span>{data.subject.creditHour}</span>
         </div>
         <div className='sub-info'>
           <span>Mã HP:</span>
-          <span>{data.subjectCode}</span>
+          <span>{data.subject.subjectCode}</span>
         </div>
         <div className='sub-info'>
           <span>Thời lượng thi:</span>
-          <span>{`${data.duration} phút`}</span>
+          <span>{`${data.subject.duration} phút`}</span>
         </div>
         <div className='sub-info'>
           <span>Điều kiện thi:</span>

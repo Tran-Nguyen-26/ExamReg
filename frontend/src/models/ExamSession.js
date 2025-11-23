@@ -1,5 +1,5 @@
 import { Room } from "./Room";
-import { Subject } from "./Subject";
+import { SubjectStatus } from "./SubjectStatus";
 
 export class ExamSession {
   constructor(data) {
@@ -10,7 +10,7 @@ export class ExamSession {
     this.registeredCount = data.registeredCount;
     this.startTime = data.startTime;
     this.room = data.room ? Room.fromJSON(data.room) : null;
-    this.subject = data.subject ? Subject.fromJSON(data.subject) : null;
+    this.subjectStatus = data.subjectStatus ? SubjectStatus.fromJSON(data.subjectStatus) : null;
     this.status = data.status;
   }
 

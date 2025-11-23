@@ -5,9 +5,11 @@ import './Style-Home.css'
 import { useEffect, useState } from "react";
 import { motion } from 'framer-motion'
 import { useExamSession } from "../../../hooks/useExamSession";
+import { useSubjectStatus } from "../../../hooks/useSubjectStatus";
 
 const Home = () => {
 
+  const { getSubjectStatus } = useSubjectStatus()
   const { getExamSessions } = useExamSession()
   const [examSessions, setExamSessions] = useState([])
   const [subjects, setSubjects] = useState([])
@@ -15,24 +17,14 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const examSessions = await getExamSessions()
-        setExamSessions(examSessions)
-
-        const subjects = Array.from(
-          new Map(examSessions.map(s => [
-            s.subject.id, 
-            { ...s.subject, sessionStatus: s.status}
-          ])).values()
-        )
+        const subjects = await getSubjectStatus()
         setSubjects(subjects)
       } catch (error) {
-        console.error("Failed to load exam sessions", error)
+        console.error("Failed to load subject status", error)
       }
     }
     fetchData()
   }, [])
-
-
 
   return (
     <motion.div

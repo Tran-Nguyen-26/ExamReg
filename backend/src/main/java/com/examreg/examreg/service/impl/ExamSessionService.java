@@ -3,23 +3,22 @@ package com.examreg.examreg.service.impl;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import com.examreg.examreg.dto.response.ExamSessionResponse;
-import com.examreg.examreg.dto.response.SubjectResponse;
+import com.examreg.examreg.dto.response.SubjectStatusResponse;
 import com.examreg.examreg.enums.EligibilityStatus;
 import com.examreg.examreg.enums.ExamSessionStatus;
 import com.examreg.examreg.exceptions.BadRequestException;
 import com.examreg.examreg.exceptions.ResourceNotFoundException;
 import com.examreg.examreg.mapper.ExamSessionMapper;
-import com.examreg.examreg.mapper.SubjectMapper;
 import com.examreg.examreg.models.ExamRegistration;
 import com.examreg.examreg.models.ExamSession;
 import com.examreg.examreg.models.Student;
-import com.examreg.examreg.models.StudentSubjectStatus;
 import com.examreg.examreg.repository.ExamSessionRepository;
 import com.examreg.examreg.service.IExamRegistrationService;
 import com.examreg.examreg.service.IExamSessionService;
@@ -35,25 +34,22 @@ public class ExamSessionService implements IExamSessionService {
   private final ExamSessionRepository examSessionRepository;
   private final IStudentSubjectStatusService statusService;
   private final ExamSessionMapper examSessionMapper;
-  private final SubjectMapper subjectMapper;
   private final IExamRegistrationService examRegistrationService;
   private final IStudentService studentService;
   
   @Override
   public List<ExamSessionResponse> getExamSessionResponses(Long studentId) {
 
-    Map<Long, StudentSubjectStatus> statusMap = statusService.getStudentSubjectStatusByStudentId(studentId)
+    Map<Long, SubjectStatusResponse> statusMap = statusService.getSubjectStatusResponse(studentId)
       .stream()
       .collect(Collectors.toMap(s -> s.getSubject().getId(), Function.identity()));
+
     List<Long> subjectIds = statusMap.keySet().stream().toList();
+
     List<ExamSession> examSessions = getExamSessionsBySubjectIds(subjectIds);
     List<ExamSessionResponse> responses = examSessions.stream().map(session -> {
 
-      StudentSubjectStatus studentSubjectStatus = statusMap.get(session.getSubject().getId());
-      SubjectResponse subjectResponse = subjectMapper.buildSubjectResponse(
-        studentSubjectStatus.getSubject(), studentSubjectStatus.getStatus()
-      );
-
+      SubjectStatusResponse ssRes = statusMap.get(session.getSubject().getId());
 
       ExamSessionStatus s = ExamSessionStatus.AVAILABLE;
       int registeredCount = examRegistrationService.getRegisteredCount(session.getId());
@@ -61,7 +57,7 @@ public class ExamSessionService implements IExamSessionService {
 
       if (registered) {
         s = ExamSessionStatus.REGISTERED;
-      } else if (studentSubjectStatus.getStatus() == EligibilityStatus.INELIGIBLE) {
+      } else if (ssRes.getStatus() == EligibilityStatus.INELIGIBLE) {
         s = ExamSessionStatus.NOT_ELIGIBLE;
       } else if (registeredCount == session.getCapacity()) {
         s = ExamSessionStatus.FULL;
@@ -69,7 +65,7 @@ public class ExamSessionService implements IExamSessionService {
         throw new RuntimeException("so luong dang ki > so luong toi da");
       }
       ExamSessionResponse examSessionResponse = examSessionMapper.buildExamSessionResponse(session, registeredCount, s);
-      examSessionResponse.setSubject(subjectResponse);
+      examSessionResponse.setSubjectStatus(ssRes);
       return examSessionResponse;
     }).toList();
     return responses;
@@ -84,7 +80,7 @@ public class ExamSessionService implements IExamSessionService {
     List<ExamSessionResponse> examSessionResponses = getExamSessionResponses(studentId);
     return examSessionResponses
       .stream()
-      .filter(es -> es.getSubject().getId().equals(subjectId))
+      .filter(es -> es.getSubjectStatus().getSubject().getId().equals(subjectId))
       .toList();
   }
 
@@ -110,7 +106,7 @@ public class ExamSessionService implements IExamSessionService {
 
     Long subjectId = examSession.getSubject().getId();
     boolean hasRegisteredThisSubject = examSessionResponses.stream()
-      .anyMatch(esp -> esp.getSubject().getId().equals(subjectId) && esp.getStatus() == ExamSessionStatus.REGISTERED);
+      .anyMatch(esp -> esp.getSubjectStatus().getSubject().getId().equals(subjectId) && esp.getStatus() == ExamSessionStatus.REGISTERED);
     
     if (hasRegisteredThisSubject) {
       throw new BadRequestException("You have already registered another exam session of this subject");
@@ -131,6 +127,20 @@ public class ExamSessionService implements IExamSessionService {
       .orElseThrow(() -> new ResourceNotFoundException("Exam session not found with id: " + examSessionId));
   }
 
+  public List<SubjectStatusResponse> getStatusRegisterResponses(Long studentId) {
+    List<ExamRegistration> examRegistrations = examRegistrationService.getExamRegistrationsByStudentId(studentId);
+    Set<Long> registeredSubjectIds = examRegistrations.stream()
+      .map(eR -> eR.getExamSession().getSubject().getId())
+      .collect(Collectors.toSet());
+    List<SubjectStatusResponse> ssRes = statusService.getSubjectStatusResponse(studentId);
+    return ssRes.stream()
+      .map(status -> {
+        boolean registered = registeredSubjectIds.contains(status.getSubject().getId());
+        status.setRegistered(registered);
+        return status;
+      })
+      .toList();
+  }
 
   //ham kiem tra trung lich
   // ....

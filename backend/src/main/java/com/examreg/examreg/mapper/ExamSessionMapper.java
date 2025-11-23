@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import com.examreg.examreg.dto.response.ExamSessionResponse;
 import com.examreg.examreg.enums.ExamSessionStatus;
 import com.examreg.examreg.models.ExamSession;
+import com.examreg.examreg.models.StudentSubjectStatus;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class ExamSessionMapper {
 
   private final RoomMapper roomMapper;
-  private final SubjectMapper subjectMapper;
+  private final SubjectStatusMapper statusMapper;
 
   public ExamSessionResponse buildExamSessionResponse(ExamSession examSession) {
     return ExamSessionResponse.builder()
@@ -25,7 +26,6 @@ public class ExamSessionMapper {
       .capacity(examSession.getCapacity())
       .startTime(examSession.getStarTime())
       .room(roomMapper.buildRoomResponse(examSession.getRoom()))
-      .subject(subjectMapper.buildSubjectResponse(examSession.getSubject()))
       .build();
   }
 
@@ -42,5 +42,11 @@ public class ExamSessionMapper {
 
   public List<ExamSessionResponse> buildExamSessionResponsesList(List<ExamSession> examSessions) {
     return examSessions.stream().map(this::buildExamSessionResponse).toList();
+  }
+
+  public ExamSessionResponse buildExamSessionResponse(ExamSession examSession, StudentSubjectStatus ssStatus) {
+    ExamSessionResponse response = buildExamSessionResponse(examSession);
+    response.setSubjectStatus(statusMapper.buildSubjectStatusReponse(ssStatus));
+    return response;
   }
 }

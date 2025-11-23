@@ -3,7 +3,6 @@ package com.examreg.examreg.mapper;
 import org.springframework.stereotype.Component;
 
 import com.examreg.examreg.dto.response.SubjectResponse;
-import com.examreg.examreg.enums.EligibilityStatus;
 import com.examreg.examreg.models.Subject;
 
 @Component
@@ -17,11 +16,5 @@ public class SubjectMapper {
       .creditHour(subject.getCreditHour())
       .duration(subject.getDuration())
       .build();
-  }
-
-  public SubjectResponse buildSubjectResponse(Subject subject, EligibilityStatus status) {
-    SubjectResponse response = buildSubjectResponse(subject);
-    response.setStatus(status);
-    return response;
   }
 }

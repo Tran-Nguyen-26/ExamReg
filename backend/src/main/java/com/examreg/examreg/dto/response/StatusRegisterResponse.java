@@ -9,10 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class SubjectResponse {
-  private Long id;
-  private String name;
-  private String subjectCode;
-  private int creditHour;
-  private int duration;
+public class StatusRegisterResponse {
+  private Long subjectId;
+  private boolean registered;
 }

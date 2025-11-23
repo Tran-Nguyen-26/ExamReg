@@ -8,11 +8,11 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.examreg.examreg.dto.response.ExamRegistrationResponse;
+import com.examreg.examreg.dto.response.SubjectStatusResponse;
 import com.examreg.examreg.enums.ExamSessionStatus;
 import com.examreg.examreg.exceptions.ResourceNotFoundException;
 import com.examreg.examreg.mapper.ExamRegistrationMapper;
 import com.examreg.examreg.models.ExamRegistration;
-import com.examreg.examreg.models.StudentSubjectStatus;
 import com.examreg.examreg.repository.ExamRegistrationRepository;
 import com.examreg.examreg.service.IExamRegistrationService;
 import com.examreg.examreg.service.IStudentSubjectStatusService;
@@ -44,7 +44,7 @@ public class ExamRegistrationService implements IExamRegistrationService {
 
   @Override
   public List<ExamRegistrationResponse> getExamRegistrationResponses(Long studentId) {
-    Map<Long, StudentSubjectStatus> statusMap = statusService.getStudentSubjectStatusByStudentId(studentId)
+    Map<Long, SubjectStatusResponse> statusMap = statusService.getSubjectStatusResponse(studentId)
       .stream()
       .collect(Collectors.toMap(s -> s.getSubject().getId(), Function.identity()));
     List<ExamRegistration> examRegistrations = getExamRegistrationsByStudentId(studentId);
@@ -53,8 +53,8 @@ public class ExamRegistrationService implements IExamRegistrationService {
       .map(e -> {
         ExamRegistrationResponse response = examRegistrationMapper.buildExamRegistrationResponse(e);
         response.getExamSession().setStatus(ExamSessionStatus.REGISTERED);
-        StudentSubjectStatus studentSubjectStatus = statusMap.get(e.getExamSession().getSubject().getId());
-        response.getExamSession().getSubject().setStatus(studentSubjectStatus.getStatus());
+        SubjectStatusResponse ssRes = statusMap.get(e.getExamSession().getSubject().getId());
+        response.getExamSession().setSubjectStatus(ssRes);
         return response;
       })
       .toList();

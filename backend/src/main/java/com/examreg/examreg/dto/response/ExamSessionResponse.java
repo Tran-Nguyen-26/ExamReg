@@ -25,6 +25,6 @@ public class ExamSessionResponse {
   @JsonFormat(pattern = "HH:mm")
   private LocalTime startTime;
   private RoomResponse room;
-  private SubjectResponse subject;
+  private SubjectStatusResponse subjectStatus;
   private ExamSessionStatus status;
 }

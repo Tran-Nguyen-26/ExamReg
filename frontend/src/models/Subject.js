@@ -5,7 +5,6 @@ export class Subject {
     this.subjectCode = data.subjectCode;
     this.creditHour = data.creditHour;
     this.duration = data.duration;
-    this.status = data.status;
   }
 
   static fromJSON(json) {

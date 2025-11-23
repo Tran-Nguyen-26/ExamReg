@@ -56,5 +56,4 @@ public class ExamSessionController {
     examSessionService.registerExamSession(examSessionId, studentDetails.getId());
     return ResponseEntity.ok(ApiResponse.success("Registered successfully"));
   }
-
 }

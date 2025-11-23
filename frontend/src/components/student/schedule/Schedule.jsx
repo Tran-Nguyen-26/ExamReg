@@ -13,8 +13,8 @@ const Schedule = ({ data, onCancel }) => {
       <div className='subject-header'>
         <img src={icon_book} alt="" />
         <div>
-          <label>{data.examSession.subject.name}</label>
-          <span>{`Mã HP: ${data.examSession.subject.subjectCode}`}</span>
+          <label>{data.examSession.subjectStatus.subject.name}</label>
+          <span>{`Mã HP: ${data.examSession.subjectStatus.subject.subjectCode}`}</span>
         </div>
       </div>
       <div className='subject-body'>
