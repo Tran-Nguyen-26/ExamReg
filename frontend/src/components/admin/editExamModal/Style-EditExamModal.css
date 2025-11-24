@@ -51,11 +51,11 @@
   border-bottom: 1px solid #e5e7eb;
 }
 
-.edit-exam-modal-header h2 {
-  margin: 0;
+.edit-exam-modal-title {
   font-size: 24px;
   font-weight: 600;
-  color: #1f2937;
+  color: #111827;
+  margin: 0;
 }
 
 .close-button {
@@ -175,7 +175,6 @@
   justify-content: flex-end;
   gap: 12px;
   padding-top: 20px;
-  border-top: 1px solid #e5e7eb;
 }
 
 .btn-cancel,
