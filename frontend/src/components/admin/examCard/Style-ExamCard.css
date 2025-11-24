@@ -19,7 +19,7 @@
   border-top: 6px solid #f59e0b;
 }
 .exam-management-card.closed {
-  border-top: 6px solid #a2a1a1;
+  border-top: 6px solid #f46a6a;
 }
 
 /* Card Header */
@@ -71,8 +71,8 @@
 }
 
 .exam-management-status.closed {
-  background-color: #cececa;
-  color: #353535;
+  background-color: #fbdede;
+  color: #8d1e1e;
 }
 
 /* Statistics */
@@ -187,38 +187,38 @@
 }
 
 .exam-management-btn-add {
-  background-color: #16a34a;
+  background-color: #2563eb;
   color: white;
 }
 
 .exam-management-btn-add:hover {
-  background-color: #15803d;
+  background-color: #1d4ed8;
 }
 
 .exam-management-btn-edit {
-  background-color: #f97316;
+  background-color: #16a34a;
   color: white;
 }
 
 .exam-management-btn-edit:hover {
-  background-color: #c75a20;
+  background-color: #15803d;
 }
 
 .exam-management-btn-close {
-  background-color: #ef4444;
+  background-color:#f97316;
   color: white;
 }
 
 .exam-management-btn-close:hover {
-  background-color: #d42626;
+  background-color: #c46928
 }
 .exam-management-btn-delete {
-  background-color: #7c2d12;
+  background-color: #e24040;
   color: white;
 }
 
 .exam-management-btn-delete:hover {
-  background-color: #5c1e0a;
+  background-color: #b91c1c;
 }
 .exam-management-btn-open {
   background-color: #bb18c7;

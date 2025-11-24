@@ -25,11 +25,12 @@ public class ExamSession {
 
   private String examSessionCode;
 
+  @JsonFormat(pattern = "dd/MM/yyyy")
   private LocalDate date;
 
   private int capacity;
 
-  @JsonFormat(pattern = "hh:mm")
+  @JsonFormat(pattern = "HH:mm")
   private LocalTime starTime;
 
   @ManyToOne

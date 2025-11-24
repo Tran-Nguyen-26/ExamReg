@@ -60,19 +60,19 @@ const Ticket = () => {
           </div>
           <div className='ticket-sub-info'>
             <label>Mã học phần:</label>
-            <span>{selectedSubject.subject_code}</span>
+            <span>{selectedSubject.subjectCode}</span>
           </div>
           <div className='ticket-sub-info'>
             <label>Ngày thi:</label>
             <span>{selectedExamSession.date}</span>
           </div>
           <div className='ticket-sub-info'>
-            <label>Ca thi:</label>
-            <span>{selectedExamSession.time}</span>
+            <label>Giờ thi:</label>
+            <span>{selectedExamSession.startTime}</span>
           </div>
           <div className='ticket-sub-info'>
             <label>Phòng thi:</label>
-            <span>{selectedExamSession.room}</span>
+            <span>{selectedExamSession.room.name}</span>
           </div>
           <div className='ticket-sub-info'>
             <label>Địa điểm thi:</label>
@@ -80,7 +80,7 @@ const Ticket = () => {
           </div>
           <div className='ticket-sub-info'>
             <label>Thời lượng bài thi:</label>
-            <span>60 phút</span>
+            <span>{`${selectedSubject.duration} phút`}</span>
           </div>
         </div>
         <div className='reminder-ticket'>

@@ -3,14 +3,39 @@ import Schedule from "../../../components/student/schedule/Schedule"
 import './Style-ExamSchedule.css'
 import { motion } from "framer-motion"
 
-//fake data
-import examRegistrationData from '../../../data/ExamRegistrationData.json'
+import { useContext, useEffect, useState } from "react"
+import { useExamRegistration } from "../../../hooks/useExamRegistration"
+import MyContext from "../../../context/MyContext"
 
 const ExamSchedule = () => {
 
+  const { getExamRegistrations, cancelExamRegistration } = useExamRegistration()
+  // const [examRegistrations, setExamRegistrations] = useState([])
 
-  //fake data
-  const examSchedules = examRegistrationData
+  const {examRegistrations, setExamRegistrations} = useContext(MyContext)
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const examRegistrations = await getExamRegistrations()
+        setExamRegistrations(examRegistrations)
+      } catch (error) {
+        console.error("Failed to load exam registrations", error)
+      }
+    }
+    fetchData()
+  }, [])
+
+  const handleCancel = async (examRegistrationId) => {
+    try {
+      await cancelExamRegistration(examRegistrationId)
+      const updated = await getExamRegistrations()
+      setExamRegistrations(updated)
+    } catch (error) {
+      console.error('Failed to cancel exam registration', error)
+    }
+  }
 
   return (
     <motion.div
@@ -27,16 +52,17 @@ const ExamSchedule = () => {
           <p>Danh sách các ca thi bạn đã đăng ký</p>
         </div>
         <div className="part2">
-          <h1>{examSchedules.length}</h1>
+          <h1>{examRegistrations.length}</h1>
           <p>Môn thi</p>
         </div>
       </div>
       <div className="main-card">
         {
-          examSchedules.map((examSchedule) => (
+          examRegistrations.map((examRegistration) => (
             <Schedule
-              key={examSchedule.id}
-              data={examSchedule}
+              key={examRegistration.id}
+              data={examRegistration}
+              onCancel={handleCancel}
             />
           ))
         }

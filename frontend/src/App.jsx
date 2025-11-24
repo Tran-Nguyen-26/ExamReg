@@ -11,7 +11,7 @@ import SubjectSessions from "./pages/admin/subjectSessions/SubjectSessions";
 import Report from "./pages/admin/report/Report";
 import ExamEligibility from "./pages/admin/exameligibility/ExamEligibility";
 import { Navigate } from "react-router-dom";
-import { Provider } from "./context/MyContext";
+import Provider from "./context/MyProvider";
 import StudentAccount from "./pages/student/studentAccount/StudentAccount";
 import Login from "./pages/login/Login";
 import { AnimatePresence } from "framer-motion";
@@ -27,7 +27,7 @@ const AnimatedRoutes = () => {
         <Route path="/" element={<Navigate to ="/login"/>}></Route>
         <Route path="/login" element={<Login />} />
         <Route path="/student/home" element={<Home/>}></Route>
-        <Route path="/student/register" element={<ExamRegister/>}></Route>
+        <Route path="/student/register/:subjectId" element={<ExamRegister/>}></Route>
         <Route path="/student/exam-schedule" element={<ExamSchedule/>}></Route>
         <Route path="/student/student-account" element={<StudentAccount />} />
         <Route path="/admin/student-management" element={<StudentManagement/>}></Route>

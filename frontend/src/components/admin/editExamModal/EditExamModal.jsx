@@ -90,7 +90,7 @@ const EditExamModal = ({ exam, onClose, onSubmit }) => {
     <div className="edit-exam-modal-overlay" onClick={handleOverlayClick}>
       <div className="edit-exam-modal">
         <div className="edit-exam-modal-header">
-          <h2>Chỉnh sửa kỳ thi</h2>
+          <h2 className="edit-exam-modal-title">Chỉnh sửa kỳ thi</h2>
           <button className="close-button" onClick={onClose}>
             <IoMdClose size={24} />
           </button>
@@ -155,21 +155,6 @@ const EditExamModal = ({ exam, onClose, onSubmit }) => {
               rows="4"
               placeholder="Nhập mô tả cho kỳ thi (tùy chọn)"
             />
-          </div>
-
-          <div className="exam-info-display">
-            <div className="info-item">
-              <span className="info-label">Số môn thi:</span>
-              <span className="info-value">{exam?.totalSubjects || 0}</span>
-            </div>
-            <div className="info-item">
-              <span className="info-label">Số ca thi:</span>
-              <span className="info-value">{exam?.totalSessions || 0}</span>
-            </div>
-            <div className="info-item">
-              <span className="info-label">Lượt đăng ký:</span>
-              <span className="info-value">{exam?.totalRegistrations || 0}</span>
-            </div>
           </div>
 
           <div className="modal-actions">

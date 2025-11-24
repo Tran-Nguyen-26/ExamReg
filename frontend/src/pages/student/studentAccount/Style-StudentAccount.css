@@ -83,7 +83,7 @@
   width: 50%;
 }
 
-form {
+.change-password-form {
   display: flex;
   flex-direction: column;
   row-gap: 40px;
@@ -93,17 +93,17 @@ form {
   font-size: 16px;
 }
 
-form div {
+.change-password-form-group {
   display: flex;
   flex-direction: column;
 }
 
-form div label {
+.change-password-from-label {
   font-weight: 600;
   margin-bottom: 10px;
 }
 
-form div input {
+.change-password-input {
   color: gray;
   padding: 5px 10px;
   border: 1px solid rgba(0,0,0,0.5);
@@ -111,7 +111,7 @@ form div input {
   width: 70%;
 }
 
-form .form-actions {
+.form-actions {
   display: flex;
   flex-direction: row;
 }
@@ -138,9 +138,21 @@ form .form-actions {
   background-color: rgb(186, 185, 185);
 }
 
-.active {
+.student-account-active {
   background-color: #CAE3FF;
   color: #1D6DBD;
+}
+
+.tab-change-password-content div {
+  position: relative;
+}
+
+.tab-change-password-content div p {
+  position: absolute;
+  font-size: 16px;
+  color: red;
+  top: 75px;
+  left: 5px;
 }
 
 .tab-change-password-content ul {
@@ -182,6 +194,7 @@ form .form-actions {
 .change-password-first-time > p {
   text-align: center;
   margin: 0px;
+  margin-bottom: 20px;
 }
 
 .change-password-first-time div {
@@ -205,6 +218,14 @@ form .form-actions {
   width: 200px;
 }
 
+.change-password-first-time div input {
+  width: 70%;
+  color: gray;
+  border: 1px solid rgba(0,0,0,0.5);
+  border-radius: 10px;
+  padding: 5px 10px;
+}
+
 .change-password-first-time button {
   border: none;
   font-size: 18px;
@@ -212,7 +233,9 @@ form .form-actions {
   color: white;
   font-weight: bold;
   border-radius: 5px;
+  width: 100%;
   cursor: pointer;
+  margin-top: 20px;
 }
 
 .change-password-first-time button:hover {

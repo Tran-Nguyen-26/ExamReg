@@ -5,6 +5,7 @@ import { MdEdit, MdDelete } from "react-icons/md";
 import { IoLockClosedOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { IoLockOpenOutline } from "react-icons/io5";
+import { FaRegTrashAlt } from "react-icons/fa";
 import "./Style-ExamCard.css"
 
 const ExamCard = ({ exam, onViewDetail, onAddSubject, onEdit, onClose, onOpen, onDelete }) => {
@@ -54,7 +55,7 @@ const ExamCard = ({ exam, onViewDetail, onAddSubject, onEdit, onClose, onOpen, o
 
       {/* Actions */}
       <div className="exam-management-actions">
-        <button 
+        {/* <button 
           className="exam-mangement-btn-action exam-management-btn-view"
           onClick={(e) => {
             e.stopPropagation();
@@ -63,7 +64,7 @@ const ExamCard = ({ exam, onViewDetail, onAddSubject, onEdit, onClose, onOpen, o
         >
           <IoEyeOutline className="exam-management-action-icon" />
           <span>Xem chi tiết</span>
-        </button>
+        </button> */}
         {exam.status !== 'closed' && (
         <button 
           className="exam-mangement-btn-action exam-management-btn-add"
@@ -103,7 +104,7 @@ const ExamCard = ({ exam, onViewDetail, onAddSubject, onEdit, onClose, onOpen, o
             ) : (
               <>
                 <IoLockClosedOutline className="exam-management-action-icon"/>
-                <span>Khóa kỳ thi</span>
+                <span>Đóng kỳ thi</span>
               </>
             )}
           </button>
@@ -112,7 +113,7 @@ const ExamCard = ({ exam, onViewDetail, onAddSubject, onEdit, onClose, onOpen, o
           className="exam-mangement-btn-action exam-management-btn-delete"
           onClick={(e) => handleButtonClick(e, onDelete)}
         >
-          <MdDelete className="exam-management-action-icon"/>
+          <FaRegTrashAlt className="exam-management-action-icon"/>
           <span>Xóa</span>
         </button>
       </div>

@@ -4,6 +4,7 @@ import regis_btn from '../../../assets/register-btn.png'
 import { useNavigate } from 'react-router-dom'
 import { useContext } from 'react'
 import MyContext from '../../../context/MyContext'
+import { IoMdCheckboxOutline } from "react-icons/io"
 
 
 const Subject = ({data}) => {
@@ -13,8 +14,9 @@ const Subject = ({data}) => {
   const {setSelectedSubject} = useContext(MyContext)
 
   const handleSelectSubject = () => {
-    setSelectedSubject(data)
-    navigate('/student/register')
+    setSelectedSubject(data.subject)
+    localStorage.setItem("selectedSubject", JSON.stringify(data.subject))
+    navigate(`/student/register/${data.subject.id}`)
   }
 
   return (
@@ -22,21 +24,40 @@ const Subject = ({data}) => {
       <div className='title'>
         <div>
           <img src={logo_subject} alt="" />
-          <span className='subject-name'>{data.name}</span>
+          <span className='subject-name'>{data.subject.name}</span>
         </div>
-        <div className='register' onClick={handleSelectSubject}>
-          <span>Đăng ký</span>
-          <img src={regis_btn} alt="" />
-        </div>
+        {
+          data.registered ? (
+            <div className='registered'>
+              <span>Đã đăng kí</span>
+              <IoMdCheckboxOutline/>
+            </div>
+          ) : data.status === 'INELIGIBLE' ? (
+            <div></div>
+          ) : (
+            <div className='register' onClick={handleSelectSubject}>
+              <span>Đăng ký</span>
+              <img src={regis_btn} alt="" />
+            </div>
+          )
+        }
       </div>
       <div className='subject-info'>
         <div className='sub-info'>
-          <span>Mã HP:</span>
-          <span>{data.subject_code}</span>
+          <span>Số tín chỉ:</span>
+          <span>{data.subject.creditHour}</span>
         </div>
         <div className='sub-info'>
-          <span>Số tín chỉ:</span>
-          <span>{data.credit_hour}</span>
+          <span>Mã HP:</span>
+          <span>{data.subject.subjectCode}</span>
+        </div>
+        <div className='sub-info'>
+          <span>Thời lượng thi:</span>
+          <span>{`${data.subject.duration} phút`}</span>
+        </div>
+        <div className='sub-info'>
+          <span>Điều kiện thi:</span>
+          <span>{data.status === 'ELIGIBLE' ? 'Đủ điều kiện' : 'Không đủ điều kiện'}</span>
         </div>
       </div>
     </div>

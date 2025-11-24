@@ -10,8 +10,8 @@ const SelectExamSession = ({setStep, examSession}) => {
         <span>Ca thi</span>
       </div>
       <h4>{`Ngày ${examSession.date}`}</h4>
-      <p>{`Thời gian thi: ${examSession.time}`}</p>
-      <p>{`Phòng thi: ${examSession.room}`}</p>
+      <p>{`Thời gian thi: ${examSession.startTime}`}</p>
+      <p>{`Phòng thi: ${examSession.room.name}`}</p>
       <div className='change-session' onClick={() => setStep(2)}>
         <MdOutlineChangeCircle/>
         <span>Thay đổi ca thi</span>

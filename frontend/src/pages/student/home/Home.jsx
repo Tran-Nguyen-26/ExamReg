@@ -2,13 +2,26 @@ import Header from "../../../components/student/header/Header";
 import Notification from "../../../components/student/notification/Notification";
 import Subject from "../../../components/student/subject/Subject";
 import './Style-Home.css'
-import { useContext } from "react";
-import MyContext from "../../../context/MyContext";
+import { useEffect, useState } from "react";
 import { motion } from 'framer-motion'
+import { useSubjectStatus } from "../../../hooks/useSubjectStatus";
 
 const Home = () => {
 
-  const {subjects} = useContext(MyContext)
+  const { getSubjectStatus } = useSubjectStatus()
+  const [subjects, setSubjects] = useState([])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const subjects = await getSubjectStatus()
+        setSubjects(subjects)
+      } catch (error) {
+        console.error("Failed to load subject status", error)
+      }
+    }
+    fetchData()
+  }, [])
 
   return (
     <motion.div

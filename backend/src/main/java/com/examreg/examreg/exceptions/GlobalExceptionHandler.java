@@ -105,5 +105,18 @@ public class GlobalExceptionHandler {
         .message("Incorrect email or password")
         .build();
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
-  } 
+  }
+
+  @ExceptionHandler(RegistrationClosedException.class)
+  public ResponseEntity<ErrorResponse> handleRegistrationClosedException(RegistrationClosedException e, 
+      HttpServletRequest request) {
+    ErrorResponse error = ErrorResponse.builder()
+        .timestamp(new Date(System.currentTimeMillis()))
+        .status(HttpStatus.UNAUTHORIZED.value())
+        .path(request.getRequestURI())
+        .error("Conflict")
+        .message(e.getMessage())
+        .build();
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+  }
 }

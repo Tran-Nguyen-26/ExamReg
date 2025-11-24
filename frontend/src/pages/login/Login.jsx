@@ -39,7 +39,7 @@ const Login = () => {
         <span>Trường đại học công nghệ</span>
       </div>
       <div className='right-panel'>
-        <form onSubmit={handleSubmitLogin}>
+        <form className='login-form' onSubmit={handleSubmitLogin}>
           <h1>Đăng nhập</h1>
           <div>
             <label>Email</label>
