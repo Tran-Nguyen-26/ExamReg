@@ -4,14 +4,11 @@ import Subject from "../../../components/student/subject/Subject";
 import './Style-Home.css'
 import { useEffect, useState } from "react";
 import { motion } from 'framer-motion'
-import { useExamSession } from "../../../hooks/useExamSession";
 import { useSubjectStatus } from "../../../hooks/useSubjectStatus";
 
 const Home = () => {
 
   const { getSubjectStatus } = useSubjectStatus()
-  const { getExamSessions } = useExamSession()
-  const [examSessions, setExamSessions] = useState([])
   const [subjects, setSubjects] = useState([])
 
   useEffect(() => {

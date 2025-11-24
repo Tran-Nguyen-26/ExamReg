@@ -15,6 +15,7 @@ const Subject = ({data}) => {
 
   const handleSelectSubject = () => {
     setSelectedSubject(data.subject)
+    localStorage.setItem("selectedSubject", JSON.stringify(data.subject))
     navigate(`/student/register/${data.subject.id}`)
   }
 

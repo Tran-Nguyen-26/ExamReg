@@ -10,7 +10,7 @@ import ExamInformation from "./pages/admin/examInformation/ExamInformation";
 import SubjectSessions from "./pages/admin/subjectSessions/SubjectSessions";
 import Report from "./pages/admin/report/Report";
 import { Navigate } from "react-router-dom";
-import { Provider } from "./context/MyContext";
+import Provider from "./context/MyProvider";
 import StudentAccount from "./pages/student/studentAccount/StudentAccount";
 import Login from "./pages/login/Login";
 import { AnimatePresence } from "framer-motion";
