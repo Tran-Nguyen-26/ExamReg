@@ -183,7 +183,7 @@ const StudentAccount = () => {
             </div>
             <div>
               <label>Ngày sinh:</label>
-              <span>05/05/2005</span>
+              <span>{user.dob}</span>
             </div>
             <div>
               <label>Giới tính:</label>
@@ -195,7 +195,7 @@ const StudentAccount = () => {
             </div>
             <div>
               <label>Số điện thoại:</label>
-              <span>12432154135</span>
+              <span>{user.phone}</span>
             </div>
             <div>
               <label>Lớp:</label>

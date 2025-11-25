@@ -8,7 +8,6 @@ import com.examreg.examreg.dto.request.ExamRequest;
 import com.examreg.examreg.dto.response.ExamResponse;
 import com.examreg.examreg.exceptions.ResourceNotFoundException;
 import com.examreg.examreg.models.Exam;
-import com.examreg.examreg.models.Subject;
 import com.examreg.examreg.mapper.ExamMapper;
 import com.examreg.examreg.repository.ExamRepository;
 import com.examreg.examreg.service.IExamService;

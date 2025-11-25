@@ -4,15 +4,11 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import com.examreg.examreg.dto.request.ExamRequest;
 import com.examreg.examreg.dto.response.ApiResponse;
 import com.examreg.examreg.dto.response.ExamResponse;
-import com.examreg.examreg.exceptions.ResourceNotFoundException;
-import com.examreg.examreg.models.Exam;
-import com.examreg.examreg.security.user.AppUserDetails;
 import com.examreg.examreg.service.IExamService;
 
 import jakarta.validation.Valid;

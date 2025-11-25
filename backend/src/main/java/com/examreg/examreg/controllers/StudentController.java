@@ -1,6 +1,5 @@
 package com.examreg.examreg.controllers;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.examreg.examreg.dto.request.AddStudentRequest;
 import com.examreg.examreg.dto.request.ChangePasswordRequest;
 import com.examreg.examreg.dto.response.ApiResponse;
-import com.examreg.examreg.dto.response.StudentResponse;
 import com.examreg.examreg.security.user.AppUserDetails;
 import com.examreg.examreg.service.IStudentService;
 
@@ -27,6 +25,7 @@ public class StudentController {
   private final IStudentService studentService;
 
   @PostMapping("/change-password")
+  @PreAuthorize("hasRole('STUDENT')")
   public ResponseEntity<ApiResponse<?>> changePassword(
     @AuthenticationPrincipal AppUserDetails studentDetails,
     @RequestBody @Valid ChangePasswordRequest request
@@ -37,12 +36,12 @@ public class StudentController {
 
   @PostMapping("/add")
   @PreAuthorize("hasRole('ADMIN')")
-  public ResponseEntity<ApiResponse<StudentResponse>> addStudent(
+  public ResponseEntity<ApiResponse<?>> addStudent(
     @RequestBody @Valid AddStudentRequest request
   ) {
-    StudentResponse response = studentService.addStudent(request);
+    studentService.addStudent(request);
     return ResponseEntity.ok(
-                ApiResponse.success("Exam created successfully", response)
-        );
-    }
+      ApiResponse.success("Student created successfully")
+    );
+  }
 }

@@ -5,11 +5,8 @@ import org.springframework.stereotype.Service;
 
 import com.examreg.examreg.dto.request.AddStudentRequest;
 import com.examreg.examreg.dto.request.ChangePasswordRequest;
-import com.examreg.examreg.dto.response.StudentResponse;
 import com.examreg.examreg.exceptions.BadRequestException;
 import com.examreg.examreg.exceptions.ResourceNotFoundException;
-import com.examreg.examreg.mapper.ExamMapper;
-import com.examreg.examreg.mapper.StudentMapper;
 import com.examreg.examreg.models.Student;
 import com.examreg.examreg.repository.StudentRepository;
 import com.examreg.examreg.service.IStudentService;
@@ -21,13 +18,18 @@ import lombok.RequiredArgsConstructor;
 public class StudentService implements IStudentService{
   
   private final StudentRepository studentRepository;
-  private final StudentMapper studentMapper;
   private final PasswordEncoder passwordEncoder;
 
   @Override
   public Student getStudentById(Long id) {
     return studentRepository.findById(id)
       .orElseThrow(() -> new ResourceNotFoundException("Student not found with id: " + id));
+  }
+
+  @Override
+  public Student getStudentByStudentCode(String studentCode) {
+    return studentRepository.findByStudentCode(studentCode)
+      .orElseThrow(() -> new ResourceNotFoundException("Student not found with code: " + studentCode));
   }
 
   @Override
@@ -41,7 +43,10 @@ public class StudentService implements IStudentService{
   }
   
   @Override
-  public StudentResponse addStudent(AddStudentRequest request) {
+  public void addStudent(AddStudentRequest request) {
+    if (studentRepository.existsByStudentCode(request.getCode())) {
+      throw new BadRequestException("Đã tồn tại học sinh với mã sinh viên: " + request.getCode());
+    }
     String defaultPassword = request.getEmail().substring(0, request.getEmail().indexOf("@"));
 
     Student student = new Student();
@@ -55,8 +60,8 @@ public class StudentService implements IStudentService{
     student.setFaculty(request.getFaculty());
     student.setEmail(request.getEmail());
     student.setPassword(passwordEncoder.encode(defaultPassword));
+    student.setFirstLogin(true);
 
-    Student savedStudent = studentRepository.save(student);
-    return studentMapper.buildStudentReponse(savedStudent);
+    studentRepository.save(student);
   }
 }
