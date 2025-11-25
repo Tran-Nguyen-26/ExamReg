@@ -1,34 +1,84 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "../../../components/admin/header/Header";
 import Sidebar from "../../../components/admin/sidebar/Sidebar"
-import Searchbar from "../../../components/admin/searchbar/Searchbar";
+import StudentSearchBar from "../../../components/admin/searchbar/StudentSearchBar";
 import StudentTable from "../../../components/admin/studentTable/StudentTable";
+import { studentService } from "../../../services/studentService";
 import './Style-StudentManagement.css'
 const StudentManagement = () => {
-    const handleSearch = (query) => {
-        console.log('Searching:', query);
-    };
-    const [students] = useState([
-        {
-        id: 1,
-        code: '2022001',
-        name: 'Nguyễn Văn A',
-        class: 'IS1-4',
-        dob: '29/11/2005',
-        email: 'nguyenvana@gmail.com',
-        phone: '0928361923'
-        },
-        {
-        id: 2,
-        code: '2022927',
-        name: 'Nguyễn Thị B',
-        class: 'IS1-4',
-        dob: '12/12/2005',
-        email: 'nguyenthib@gmail.com',
-        phone: '0918972361'
-        }
-    ]);
+    const [students, setStudents] = useState([]);
+    const [filteredStudents, setFilteredStudents] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
 
+    // useEffect(() => {
+    //     loadStudents();
+    // }, []);
+
+    // const loadStudents = async () => {
+    //     setLoading(true);
+    //     setError('');
+    //     try {
+    //         const response = await studentService.getAllStudents();
+    //         if (response.success) {
+    //             const formattedStudents = response.data.map(student => ({
+    //                 id: student.id,
+    //                 code: student.studentCode,
+    //                 name: student.fullname,
+    //                 gender: formatGender(student.gender),
+    //                 class: student.className,
+    //                 major: student.major,
+    //                 department: student.faculty,
+    //                 dob: formatDate(student.dob),
+    //                 email: student.email,
+    //                 phone: student.phone
+    //             }));
+    //             setStudents(formattedStudents);
+    //             setFilteredStudents(formattedStudents);
+    //         }
+    //     } catch (err) {
+    //         console.error('Error loading students:', err);
+    //         setError('Không thể tải danh sách sinh viên. Vui lòng thử lại!');
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
+
+    const formatGender = (gender) => {
+        const genderMap = {
+            'MALE': 'Nam',
+            'FEMALE': 'Nữ',
+        };
+        return genderMap[gender] || gender;
+    };
+
+    const formatDate = (dateString) => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    };
+
+    const handleSearch = (query) => {
+        if (!query.trim()) {
+            setFilteredStudents(students);
+            return;
+        }
+
+        const searchQuery = query.toLowerCase();
+        const filtered = students.filter(student => 
+            student.code.toLowerCase().includes(searchQuery) ||
+            student.name.toLowerCase().includes(searchQuery) ||
+            student.email.toLowerCase().includes(searchQuery) ||
+            student.class.toLowerCase().includes(searchQuery)
+        );
+        setFilteredStudents(filtered);
+    };
+    const handleEdit = () => {
+
+    }
 
     const handleImport = () => {
         alert('Chức năng Import Excel');
@@ -37,14 +87,6 @@ const StudentManagement = () => {
     const handleAdd = () => {
         alert('Thêm sinh viên mới');
     };
-
-    // const handleView = (student) => {
-    //     alert(`Xem thông tin: ${student.name}`);
-    // };
-
-    // const handleEdit = (student) => {
-    //     alert(`Chỉnh sửa: ${student.name}`);
-    // };
 
     const handleDelete = (student) => {
         if (confirm(`Bạn có chắc muốn xóa sinh viên ${student.name}?`)) {
@@ -58,14 +100,22 @@ const StudentManagement = () => {
             <div className="main">
                 <Sidebar/>
                 <div className="content">
-                    <Searchbar
+                    <StudentSearchBar
                     onSearch={handleSearch}
                     onImport={handleImport}
                     onAdd={handleAdd}/>
-                    <StudentTable
-                    students={students}
-                    onDelete={handleDelete}
-                    />
+                    {loading ? (
+                        <div className="loading-container">
+                            <div className="loading-spinner"></div>
+                            <p>Đang tải danh sách sinh viên...</p>
+                        </div>
+                    ) : (
+                        <StudentTable
+                            students={filteredStudents}
+                            onEdit={handleEdit}
+                            onDelete={handleDelete}
+                        />
+                    )}
                 </div>
             </div>
         </div>

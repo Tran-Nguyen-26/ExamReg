@@ -1,5 +1,6 @@
 package com.examreg.examreg.models;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.examreg.examreg.enums.Gender;
@@ -35,8 +36,12 @@ public class Student extends User{
   private Gender gender;
 
   private String className;
+  
+  private String phone;
 
   private String major;
+
+  private LocalDate dob;
 
   private String faculty;
 

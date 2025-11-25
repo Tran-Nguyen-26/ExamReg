@@ -3,9 +3,13 @@ package com.examreg.examreg.service.impl;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.examreg.examreg.dto.request.AddStudentRequest;
 import com.examreg.examreg.dto.request.ChangePasswordRequest;
+import com.examreg.examreg.dto.response.StudentResponse;
 import com.examreg.examreg.exceptions.BadRequestException;
 import com.examreg.examreg.exceptions.ResourceNotFoundException;
+import com.examreg.examreg.mapper.ExamMapper;
+import com.examreg.examreg.mapper.StudentMapper;
 import com.examreg.examreg.models.Student;
 import com.examreg.examreg.repository.StudentRepository;
 import com.examreg.examreg.service.IStudentService;
@@ -17,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class StudentService implements IStudentService{
   
   private final StudentRepository studentRepository;
+  private final StudentMapper studentMapper;
   private final PasswordEncoder passwordEncoder;
 
   @Override
@@ -35,4 +40,23 @@ public class StudentService implements IStudentService{
     studentRepository.save(student);
   }
   
+  @Override
+  public StudentResponse addStudent(AddStudentRequest request) {
+    String defaultPassword = request.getEmail().substring(0, request.getEmail().indexOf("@"));
+
+    Student student = new Student();
+    student.setStudentCode(request.getCode());
+    student.setFullname(request.getName());
+    student.setGender(request.getGender());
+    student.setDob(request.getDob());
+    student.setClassName(request.getClassName());
+    student.setPhone(request.getPhone());
+    student.setMajor(request.getMajor());
+    student.setFaculty(request.getFaculty());
+    student.setEmail(request.getEmail());
+    student.setPassword(passwordEncoder.encode(defaultPassword));
+
+    Student savedStudent = studentRepository.save(student);
+    return studentMapper.buildStudentReponse(savedStudent);
+  }
 }
