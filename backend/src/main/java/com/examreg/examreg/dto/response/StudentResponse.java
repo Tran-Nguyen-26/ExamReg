@@ -1,5 +1,7 @@
 package com.examreg.examreg.dto.response;
 
+import java.time.LocalDate;
+
 import com.examreg.examreg.enums.Gender;
 import com.examreg.examreg.enums.Role;
 
@@ -22,5 +24,7 @@ public class StudentResponse {
   private String major;
   private String faculty;
   private Role role;
+  private LocalDate dob;
+  private String phone;
   private boolean firstLogin;
 }
