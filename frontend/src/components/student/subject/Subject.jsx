@@ -20,7 +20,7 @@ const Subject = ({data}) => {
   }
 
   return (
-    <div className='subject'>
+    <div className={`subject ${data.status === 'INELIGIBLE' ? 'subject-ineligible' : ''}`}>
       <div className='title'>
         <div>
           <img src={logo_subject} alt="" />

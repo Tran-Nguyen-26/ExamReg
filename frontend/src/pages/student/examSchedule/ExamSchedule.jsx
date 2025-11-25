@@ -3,16 +3,46 @@ import Schedule from "../../../components/student/schedule/Schedule"
 import './Style-ExamSchedule.css'
 import { motion } from "framer-motion"
 
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { useExamRegistration } from "../../../hooks/useExamRegistration"
 import MyContext from "../../../context/MyContext"
+import Ticket from "../../../components/student/ticket/Ticket"
 
 const ExamSchedule = () => {
 
-  const { getExamRegistrations, cancelExamRegistration } = useExamRegistration()
-  // const [examRegistrations, setExamRegistrations] = useState([])
+  const ticketRef = useRef()
 
-  const {examRegistrations, setExamRegistrations} = useContext(MyContext)
+  const { getExamRegistrations, cancelExamRegistration } = useExamRegistration()
+  const {
+    examRegistrations, 
+    setExamRegistrations,
+    setSelectedSubject,
+    setSelectedLocation,
+    selectedExamSession,
+    setSelectedExamSession
+  } = useContext(MyContext)
+
+  const handleDownloadFromSchedule = (examRegistration) => {
+    setSelectedExamSession(examRegistration.examSession)
+    setSelectedLocation(examRegistration.examSession.room.location)
+    setSelectedSubject(examRegistration.examSession.subjectStatus.subject)
+    setTimeout(() => {
+      if (ticketRef.current) {
+        ticketRef.current.download()
+      }
+    }, 300)
+  }
+
+  const handlePrintFromSchedule = (examRegistration) => {
+    setSelectedExamSession(examRegistration.examSession)
+    setSelectedLocation(examRegistration.examSession.room.location)
+    setSelectedSubject(examRegistration.examSession.subjectStatus.subject)
+    setTimeout(() => {
+      if (ticketRef.current) {
+        ticketRef.current.print()
+      }
+    }, 300)
+  }
 
 
   useEffect(() => {
@@ -63,11 +93,20 @@ const ExamSchedule = () => {
               key={examRegistration.id}
               data={examRegistration}
               onCancel={handleCancel}
+              onDownload={() => handleDownloadFromSchedule(examRegistration)}
+              onPrint={() => handlePrintFromSchedule(examRegistration)}
             />
           ))
         }
       </div>
     </div>
+    {
+      selectedExamSession && (
+        <div style={{visibility:'hidden', position:'absolute', left:'-9999px'}}>
+          <Ticket ref={ticketRef}/>
+        </div>
+      )
+    }
     </motion.div>
   )
 }

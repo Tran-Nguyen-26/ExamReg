@@ -23,7 +23,6 @@ const ExamRegister = () => {
   const [examSessions, setExamSessions] = useState([])
 
   const [step, setStep] = useState(1)
-  const navigate = useNavigate()
   const [showLocationWarning, setShowLocationWarning] = useState(false)
   const [showExamSessionWarning, setShowExamSessionWarning] = useState(false)
   const [showTicket, setShowTicket] = useState(false)
@@ -81,8 +80,6 @@ const ExamRegister = () => {
     return examSessions.filter(es => es.room.location.id === selectedLocation?.id)
   }, [examSessions, selectedLocation])
 
-  console.log(filteredSessionsBySelectedLocation)
-
   const toggleExamSession = (examSession) => {
     if (examSession.status === "AVAILABLE") {
       selectedExamSession?.id == examSession.id ? setSelectedExamSession(null) : setSelectedExamSession(examSession)
@@ -108,7 +105,7 @@ const ExamRegister = () => {
       setShowTicket(true)
     } catch(error) {
       console.error("Failed to register: ", error)
-      window.alert("Đăng kí ca thi thất bại")
+      window.alert(`Đăng kí ca thi thất bại \n ${error.response.data.message}`)
     }
   }
 

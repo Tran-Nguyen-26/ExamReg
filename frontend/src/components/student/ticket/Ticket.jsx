@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { forwardRef, useContext, useImperativeHandle } from 'react'
 import './Style-Ticket.css'
 import MyContext from '../../../context/MyContext'
 import logo_university from '../../../assets/logo_university_no_bg.png'
@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom'
 import html2pdf from 'html2pdf.js'
 import printJS from 'print-js'
 
-const Ticket = () => {
+const Ticket = forwardRef((props, ref) => {
 
   const navigate = useNavigate()
 
@@ -24,7 +24,7 @@ const Ticket = () => {
   } = useContext(MyContext)
 
   const handleDownload = () => {
-    const element = document.querySelector('.ticket')
+    const element = document.getElementById('ticket')
     const subject_name = selectedSubject.name.split(" ").join("-")
     const file_name = `phiếu-dự-thi-môn-${subject_name}.pdf`
     html2pdf().from(element).save(file_name)
@@ -38,6 +38,11 @@ const Ticket = () => {
       style: '',
     })
   }
+
+  useImperativeHandle(ref, () => ({
+    download: handleDownload,
+    print: handlePrint
+  }))
 
   return (
     <div className='dialog-ticket'>
@@ -104,6 +109,6 @@ const Ticket = () => {
       </div>
     </div>
   )
-}
+})
 
 export default Ticket

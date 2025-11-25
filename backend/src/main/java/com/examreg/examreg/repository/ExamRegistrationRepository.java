@@ -14,4 +14,8 @@ public interface ExamRegistrationRepository extends JpaRepository<ExamRegistrati
 
   boolean existsByStudentIdAndExamSessionId(Long studentId, Long examSessionId);
 
+  boolean existsByStudentIdAndExamSession_SubjectId(Long studentId, Long subjectId);
+
+  boolean existsByIdAndStudentId(Long examRegistrationId, Long studentId);
+
 }

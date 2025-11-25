@@ -33,6 +33,11 @@ public class ExamRegistrationService implements IExamRegistrationService {
   }
 
   @Override
+  public boolean existsByStudentIdAndExamSession_SubjectId(Long studentId, Long subjectId) {
+    return examRegistrationRepository.existsByStudentIdAndExamSession_SubjectId(studentId, subjectId);
+  }
+
+  @Override
   public int getRegisteredCount(Long examSessionId) {
     return examRegistrationRepository.countByExamSessionId(examSessionId);
   }
@@ -62,10 +67,8 @@ public class ExamRegistrationService implements IExamRegistrationService {
 
   @Override
   public void deleteExamRegistration(Long examRegistrationId, Long studentId) {
-    List<ExamRegistration> examRegistrations = getExamRegistrationsByStudentId(studentId);
-    boolean exists = examRegistrations.stream()
-      .anyMatch(reg -> reg.getId().equals(examRegistrationId));
-    if (exists) {
+    boolean alreadyExamRegistration = examRegistrationRepository.existsByIdAndStudentId(examRegistrationId, studentId);
+    if (alreadyExamRegistration) {
       examRegistrationRepository.deleteById(examRegistrationId);
     } else {
       throw new ResourceNotFoundException("ExamRegistration not found for this student");

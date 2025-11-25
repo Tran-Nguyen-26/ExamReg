@@ -8,6 +8,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.examreg.examreg.dto.response.ExamSessionResponse;
 import com.examreg.examreg.dto.response.SubjectStatusResponse;
@@ -85,46 +86,53 @@ public class ExamSessionService implements IExamSessionService {
   }
 
   @Override
+  @Transactional
   public void registerExamSession(Long examSessionId, Long studentId) {
-    List<ExamSessionResponse> examSessionResponses = getExamSessionResponses(studentId);
-    ExamSessionResponse existsExamSession = examSessionResponses.stream()
-      .filter(esp -> esp.getId().equals(examSessionId))
-      .findFirst()
-      .orElseThrow(() -> new BadRequestException("Exam session not found in student's list"));
-
-
-    if (existsExamSession.getStatus() == ExamSessionStatus.REGISTERED) {
-      throw new BadRequestException("Exam session already registered");
-    } else if (existsExamSession.getStatus() == ExamSessionStatus.NOT_ELIGIBLE) {
-      throw new BadRequestException("Student is not eligible to register for this exam session");
-    } else if (existsExamSession.getStatus() == ExamSessionStatus.FULL) {
-      throw new BadRequestException("Exam session is already full");
+    //Lock
+    ExamSession examSession = examSessionRepository.findByIdForUpdate(examSessionId);
+    if (examSession == null) {
+      throw new ResourceNotFoundException("Không tìm thấy ca thi");
     }
 
-    ExamSession examSession = getExamSessionById(examSessionId);
-    Student student = studentService.getStudentById(studentId);
+    if(examRegistrationService.getRegisteredCount(examSessionId) >= examSession.getCapacity()) {
+      throw new BadRequestException("Ca thi đã đủ số lượng đăng kí");
+    } 
+
+    boolean alreadyRegistered = examRegistrationService.existsByStudentIdAndExamSessionId(studentId, examSessionId);
+    if (alreadyRegistered) {
+      throw new BadRequestException("Bạn đã đăng kí ca thi này rồi");
+    }
 
     Long subjectId = examSession.getSubject().getId();
-    boolean hasRegisteredThisSubject = examSessionResponses.stream()
-      .anyMatch(esp -> esp.getSubjectStatus().getSubject().getId().equals(subjectId) && esp.getStatus() == ExamSessionStatus.REGISTERED);
-    
-    if (hasRegisteredThisSubject) {
-      throw new BadRequestException("You have already registered another exam session of this subject");
+    boolean registeredSameSubject = examRegistrationService.existsByStudentIdAndExamSession_SubjectId(studentId, subjectId);
+    if (registeredSameSubject) {
+      throw new BadRequestException("Bạn đã đăng kí ca thi có môn học này");
     }
 
+    //conflict time
+    List<ExamRegistration> existingRegistrations = examRegistrationService.getExamRegistrationsByStudentId(studentId);
+    LocalDateTime start =  LocalDateTime.of(examSession.getDate(), examSession.getStarTime());
+    LocalDateTime end = start.plusMinutes(examSession.getSubject().getDuration());
+    boolean overlap = existingRegistrations.stream().anyMatch(reg -> {
+      ExamSession existing = reg.getExamSession();
+      LocalDateTime existingStart = LocalDateTime.of(existing.getDate(), existing.getStarTime());
+      LocalDateTime existingEnd = existingStart.plusMinutes(existing.getSubject().getDuration());
+      return start.isBefore(existingEnd) && existingStart.isBefore(end);
+    });
 
-    ExamRegistration examRegistration = ExamRegistration
-      .builder()
+    if (overlap) {
+      throw new BadRequestException("Ca thi trùng thời gian với ca thi đã đăng kí");
+    }
+
+    Student student = studentService.getStudentById(studentId);
+
+    ExamRegistration examRegistration = ExamRegistration.builder()
       .student(student)
       .examSession(examSession)
       .registeredAt(LocalDateTime.now())
       .build();
+    
     examRegistrationService.saveExamRegistration(examRegistration);
-  }
-
-  private ExamSession getExamSessionById(Long examSessionId) {
-    return examSessionRepository.findById(examSessionId)
-      .orElseThrow(() -> new ResourceNotFoundException("Exam session not found with id: " + examSessionId));
   }
 
   public List<SubjectStatusResponse> getStatusRegisterResponses(Long studentId) {
@@ -141,8 +149,5 @@ public class ExamSessionService implements IExamSessionService {
       })
       .toList();
   }
-
-  //ham kiem tra trung lich
-  // ....
   
 }

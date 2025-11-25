@@ -9,6 +9,8 @@ public interface IExamRegistrationService {
 
   public boolean existsByStudentIdAndExamSessionId(Long studentId, Long examSessionId);
 
+  public boolean existsByStudentIdAndExamSession_SubjectId(Long studentId, Long subjectId);
+
   public int getRegisteredCount(Long examSessionId);
 
   public List<ExamRegistration> getExamRegistrationsByStudentId(Long studentId);
