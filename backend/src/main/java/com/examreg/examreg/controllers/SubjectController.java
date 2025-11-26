@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.examreg.examreg.dto.SubjectDTO;
+import com.examreg.examreg.dto.request.SubjectRequest;
 import com.examreg.examreg.dto.response.ApiResponse;
+import com.examreg.examreg.dto.response.SubjectResponse;
+import com.examreg.examreg.mapper.SubjectMapper;
 import com.examreg.examreg.service.ISubjectService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,19 +28,20 @@ import lombok.RequiredArgsConstructor;
 public class SubjectController {
 
   private final ISubjectService subjectService;
+  private final SubjectMapper subjectMapper;
 
   @PostMapping
-  public ResponseEntity<ApiResponse<SubjectDTO>> createSubject(@RequestBody SubjectDTO subjectDTO) {
-    SubjectDTO createdSubject = subjectService.createSubject(subjectDTO);
+  public ResponseEntity<ApiResponse<SubjectResponse>> createSubject(@RequestBody SubjectRequest subjectDTO) {
+    SubjectResponse createdSubject = subjectService.createSubject(subjectDTO);
     return ResponseEntity.status(HttpStatus.CREATED)
         .body(ApiResponse.success("Subject created successfully", createdSubject));
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<ApiResponse<SubjectDTO>> updateSubject(
+  public ResponseEntity<ApiResponse<SubjectResponse>> updateSubject(
       @PathVariable Long id,
-      @RequestBody SubjectDTO subjectDTO) {
-    SubjectDTO updatedSubject = subjectService.updateSubject(id, subjectDTO);
+      @RequestBody SubjectRequest subjectDTO) {
+    SubjectResponse updatedSubject = subjectService.updateSubject(id, subjectDTO);
     return ResponseEntity.ok(ApiResponse.success("Subject updated successfully", updatedSubject));
   }
 
@@ -49,15 +52,15 @@ public class SubjectController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<ApiResponse<SubjectDTO>> getSubjectById(@PathVariable Long id) {
-    SubjectDTO subject = subjectService.getSubjectById(id);
+  public ResponseEntity<ApiResponse<SubjectResponse>> getSubjectById(@PathVariable Long id) {
+    SubjectResponse subject = subjectMapper.buildSubjectResponse(subjectService.getSubjectById(id));
     return ResponseEntity.ok(ApiResponse.success("Subject retrieved successfully", subject));
   }
 
   @GetMapping
-  public ResponseEntity<ApiResponse<List<SubjectDTO>>> getAllSubjects(
+  public ResponseEntity<ApiResponse<List<SubjectResponse>>> getAllSubjects(
       @RequestParam(required = false) Long examId) {
-    List<SubjectDTO> subjects;
+    List<SubjectResponse> subjects;
     if (examId != null) {
       subjects = subjectService.getSubjectsByExamId(examId);
     } else {

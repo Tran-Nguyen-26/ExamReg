@@ -15,4 +15,5 @@ public class SubjectResponse {
   private String subjectCode;
   private int creditHour;
   private int duration;
+  private Long examId;
 }

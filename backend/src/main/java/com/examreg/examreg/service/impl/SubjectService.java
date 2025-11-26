@@ -6,8 +6,10 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.examreg.examreg.dto.SubjectDTO;
+import com.examreg.examreg.dto.request.SubjectRequest;
+import com.examreg.examreg.dto.response.SubjectResponse;
 import com.examreg.examreg.exceptions.ResourceNotFoundException;
+import com.examreg.examreg.mapper.SubjectMapper;
 import com.examreg.examreg.models.Exam;
 import com.examreg.examreg.models.Subject;
 import com.examreg.examreg.repository.ExamRepository;
@@ -22,10 +24,11 @@ public class SubjectService implements ISubjectService {
 
   private final SubjectRepository subjectRepository;
   private final ExamRepository examRepository;
+  private final SubjectMapper subjectMapper;
 
   @Override
   @Transactional
-  public SubjectDTO createSubject(SubjectDTO subjectDTO) {
+  public SubjectResponse createSubject(SubjectRequest subjectDTO) {
     Subject subject = new Subject();
     subject.setSubjectCode(subjectDTO.getSubjectCode());
     subject.setName(subjectDTO.getName());
@@ -39,12 +42,12 @@ public class SubjectService implements ISubjectService {
     }
 
     Subject savedSubject = subjectRepository.save(subject);
-    return mapToDTO(savedSubject);
+    return subjectMapper.buildSubjectResponse(savedSubject);
   }
 
   @Override
   @Transactional
-  public SubjectDTO updateSubject(Long id, SubjectDTO subjectDTO) {
+  public SubjectResponse updateSubject(Long id, SubjectRequest subjectDTO) {
     Subject subject = subjectRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Subject not found with id: " + id));
 
@@ -62,7 +65,7 @@ public class SubjectService implements ISubjectService {
     }
 
     Subject updatedSubject = subjectRepository.save(subject);
-    return mapToDTO(updatedSubject);
+    return subjectMapper.buildSubjectResponse(updatedSubject);
   }
 
   @Override
@@ -74,35 +77,35 @@ public class SubjectService implements ISubjectService {
   }
 
   @Override
-  public SubjectDTO getSubjectById(Long id) {
+  public Subject getSubjectById(Long id) {
     Subject subject = subjectRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Subject not found with id: " + id));
-    return mapToDTO(subject);
+    return subject;
   }
 
   @Override
-  public List<SubjectDTO> getAllSubjects() {
+  public List<SubjectResponse> getAllSubjects() {
     return subjectRepository.findAll().stream()
-        .map(this::mapToDTO)
+        .map(subjectMapper::buildSubjectResponse)
         .collect(Collectors.toList());
   }
 
   @Override
-  public List<SubjectDTO> getSubjectsByExamId(Long examId) {
+  public List<SubjectResponse> getSubjectsByExamId(Long examId) {
     return subjectRepository.findAll().stream()
         .filter(subject -> subject.getExam() != null && subject.getExam().getId().equals(examId))
-        .map(this::mapToDTO)
+        .map(subjectMapper::buildSubjectResponse)
         .collect(Collectors.toList());
   }
 
-  private SubjectDTO mapToDTO(Subject subject) {
-    return SubjectDTO.builder()
-        .id(subject.getId())
-        .subjectCode(subject.getSubjectCode())
-        .name(subject.getName())
-        .creditHour(subject.getCreditHour())
-        .duration(subject.getDuration())
-        .examId(subject.getExam() != null ? subject.getExam().getId() : null)
-        .build();
-  }
+  // private SubjectDTO mapToDTO(Subject subject) {
+  //   return SubjectDTO.builder()
+  //       .id(subject.getId())
+  //       .subjectCode(subject.getSubjectCode())
+  //       .name(subject.getName())
+  //       .creditHour(subject.getCreditHour())
+  //       .duration(subject.getDuration())
+  //       .examId(subject.getExam() != null ? subject.getExam().getId() : null)
+  //       .build();
+  // }
 }
