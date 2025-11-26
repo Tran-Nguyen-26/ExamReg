@@ -12,18 +12,6 @@ const CourseSearchbar = ({ onSearch, onAdd }) => (
         className="search-input"
       />
 
-      <select className="search-select" defaultValue="all">
-        <option value="all">Tất cả khoa</option>
-        <option value="it">Công nghệ thông tin</option>
-        <option value="ece">Khoa Điện tử</option>
-      </select>
-
-      <select className="search-select" defaultValue="all-type">
-        <option value="all-type">Tất cả các loại</option>
-        <option value="theory">Lý thuyết</option>
-        <option value="practice">Thực hành</option>
-      </select>
-
       <button className="search-btn" title="Tìm kiếm">
         <IoIosSearch className="search-icon" />
       </button>

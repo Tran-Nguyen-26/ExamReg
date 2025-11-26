@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "../../../components/admin/header/Header";
 import Sidebar from "../../../components/admin/sidebar/Sidebar";
 import CourseSearchbar from "../../../components/admin/searchbar/CourseSearchbar";
@@ -6,35 +6,44 @@ import SubjectTable from "../../../components/admin/subjectTable/SubjectTable";
 import './Style-CourseManagement.css'
 import { IoMdAdd } from "react-icons/io";
 import CreateCourseModal from "../../../components/admin/createCourseModal/CreateCourseModal";
+import EditCourseModal from "../../../components/admin/editCourseModal/EditCourseModal";
+import apiCall from "../../../utils/api";
 
 const CourseManagement = () => {
     const handleSearch = (query) => {
         console.log('Searching:', query);
     };
 
-    const [subjects] = useState([
-        {
-            id: 1,
-            code: 'CS101',
-            name: 'Nhập môn lập trình',
-            credits: 3,
-            semester: 1,
-            duration: '90 phút',
-            status: 'Active'
-        },
-        {
-            id: 2,
-            code: 'CS102',
-            name: 'Cấu trúc dữ liệu',
-            credits: 4,
-            semester: 2,
-            duration: '120 phút',
-            status: 'Active'
-        }
-    ]);
-
+    const [subjectsState, setSubjectsState] = useState([]);
     const [isCreateCourseModal, setIsCreateCourseModal] = useState(false);
-    const [subjectsState, setSubjectsState] = useState(subjects);
+    const [isEditCourseModal, setIsEditCourseModal] = useState(false);
+    const [selectedCourse, setSelectedCourse] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        fetchSubjects();
+    }, []);
+
+    const fetchSubjects = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            const response = await apiCall('/subjects', { method: 'GET' }, false);
+            console.log('API Response:', response);
+            if (response.data) {
+                console.log('Subjects data:', response.data);
+                setSubjectsState(response.data);
+            } else {
+                console.log('No data in response:', response);
+            }
+        } catch (err) {
+            setError('Failed to fetch subjects: ' + (err.message || 'Unknown error'));
+            console.error('Error fetching subjects:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleAdd = () => {
         setIsCreateCourseModal(true);
@@ -44,18 +53,30 @@ const CourseManagement = () => {
         setIsCreateCourseModal(false);
     };
 
-    const handleSubmitCourse = (course) => {
-        const newCourse = {
-            id: subjectsState.length + 1,
-            code: course.code,
-            name: course.name,
-            credits: course.credits,
-            semester: course.semester,
-            duration: course.duration,
-            status: course.status || 'Active'
-        };
-        setSubjectsState([...subjectsState, newCourse]);
-        alert('Thêm môn học thành công!');
+    const handleSubmitCourse = async (course) => {
+        try {
+            const subjectData = {
+                subjectCode: course.code,
+                name: course.name,
+                creditHour: course.credits,
+                duration: course.duration,
+                examId: null
+            };
+
+            const response = await apiCall('/subjects', {
+                method: 'POST',
+                body: JSON.stringify(subjectData)
+            }, false);
+
+            if (response.data) {
+                alert('Thêm môn học thành công!');
+                fetchSubjects();
+                closeCreateCourseModal();
+            }
+        } catch (err) {
+            alert('Lỗi khi thêm môn học: ' + (err.message || 'Unknown error'));
+            console.error('Error creating subject:', err);
+        }
     };
 
     const handleView = (subject) => {
@@ -63,14 +84,87 @@ const CourseManagement = () => {
     };
 
     const handleEdit = (subject) => {
-        alert(`Chỉnh sửa: ${subject.name}`);
+        setSelectedCourse(subject);
+        setIsEditCourseModal(true);
     };
 
-    const handleDelete = (subject) => {
-        if (confirm(`Bạn có chắc muốn xóa môn học ${subject.name}?`)) {
-            console.log('Deleted:', subject);
+    const closeEditCourseModal = () => {
+        setIsEditCourseModal(false);
+        setSelectedCourse(null);
+    };
+
+    const handleUpdateCourse = async (updatedCourse) => {
+        try {
+            const subjectData = {
+                subjectCode: updatedCourse.code,
+                name: updatedCourse.name,
+                creditHour: updatedCourse.credits,
+                duration: updatedCourse.duration,
+                examId: null
+            };
+
+            const response = await apiCall(`/subjects/${selectedCourse.id}`, {
+                method: 'PUT',
+                body: JSON.stringify(subjectData)
+            }, false);
+
+            if (response.data) {
+                alert('Cập nhật môn học thành công!');
+                fetchSubjects();
+                closeEditCourseModal();
+            }
+        } catch (err) {
+            alert('Lỗi khi cập nhật môn học: ' + (err.message || 'Unknown error'));
+            console.error('Error updating subject:', err);
         }
     };
+
+    const handleDelete = async (subject) => {
+        if (confirm(`Bạn có chắc muốn xóa môn học ${subject.name}?`)) {
+            try {
+                const response = await apiCall(`/subjects/${subject.id}`, {
+                    method: 'DELETE'
+                }, false);
+
+                if (response.data) {
+                    alert('Xóa môn học thành công!');
+                    fetchSubjects();
+                }
+            } catch (err) {
+                alert('Lỗi khi xóa môn học: ' + (err.message || 'Unknown error'));
+                console.error('Error deleting subject:', err);
+            }
+        }
+    };
+
+    if (loading) {
+        return (
+            <div className="page">
+                <Header/>
+                <div className="main">
+                    <Sidebar/>
+                    <div className="content">
+                        <p>Loading subjects...</p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="page">
+                <Header/>
+                <div className="main">
+                    <Sidebar/>
+                    <div className="content">
+                        <p style={{color: 'red'}}>{error}</p>
+                        <button onClick={fetchSubjects}>Retry</button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="page">
@@ -92,6 +186,9 @@ const CourseManagement = () => {
                     />
                     {isCreateCourseModal && (
                         <CreateCourseModal onClose={closeCreateCourseModal} onSubmit={handleSubmitCourse} />
+                    )}
+                    {isEditCourseModal && (
+                        <EditCourseModal course={selectedCourse} onClose={closeEditCourseModal} onSubmit={handleUpdateCourse} />
                     )}
                 </div>
             </div>
