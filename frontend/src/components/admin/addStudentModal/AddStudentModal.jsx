@@ -2,7 +2,7 @@ import './Style-AddStudentModal.css'
 import React, { useState } from 'react'; 
 import { studentService } from '../../../services/studentService';
 
-const AddStudentModal = ({ onClose, onSave }) => {
+const AddStudentModal = ({ onClose, onSubmit}) => {
   const [formData, setFormData] = useState({
     code: '',
     name: '',
@@ -14,55 +14,56 @@ const AddStudentModal = ({ onClose, onSave }) => {
     email: '',
     dob: ''
   });
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleChange = (field, value) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
-    if (error) setError('');
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
   };
 
   const validateForm = () => {
     if (!formData.code || !formData.name || !formData.gender ||
         !formData.className || !formData.major || !formData.faculty ||
         !formData.phone || !formData.email || !formData.dob) {
-      setError('Vui lòng điền đầy đủ thông tin!');
+      alert('Vui lòng điền đầy đủ thông tin!');
       return false;
     }
-
-    // Validate email format
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
-      setError('Email không hợp lệ!');
-      return false;
-    }
-  return true;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formData.email)) {
+        alert('Email không hợp lệ!');
+        return false;
+      }
+    return true;
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
     if (!validateForm()) {
       return;
     }
+    onSubmit(formData);
+    handleCloseModal();
+  };
 
-    setLoading(true);
-    setError('');
-
-    try {
-      const response = await studentService.addStudent(formData);
-      
-      if (response.success) {
-        onSave(response.data);
-        onClose();
-      }
-    } catch (err) {
-      console.error('Error adding student:', err);
-      setError(err.message || 'Có lỗi xảy ra khi thêm sinh viên!');
-    } finally {
-      setLoading(false);
-    }
+  const handleCloseModal = () => {
+    setFormData ({
+      code: '',
+      name: '',
+      gender: '',
+      className: '',
+      major: '',
+      faculty: '',
+      phone: '',
+      email: '',
+      dob: ''
+    });
+    onClose();
   };
 
   return (
@@ -75,7 +76,7 @@ const AddStudentModal = ({ onClose, onSave }) => {
 
         {/* Body */}
         <div className="add-modal-body">
-          <form className="add-student-form">
+          <form onSubmit={handleSubmit} className="add-student-form">
             {/* Row 1: Mã sinh viên & Họ và tên */}
             <div className="add-student-form-row">
               <div className="add-student-form-group">
@@ -84,9 +85,10 @@ const AddStudentModal = ({ onClose, onSave }) => {
                 </label>
                 <input
                   type="text"
+                  name="code"
                   className="add-student-form-input"
                   value={formData.code}
-                  onChange={(e) => handleChange('code', e.target.value)}
+                  onChange={handleInputChange}
                   placeholder="Nhập mã sinh viên"
                 />
               </div>
@@ -97,9 +99,10 @@ const AddStudentModal = ({ onClose, onSave }) => {
                 </label>
                 <input
                   type="text"
+                  name="name"
                   className="add-student-form-input"
                   value={formData.name}
-                  onChange={(e) => handleChange('name', e.target.value)}
+                  onChange={handleInputChange}
                   placeholder="Nhập họ và tên"
                 />
               </div>
@@ -112,9 +115,10 @@ const AddStudentModal = ({ onClose, onSave }) => {
                   Giới tính <span className="required">*</span>
                 </label>
                 <select
+                  name='gender'
                   className="add-student-form-input"
                   value={formData.gender}
-                  onChange={(e) => handleChange('gender', e.target.value)}
+                  onChange={handleInputChange}
                 >
                   <option value="">Chọn giới tính</option>
                   <option value="MALE">Nam</option>
@@ -128,9 +132,10 @@ const AddStudentModal = ({ onClose, onSave }) => {
                 </label>
                 <input
                   type="date"
+                  name='dob'
                   className="add-student-form-input"
                   value={formData.dob}
-                  onChange={(e) => handleChange('dob', e.target.value)}
+                  onChange={handleInputChange}
                 />
               </div>
             </div>
@@ -143,9 +148,10 @@ const AddStudentModal = ({ onClose, onSave }) => {
                 </label>
                 <input
                   type="text"
+                  name='className'
                   className="add-student-form-input"
                   value={formData.className}
-                  onChange={(e) => handleChange('className', e.target.value)}
+                  onChange={handleInputChange}
                   placeholder="Nhập lớp"
                 />
               </div>
@@ -156,9 +162,10 @@ const AddStudentModal = ({ onClose, onSave }) => {
                 </label>
                 <input
                   type="tel"
+                  name='phone'
                   className="add-student-form-input"
                   value={formData.phone}
-                  onChange={(e) => handleChange('phone', e.target.value)}
+                  onChange={handleInputChange}
                   placeholder="Nhập số điện thoại"
                 />
               </div>
@@ -171,9 +178,10 @@ const AddStudentModal = ({ onClose, onSave }) => {
                   </label>
                   <input
                     type="text"
+                    name='major'
                     className="add-student-form-input"
                     value={formData.major}
-                    onChange={(e) => handleChange('major', e.target.value)}
+                    onChange={handleInputChange}
                     placeholder="Nhập ngành học"
                   />
               </div>
@@ -184,9 +192,10 @@ const AddStudentModal = ({ onClose, onSave }) => {
                 </label>
                 <input
                   type="text"
+                  name='faculty'
                   className="add-student-form-input"
                   value={formData.faculty}
-                  onChange={(e) => handleChange('faculty', e.target.value)}
+                  onChange={handleInputChange}
                   placeholder="Nhập khoa"
                 />
               </div>
@@ -199,23 +208,23 @@ const AddStudentModal = ({ onClose, onSave }) => {
               </label>
               <input
                 type="email"
+                name='email'
                 className="add-student-form-input"
                 value={formData.email}
-                onChange={(e) => handleChange('email', e.target.value)}
+                onChange={handleInputChange}
                 placeholder="Nhập email"
               />
             </div>
-          </form>
-        </div>
 
-        {/* Footer */}
-        <div className="add-student-modal-footer">
-          <button onClick={onClose} className="btn-cancel">
-            Hủy
-          </button>
-          <button onClick={handleSubmit} className="btn-add" disabled={loading}>
-            {loading ? 'Đang thêm...' : 'Thêm sinh viên'}
-          </button>
+            <div className="add-student-modal-footer">
+              <button onClick={onClose} className="btn-cancel">
+                Hủy
+              </button>
+              <button type='submit' className="btn-add" >
+                Thêm học sinh
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

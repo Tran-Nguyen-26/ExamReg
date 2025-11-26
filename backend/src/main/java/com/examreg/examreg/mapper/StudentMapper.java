@@ -14,6 +14,8 @@ public class StudentMapper {
       .studentCode(student.getStudentCode())
       .fullname(student.getFullname())
       .gender(student.getGender())
+      .dob(student.getDob())
+      .phone(student.getPhone())
       .className(student.getClassName())
       .major(student.getMajor())
       .faculty(student.getFaculty())

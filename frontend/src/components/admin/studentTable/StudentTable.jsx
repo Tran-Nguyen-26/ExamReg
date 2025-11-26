@@ -7,7 +7,7 @@ import { FaTrashAlt } from "react-icons/fa";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { useState } from 'react';
 
-const StudentTable = ({ students, onDelete }) =>{
+const StudentTable = ({ students, onEdit, onDelete }) =>{
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -82,7 +82,7 @@ const StudentTable = ({ students, onDelete }) =>{
                 <td className="student-table-cell">{index + 1}</td>
                 <td className="student-table-cell student-code">{student.code}</td>
                 <td className="student-table-cell student-table-row-left">{student.name}</td>
-                <td className="student-table-cell">{student.class}</td>
+                <td className="student-table-cell">{student.className}</td>
                 <td className="student-table-cell">{student.dob}</td>
                 <td className="student-table-cell student-table-row-left">{student.email}</td>
                 <td className="student-table-cell">{student.phone}</td>
@@ -127,7 +127,7 @@ const StudentTable = ({ students, onDelete }) =>{
       <EditStudentModal 
         student={selectedStudent} 
         onClose={handleCloseEditModal}
-        onSave={handleSave}
+        onSubmit={onEdit}
       />
     )}
     </>

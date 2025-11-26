@@ -1,28 +1,90 @@
 import './Style-EditStudentModal.css'
-import React, { useState } from 'react'; 
+import React, { useState, useEffect } from 'react'; 
 
-const EditStudentModal = ({ student, onClose, onSave }) => {
+const EditStudentModal = ({ student, onClose, onSubmit }) => {
   const [formData, setFormData] = useState({
-    code: student.code,
-    name: student.name,
-    gender: student.gender || '',
-    class: student.class,
-    major: student.major || '',
-    department: student.department || '',
-    phone: student.phone,
-    email: student.email,
-    dob: student.dob
+    code: '',
+    name: '',
+    gender: '',
+    className: '',
+    major: '',
+    faculty: '',
+    phone: '',
+    email: '',
+    dob: '',
   });
 
-  const handleChange = (field, value) => {
+  const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+      if (student) {
+        // Convert Vietnamese date format (DD/MM/YYYY) to YYYY-MM-DD for input
+        const convertDate = (dateStr) => {
+          const [day, month, year] = dateStr.split('/');
+          return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+        };
+
+        const convertGender = (gender) => {
+          if (gender === 'Nam') return 'MALE';
+          if (gender === 'Nữ') return 'FEMALE';
+          return '';
+        }
+  
+        setFormData({
+          code: student.code,
+          name: student.name,
+          gender: convertGender(student.gender),
+          className: student.className,
+          major: student.major || '',
+          faculty: student.faculty || '',
+          phone: student.phone,
+          email: student.email,
+          dob: convertDate(student.dob)
+        });
+      }
+    }, [student]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [field]: value
+      [name]: value
     }));
+    
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
+  };
+
+  const validateForm = () => {
+    if (!formData.code || !formData.name || !formData.gender || 
+        !formData.className || !formData.major || !formData.faculty || 
+        !formData.phone || !formData.email || !formData.dob) {
+      setError('Vui lòng điền đầy đủ thông tin!');
+      return false;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setError('Email không hợp lệ!');
+      return false;
+    }
+
+    return true;
   };
 
   const handleSubmit = () => {
-    onSave(formData);
+    if (!validateForm()) {
+      return;
+    }
+    onSubmit({
+        ...student,
+        ...formData
+    });
     onClose();
   };
 
@@ -45,9 +107,10 @@ const EditStudentModal = ({ student, onClose, onSave }) => {
                 </label>
                 <input
                   type="text"
+                  name='code'
                   className="edit-student-form-input"
                   value={formData.code}
-                  onChange={(e) => handleChange('code', e.target.value)}
+                  onChange={handleChange}
                   placeholder="Nhập mã sinh viên"
                 />
               </div>
@@ -58,9 +121,10 @@ const EditStudentModal = ({ student, onClose, onSave }) => {
                 </label>
                 <input
                   type="text"
+                  name='name'
                   className="edit-student-form-input"
                   value={formData.name}
-                  onChange={(e) => handleChange('name', e.target.value)}
+                  onChange={handleChange}
                   placeholder="Nhập họ và tên"
                 />
               </div>
@@ -74,13 +138,13 @@ const EditStudentModal = ({ student, onClose, onSave }) => {
                 </label>
                 <select
                   className="edit-student-form-input"
+                  name='gender'
                   value={formData.gender}
-                  onChange={(e) => handleChange('gender', e.target.value)}
+                  onChange={handleChange}
                 >
                   <option value="">Chọn giới tính</option>
-                  <option value="Nam">Nam</option>
-                  <option value="Nữ">Nữ</option>
-                  <option value="Khác">Khác</option>
+                  <option value="MALE">Nam</option>
+                  <option value="FEMALE">Nữ</option>
                 </select>
               </div>
 
@@ -90,9 +154,10 @@ const EditStudentModal = ({ student, onClose, onSave }) => {
                 </label>
                 <input
                   type="date"
+                  name='dob'
                   className="edit-student-form-input"
                   value={formData.dob}
-                  onChange={(e) => handleChange('dob', e.target.value)}
+                  onChange={handleChange}
                 />
               </div>
             </div>
@@ -105,9 +170,10 @@ const EditStudentModal = ({ student, onClose, onSave }) => {
                 </label>
                 <input
                   type="text"
+                  name='className'
                   className="edit-student-form-input"
-                  value={formData.class}
-                  onChange={(e) => handleChange('class', e.target.value)}
+                  value={formData.className}
+                  onChange={handleChange}
                   placeholder="Nhập lớp"
                 />
               </div>
@@ -118,9 +184,10 @@ const EditStudentModal = ({ student, onClose, onSave }) => {
                 </label>
                 <input
                   type="tel"
+                  name='phone'
                   className="edit-student-form-input"
                   value={formData.phone}
-                  onChange={(e) => handleChange('phone', e.target.value)}
+                  onChange={handleChange}
                   placeholder="Nhập số điện thoại"
                 />
               </div>
@@ -134,9 +201,10 @@ const EditStudentModal = ({ student, onClose, onSave }) => {
                 </label>
                 <input
                   type="text"
+                  name='major'
                   className="edit-student-form-input"
                   value={formData.major}
-                  onChange={(e) => handleChange('major', e.target.value)}
+                  onChange={handleChange}
                   placeholder="Nhập ngành học"
                 />
               </div>
@@ -147,9 +215,10 @@ const EditStudentModal = ({ student, onClose, onSave }) => {
                 </label>
                 <input
                   type="text"
+                  name='faculty'
                   className="edit-student-form-input"
-                  value={formData.department}
-                  onChange={(e) => handleChange('department', e.target.value)}
+                  value={formData.faculty}
+                  onChange={handleChange}
                   placeholder="Nhập khoa"
                 />
               </div>
@@ -162,9 +231,10 @@ const EditStudentModal = ({ student, onClose, onSave }) => {
               </label>
               <input
                 type="email"
+                name='email'
                 className="edit-student-form-input"
                 value={formData.email}
-                onChange={(e) => handleChange('email', e.target.value)}
+                onChange={handleChange}
                 placeholder="Nhập email"
               />
             </div>

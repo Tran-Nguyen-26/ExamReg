@@ -12,12 +12,6 @@ const StudentSearchBar = ({ onSearch, onImport, onAdd }) => {
     setShowAddModal(true);
   };
 
-  // Sửa lỗi: gọi hàm onAdd từ props
-  const handleSaveStudent = (studentData) => {
-    onAdd(studentData);
-    setShowAddModal(false);
-  };
-
   return (
     <>
       <div className="searchbar-container">
@@ -49,7 +43,7 @@ const StudentSearchBar = ({ onSearch, onImport, onAdd }) => {
       {showAddModal && (
         <AddStudentModal
           onClose={() => setShowAddModal(false)}
-          onSave={handleSaveStudent}
+          onSubmit={onAdd}
         />
       )}
     </>

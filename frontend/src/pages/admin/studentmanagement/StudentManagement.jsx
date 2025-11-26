@@ -11,38 +11,57 @@ const StudentManagement = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
-    // useEffect(() => {
-    //     loadStudents();
-    // }, []);
+    useEffect(() => {
+        loadStudents();
+    }, []);
 
-    // const loadStudents = async () => {
-    //     setLoading(true);
-    //     setError('');
-    //     try {
-    //         const response = await studentService.getAllStudents();
-    //         if (response.success) {
-    //             const formattedStudents = response.data.map(student => ({
-    //                 id: student.id,
-    //                 code: student.studentCode,
-    //                 name: student.fullname,
-    //                 gender: formatGender(student.gender),
-    //                 class: student.className,
-    //                 major: student.major,
-    //                 department: student.faculty,
-    //                 dob: formatDate(student.dob),
-    //                 email: student.email,
-    //                 phone: student.phone
-    //             }));
-    //             setStudents(formattedStudents);
-    //             setFilteredStudents(formattedStudents);
-    //         }
-    //     } catch (err) {
-    //         console.error('Error loading students:', err);
-    //         setError('Không thể tải danh sách sinh viên. Vui lòng thử lại!');
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // };
+    const loadStudents = async () => {
+        setError('');
+        try {
+            setLoading(true);
+            const response = await studentService.getAll();
+            const formattedStudents = response.map(student => ({
+                id: student.id,
+                code: student.studentCode,
+                name: student.fullname,
+                gender: formatGender(student.gender),
+                className: student.className,
+                major: student.major,
+                faculty: student.faculty,
+                dob: formatDate(student.dob),
+                email: student.email,
+                phone: student.phone
+            }));
+                setStudents(formattedStudents);
+                setFilteredStudents(formattedStudents);
+        } catch (error) {
+            console.error('Error loading students:', error);
+            alert('Lỗi khi tải danh sách học sinh!');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleAddStudent = async (formData) => {
+        try {
+            await studentService.addStudent({
+                code: formData.code,
+                name: formData.name,
+                gender: formData.gender,
+                className: formData.className,
+                major: formData.major,
+                faculty: formData.faculty,
+                dob: formData.dob,
+                email: formData.email,
+                phone: formData.phone
+            });
+            alert("Thêm học sinh thành công!");
+            await loadStudents();
+        } catch (error) {
+            console.error(error)
+            alert("Lỗi khi thêm học sinh")
+        }
+    };
 
     const formatGender = (gender) => {
         const genderMap = {
@@ -72,26 +91,48 @@ const StudentManagement = () => {
             student.code.toLowerCase().includes(searchQuery) ||
             student.name.toLowerCase().includes(searchQuery) ||
             student.email.toLowerCase().includes(searchQuery) ||
-            student.class.toLowerCase().includes(searchQuery)
+            student.className.toLowerCase().includes(searchQuery)
         );
         setFilteredStudents(filtered);
     };
-    const handleEdit = () => {
+    const handleUpdateStudent = async (updatedStudent) => {
+        try {
+            const dob = updatedStudent.dob.split('/').reverse().join('-');
 
+            await studentService.update(updatedStudent.id, {
+                code: updatedStudent.code,
+                name: updatedStudent.name,
+                gender: updatedStudent.gender,
+                className: updatedStudent.className,
+                major: updatedStudent.major,
+                faculty: updatedStudent.faculty,
+                dob: dob,
+                email: updatedStudent.email,
+                phone: updatedStudent.phone
+            })
+            alert("Cập nhật thông tin học sinh thành công!")
+            await loadStudents();
+        } catch (error) {
+            console.error('Error updating student:', error);
+            alert('Lỗi khi cập nhật học sinh!');
+        }
+        
+    }
+
+    const handleDeleteStudent = async (student) => {
+        if (confirm(`Bạn có chắc muốn xóa học sinh này ? "${student.name}"? Hành động này không thể hoàn tác!`)) {
+            try {
+                await studentService.delete(student.id);
+                await loadStudents();
+            } catch (error) {
+                console.error('Error deleting student:', error);
+                alert('Lỗi khi xóa học sinh!');
+            }
+        }
     }
 
     const handleImport = () => {
         alert('Chức năng Import Excel');
-    };
-
-    const handleAdd = () => {
-        alert('Thêm sinh viên mới');
-    };
-
-    const handleDelete = (student) => {
-        if (confirm(`Bạn có chắc muốn xóa sinh viên ${student.name}?`)) {
-        console.log('Deleted:', student);
-        }
     };
         
     return (
@@ -103,7 +144,7 @@ const StudentManagement = () => {
                     <StudentSearchBar
                     onSearch={handleSearch}
                     onImport={handleImport}
-                    onAdd={handleAdd}/>
+                    onAdd={handleAddStudent}/>
                     {loading ? (
                         <div className="loading-container">
                             <div className="loading-spinner"></div>
@@ -112,8 +153,8 @@ const StudentManagement = () => {
                     ) : (
                         <StudentTable
                             students={filteredStudents}
-                            onEdit={handleEdit}
-                            onDelete={handleDelete}
+                            onEdit={handleUpdateStudent}
+                            onDelete={handleDeleteStudent}
                         />
                     )}
                 </div>

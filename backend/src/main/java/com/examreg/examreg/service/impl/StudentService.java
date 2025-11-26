@@ -1,5 +1,8 @@
 package com.examreg.examreg.service.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +17,7 @@ import com.examreg.examreg.models.Student;
 import com.examreg.examreg.repository.StudentRepository;
 import com.examreg.examreg.service.IStudentService;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -58,5 +62,36 @@ public class StudentService implements IStudentService{
 
     Student savedStudent = studentRepository.save(student);
     return studentMapper.buildStudentReponse(savedStudent);
+  }
+
+  @Override
+  public List<StudentResponse> getAllStudents() {
+    List<Student> students = studentRepository.findAll();
+    return students.stream().map(studentMapper::buildStudentReponse).collect(Collectors.toList());
+  }
+
+  @Override
+  @Transactional
+  public StudentResponse updateStudent(Long id, AddStudentRequest request) {
+    Student student = studentRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Student not found with id: " + id));
+    student.setStudentCode(request.getCode());
+    student.setFullname(request.getName());
+    student.setGender(request.getGender());
+    student.setDob(request.getDob());
+    student.setClassName(request.getClassName());
+    student.setPhone(request.getPhone());
+    student.setMajor(request.getMajor());
+    student.setFaculty(request.getFaculty());
+    student.setEmail(request.getEmail());
+
+    Student updatedStudent = studentRepository.save(student);
+    return studentMapper.buildStudentReponse(updatedStudent);
+  }
+
+  @Override
+  public void deleteStudent(Long id) {
+    Student student = studentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Student not found with id: " + id));
+
+    studentRepository.delete(student);
   }
 }
