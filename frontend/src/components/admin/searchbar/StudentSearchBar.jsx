@@ -3,38 +3,38 @@ import { TfiImport } from "react-icons/tfi";
 import { IoMdAdd } from "react-icons/io";
 import './Style-StudentSearchBar.css';
 import AddStudentModal from '../addStudentModal/AddStudentModal'
+import ImportStudentModal from "../importStudentModal/ImportStudentModal";
 import { useState } from "react";
 
 const StudentSearchBar = ({ onSearch, onImport, onAdd }) => {
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showImportModal, setShowImportModal] = useState(false);
 
   const handleAddStudentClick = () => {
     setShowAddModal(true);
   };
 
-  // Sửa lỗi: gọi hàm onAdd từ props
-  const handleSaveStudent = (studentData) => {
-    onAdd(studentData);
-    setShowAddModal(false);
+  const handleImportClick = () => {
+    setShowImportModal(true);
   };
 
   return (
     <>
-      <div className="searchbar-container">
-        <div className="search-input-wrapper">
+      <div className="student-searchbar-container">
+        <div className="search-student-input-wrapper">
           <input
             type="text"
             placeholder="Tìm kiếm theo tên, mã sinh viên"
             onChange={(e) => onSearch(e.target.value)}
-            className="search-input"
+            className="search-student-input"
           />
-          <button className="search-btn">
-            <IoIosSearch className="search-icon" />
+          <button className="search-student-btn">
+            <IoIosSearch className="search-student-icon" />
           </button>
         </div>
 
         <div className="buttons">
-          <button onClick={onImport} className="btn-import">
+          <button onClick={handleImportClick} className="btn-import">
             <TfiImport className="btn-icon-student" />
             <span>Import Excel</span>
           </button>
@@ -49,7 +49,14 @@ const StudentSearchBar = ({ onSearch, onImport, onAdd }) => {
       {showAddModal && (
         <AddStudentModal
           onClose={() => setShowAddModal(false)}
-          onSave={handleSaveStudent}
+          onSubmit={onAdd}
+        />
+      )}
+
+      {showImportModal && (
+        <ImportStudentModal
+            onClose={() => setShowImportModal(false)}
+            onImport={onImport}
         />
       )}
     </>
