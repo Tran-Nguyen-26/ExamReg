@@ -15,6 +15,7 @@
     "bootstrap": "^5.3.8",
     "framer-motion": "^12.23.24",
     "html2pdf.js": "^0.12.1",
+    "jwt-decode": "^4.0.0",
     "lucide": "^0.548.0",
     "lucide-react": "^0.548.0",
     "print-js": "^1.6.0",

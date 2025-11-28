@@ -2,6 +2,7 @@ import { useContext } from "react"
 import { authService } from "../services/authService"
 import MyContext from "../context/MyContext"
 import { useNavigate } from "react-router-dom"
+// import jwtDecode from 'jwt-decode'
 
 export const useAuth = () => {
 
@@ -16,12 +17,16 @@ export const useAuth = () => {
       if (u.role === 'STUDENT') {
         if (u.firstLogin) navigate('/student/student-account')
         else navigate('/student/exam-schedule')
+        const decoded = jwtDecode(authResponse.token)
+        // const expMs = decoded.exp * 1000
+        // localStorage.setItem("token_exp", expMs)
+        // scheduleAutoLogout(expMs)
       } else if (u.role === 'ADMIN') {
         navigate('/admin/student-management')
       }
       return authResponse
     } catch (e) {
-      throw e
+      throw new Error(e.message)
     }
   }
 
@@ -40,6 +45,18 @@ export const useAuth = () => {
       setUser(null)
     } catch (e) {
       throw e
+    }
+  }
+
+  const scheduleAutoLogout = (expMs) => {
+    const remaining = expMs - Date.now()
+
+    if (remaining > 0) {
+      setTimeout(() => {
+        logout()
+      }, remaining)
+    } else {
+      logout()
     }
   }
 

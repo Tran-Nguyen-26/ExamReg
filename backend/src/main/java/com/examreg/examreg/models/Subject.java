@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
@@ -26,6 +27,9 @@ public class Subject {
   private int creditHour;
 
   private int duration;
+
+  @ManyToMany(mappedBy = "subjects")
+  private List<Exam> exams;
 
   @OneToMany(mappedBy = "subject")
   private List<StudentSubjectStatus> studentSubjects;

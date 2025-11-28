@@ -9,7 +9,7 @@ const Login = () => {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [showError, setShowError] = useState(false)
+  const [showError, setShowError] = useState('')
   const navigate = useNavigate()
   const { login } = useAuth() 
   
@@ -26,8 +26,8 @@ const Login = () => {
     try {
       await login(email, password)
     } catch (err) {
-      console.error('Login failed', err.error, err.status)
-      setShowError(true)
+      console.error('Login failed', err)
+      setShowError(err.message)
     }
   }
 
@@ -62,7 +62,8 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
             <p className={`invalid ${showError ? 'show': ''}`}>
-              Email hoặc mật khẩu không đúng. Vui lòng thử lại.
+              {/* Email hoặc mật khẩu không đúng. Vui lòng thử lại. */}
+              {showError}
             </p>
           </div>
           <p className='forgot-password'>

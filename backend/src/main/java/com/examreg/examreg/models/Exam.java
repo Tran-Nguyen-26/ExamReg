@@ -8,7 +8,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import lombok.Data;
 
 @Data
@@ -30,6 +32,11 @@ public class Exam {
   @Column(columnDefinition = "TEXT")
   private String description; 
 
-  @OneToMany(mappedBy = "exam")
+  @ManyToMany
+  @JoinTable(
+    name = "exam_subject",
+    joinColumns = @JoinColumn(name = "exam_id"),
+    inverseJoinColumns = @JoinColumn(name = "subject_id")
+  )
   private List<Subject> subjects;
 }

@@ -1,5 +1,7 @@
 package com.examreg.examreg.service.impl;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -53,6 +55,21 @@ public class AuthService implements IAuthService {
     if ("ROLE_STUDENT".equals(role)) {
       Student student = studentRepository.findById(userDetails.getId())
         .orElseThrow(() -> new ResourceNotFoundException("Student not found: " + userDetails.getId()));
+        if (student.getLoginLockedUntil() != null && 
+          LocalDateTime.now().isBefore(student.getLoginLockedUntil())
+        ) {
+          long minutes = Duration
+            .between(LocalDateTime.now(), student.getLoginLockedUntil())
+            .toMinutes();
+          
+          throw new RuntimeException(String.format("Bạn phải đợi %d phút nữa mới được đăng nhập lại", minutes));
+        }
+        if (student.getLoginLockedUntil() != null && 
+          LocalDateTime.now().isAfter(student.getLoginLockedUntil())
+        ) {
+          student.setLoginLockedUntil(null);
+          studentRepository.save(student);
+        }
       StudentResponse studentResponse = studentMapper.buildStudentReponse(student);
       return AuthResponse.<StudentResponse>builder()
         .token(token)
@@ -96,6 +113,19 @@ public class AuthService implements IAuthService {
 
     if (remainingMs > 0) {
       blacklistService.addToBlacklist(jti, remainingMs);
+    }
+
+    AppUserDetails studentDetails = (AppUserDetails)SecurityContextHolder
+      .getContext()
+      .getAuthentication()
+      .getPrincipal();
+    
+    if ("ROLE_STUDENT".equals(studentDetails.getAuthority().getAuthority())) {
+      Student student= studentRepository.findById(studentDetails.getId())
+        .orElseThrow(() -> new ResourceNotFoundException("Student not found"));
+      
+      student.setLoginLockedUntil(LocalDateTime.now().plusMinutes(20));
+      studentRepository.save(student);
     }
   }
   

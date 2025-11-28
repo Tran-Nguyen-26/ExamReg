@@ -5,11 +5,13 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,6 +31,20 @@ public class ImportLogService implements IImportLogService {
 
   private final IStudentService studentService;
   private final IStudentSubjectStatusService statusService;
+
+  // @Override
+  // @Async("fileStudentExecutor")
+  // public CompletableFuture<String> importStudentsFile(MultipartFile file) {
+  //   try {
+  //     List<AddStudentRequest> studentRequests = excelToStudentRequest(file.getInputStream());
+  //     for (AddStudentRequest student : studentRequests) {
+  //       studentService.addStudent(student);
+  //     }
+  //   } catch (Exception e) {
+  //     throw new RuntimeException("Không thể đọc file excel " + file.getOriginalFilename() + ": " + e.getMessage(), e);
+  //   }
+  //   return CompletableFuture.completedFuture("DONE");
+  // }
 
   @Override
   public void importStudents(MultipartFile file) {
