@@ -9,6 +9,7 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  padding: 1rem;
   animation: fadeIn 0.2s ease-out;
 }
 
@@ -21,10 +22,10 @@
   }
 }
 
-.edit-exam-modal {
+.edit-exam-modal-main {
   background: white;
-  border-radius: 12px;
-  width: 90%;
+  border-radius: 1rem;
+  width: 100%;
   max-width: 700px;
   max-height: 90vh;
   overflow-y: auto;
@@ -58,7 +59,7 @@
   margin: 0;
 }
 
-.close-button {
+.edit-exam-modal-close-button {
   background: none;
   border: none;
   cursor: pointer;
@@ -71,171 +72,117 @@
   transition: all 0.2s;
 }
 
-.close-button:hover {
+.edit-exam-modal-close-button:hover {
   background-color: #f3f4f6;
   color: #1f2937;
 }
 
+.edit-exam-modal-close-icon {
+  width: 2rem;
+  height: 2rem;
+}
+
 .edit-exam-modal-form {
-  padding: 24px 28px;
+  padding: 1.5rem;
 }
 
-.form-group {
-  margin-bottom: 20px;
+.edit-exam-modal-form-group {
+  margin-bottom: 1.5rem;
 }
 
-.form-group label {
+.edit-exam-modal-form-group label {
   display: block;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 0.875rem;
+  font-weight: 600;
   color: #374151;
-  margin-bottom: 8px;
+  margin-bottom: 0.5rem;
 }
 
 .required {
   color: #ef4444;
 }
 
-.form-group input,
-.form-group textarea {
+.edit-exam-modal-form-group input,
+.edit-exam-modal-form-group textarea {
   width: 100%;
-  padding: 10px 14px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 14px;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
   transition: all 0.2s;
-  font-family: inherit;
+  outline: none;
   box-sizing: border-box;
 }
 
-.form-group input:focus,
-.form-group textarea:focus {
+.edit-exam-modal-form-group input:focus,
+.edit-exam-modal-form-group textarea:focus {
   outline: none;
   border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-.form-group input.error,
-.form-group textarea.error {
+.edit-exam-modal-form-group input.error,
+.edit-exam-modal-form-group textarea.error {
   border-color: #ef4444;
 }
 
-.form-group input.error:focus,
-.form-group textarea.error:focus {
+.edit-exam-modal-form-group input.error:focus,
+.edit-exam-modal-form-group textarea.error:focus {
   box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
 }
 
-.error-message {
+.edit-exam-modal-error-message {
   display: block;
   color: #ef4444;
   font-size: 13px;
   margin-top: 6px;
 }
 
-.form-row {
+.edit-exam-modal-form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
 }
 
-.form-group textarea {
+.edit-exam-modal-form-group textarea {
   resize: vertical;
-  min-height: 100px;
+  font-family: inherit;
 }
 
-.exam-info-display {
-  background-color: #f9fafb;
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 24px;
-  display: flex;
-  gap: 24px;
-}
-
-.info-item {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.info-label {
-  font-size: 13px;
-  color: #6b7280;
-  font-weight: 500;
-}
-
-.info-value {
-  font-size: 18px;
-  font-weight: 600;
-  color: #1f2937;
-}
-
-.modal-actions {
+.edit-exam-modal-modal-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
-  padding-top: 20px;
+  gap: 0.75rem;
+  padding: 0.7rem;
 }
 
-.btn-cancel,
-.btn-submit {
-  padding: 10px 24px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
+.edit-exam-modal-btn-cancel,
+.edit-exam-modal-btn-submit {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
   cursor: pointer;
   transition: all 0.2s;
   border: none;
 }
 
-.btn-cancel {
-  background-color: white;
-  color: #6b7280;
-  border: 1px solid #d1d5db;
+.edit-exam-modal-btn-cancel {
+  background-color: #f3f4f6;
+  color: #374151;
 }
 
-.btn-cancel:hover {
-  background-color: #f9fafb;
-  color: #1f2937;
+.edit-exam-modal-btn-cancel:hover {
+  background-color: #e5e7eb;
 }
 
-.btn-submit {
-  background-color: #3b82f6;
+.edit-exam-modal-btn-submit {
+  background-color: #2563eb;
   color: white;
 }
 
-.btn-submit:hover {
-  background-color: #2563eb;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .edit-exam-modal {
-    width: 95%;
-    max-height: 95vh;
-  }
-
-  .edit-exam-modal-header,
-  .edit-exam-modal-form {
-    padding: 20px;
-  }
-
-  .form-row {
-    grid-template-columns: 1fr;
-  }
-
-  .exam-info-display {
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .modal-actions {
-    flex-direction: column;
-  }
-
-  .btn-cancel,
-  .btn-submit {
-    width: 100%;
-  }
+.edit-exam-modal-btn-submit:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3);
 }
