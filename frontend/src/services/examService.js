@@ -1,5 +1,5 @@
 import apiCall from "../utils/api";
-import { ExamResponse } from "../models/Exam";
+import { Exam, ExamResponse } from "../models/Exam";
 export const examService = {
     add : async(exam) => {
         const response = await apiCall('/exams/add', {
@@ -49,6 +49,12 @@ export const examService = {
             method: 'PUT'
         }) 
         return ExamResponse.fromJSON(response.data)
-    }
+    },
 
+    getExamIsOpen: async () => {
+        const response = await apiCall('/exams/is-open', {
+            method: 'GET'
+        })
+        return Exam.fromJSON(response.data)
+    }
 }

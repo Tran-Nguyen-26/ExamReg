@@ -9,10 +9,16 @@ import com.examreg.examreg.models.Subject;
 public interface ISubjectService {
 
   public Subject getSubjectById(Long subjectId);
+
   public Subject getSubjectBySubjectCode(String subjectCode);
+
   public SubjectResponse createSubject(SubjectRequest subject);
+
   public SubjectResponse updateSubject(Long id, SubjectRequest request);
+
   public void deleteSubject(Long id);
+
   public List<SubjectResponse> getAllSubjects();
-  public List<SubjectResponse> getSubjectsByExamId(Long examId);
+  
+  // public List<SubjectResponse> getSubjectsByExamId(Long examId);
 }

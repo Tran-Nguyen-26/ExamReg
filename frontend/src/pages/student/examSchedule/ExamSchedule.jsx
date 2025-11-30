@@ -14,6 +14,7 @@ const ExamSchedule = () => {
 
   const { getExamRegistrations, cancelExamRegistration } = useExamRegistration()
   const {
+    openExam,
     examRegistrations, 
     setExamRegistrations,
     setSelectedSubject,
@@ -48,19 +49,22 @@ const ExamSchedule = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const examRegistrations = await getExamRegistrations()
+        const examRegistrations = await getExamRegistrations(openExam.id)
         setExamRegistrations(examRegistrations)
       } catch (error) {
         console.error("Failed to load exam registrations", error)
       }
     }
     fetchData()
-  }, [])
+  }, [openExam.id])
 
   const handleCancel = async (examRegistrationId) => {
     try {
       await cancelExamRegistration(examRegistrationId)
-      const updated = await getExamRegistrations()
+      setTimeout(() => {
+        alert('Huỷ đăng kí thành công')
+      }, 500)
+      const updated = await getExamRegistrations(openExam.id)
       setExamRegistrations(updated)
     } catch (error) {
       console.error('Failed to cancel exam registration', error)

@@ -2,19 +2,21 @@ import Header from "../../../components/student/header/Header";
 import Notification from "../../../components/student/notification/Notification";
 import Subject from "../../../components/student/subject/Subject";
 import './Style-Home.css'
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { motion } from 'framer-motion'
 import { useSubjectStatus } from "../../../hooks/useSubjectStatus";
+import MyContext from "../../../context/MyContext";
 
 const Home = () => {
 
   const { getSubjectStatus } = useSubjectStatus()
   const [subjects, setSubjects] = useState([])
+  const { openExam } = useContext(MyContext)
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const subjects = await getSubjectStatus()
+        const subjects = await getSubjectStatus(openExam.id)
         setSubjects(subjects)
       } catch (error) {
         console.error("Failed to load subject status", error)

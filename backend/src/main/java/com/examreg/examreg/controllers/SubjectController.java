@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.examreg.examreg.dto.request.SubjectRequest;
@@ -58,14 +57,8 @@ public class SubjectController {
   }
 
   @GetMapping
-  public ResponseEntity<ApiResponse<List<SubjectResponse>>> getAllSubjects(
-      @RequestParam(required = false) Long examId) {
-    List<SubjectResponse> subjects;
-    if (examId != null) {
-      subjects = subjectService.getSubjectsByExamId(examId);
-    } else {
-      subjects = subjectService.getAllSubjects();
-    }
+  public ResponseEntity<ApiResponse<List<SubjectResponse>>> getAllSubjects() {
+    List<SubjectResponse> subjects = subjectService.getAllSubjects();
     return ResponseEntity.ok(ApiResponse.success("Subjects retrieved successfully", subjects));
   }
 }

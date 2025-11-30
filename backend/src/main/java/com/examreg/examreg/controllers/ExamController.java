@@ -84,4 +84,12 @@ public class ExamController {
                 ApiResponse.success("Exam opened successfully", response)
         );
     }
+
+    @GetMapping("/is-open")
+    public ResponseEntity<ApiResponse<ExamResponse>> getExamIsOpen() {
+        ExamResponse response = examService.getExamIsOpen();
+        return ResponseEntity.ok(
+                ApiResponse.success("Get Exam open successfully", response)
+        );
+    }
 }

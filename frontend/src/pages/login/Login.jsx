@@ -3,6 +3,7 @@ import logo_university from '../../assets/logo_uet.webp'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { useAuth } from '../../hooks/useAuth'
+import { useExam } from '../../hooks/useExam'
 
 
 const Login = () => {
@@ -12,6 +13,7 @@ const Login = () => {
   const [showError, setShowError] = useState('')
   const navigate = useNavigate()
   const { login } = useAuth() 
+  const { getExamIsOpen } = useExam()
   
 
   const handleFocusPassword = (e) => {
@@ -25,6 +27,7 @@ const Login = () => {
     e.preventDefault()
     try {
       await login(email, password)
+      await getExamIsOpen()
     } catch (err) {
       console.error('Login failed', err)
       setShowError(err.message)

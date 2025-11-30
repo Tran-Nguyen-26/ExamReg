@@ -2,18 +2,18 @@ import { examSessionService } from "../services/examSessionService"
 
 export const useExamSession = () => {
 
-  const getExamSessions = async () => {
+  const getExamSessions = async (examId) => {
     try {
-      const examSessions = await examSessionService.getExamSessions()
+      const examSessions = await examSessionService.getExamSessions(examId)
       return examSessions
     } catch (error) {
       throw error
     }
   }
 
-  const getExamSessionsBySubjectId = async (subjectId) => {
+  const getExamSessionsBySubjectId = async (subjectId, examId) => {
     try {
-      const examSessions = await examSessionService.getExamSessionsBySubjectId(subjectId)
+      const examSessions = await examSessionService.getExamSessionsBySubjectId(subjectId, examId)
       return examSessions
     } catch (error) {
       throw error

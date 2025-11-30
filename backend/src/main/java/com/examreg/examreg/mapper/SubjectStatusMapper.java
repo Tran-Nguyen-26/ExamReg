@@ -20,6 +20,7 @@ public class SubjectStatusMapper {
       .id(ssStatus.getId())
       .status(ssStatus.getStatus())
       .subject(subjectMapper.buildSubjectResponse(ssStatus.getSubject()))
+      .examId(ssStatus.getExam().getId())
       .build();
   } 
   

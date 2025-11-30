@@ -21,6 +21,8 @@ public class Exam {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  private String examCode;
+
   private String examName;
 
   private LocalDate startDate;
@@ -31,6 +33,8 @@ public class Exam {
 
   @Column(columnDefinition = "TEXT")
   private String description; 
+
+  private boolean isOpen;
 
   @ManyToMany
   @JoinTable(

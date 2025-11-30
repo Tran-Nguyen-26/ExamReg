@@ -1,9 +1,9 @@
 import { examRegistrationService } from "../services/examRegistrationService"
 
 export const useExamRegistration = () => {
-  const getExamRegistrations = async () => {
+  const getExamRegistrations = async (examId) => {
     try {
-      const examRegistrations = await examRegistrationService.getExamRegistrations()
+      const examRegistrations = await examRegistrationService.getExamRegistrations(examId)
       return examRegistrations;
     } catch (error) {
       throw error

@@ -17,7 +17,7 @@ export const useAuth = () => {
       if (u.role === 'STUDENT') {
         if (u.firstLogin) navigate('/student/student-account')
         else navigate('/student/exam-schedule')
-        const decoded = jwtDecode(authResponse.token)
+        // const decoded = jwtDecode(authResponse.token)
         // const expMs = decoded.exp * 1000
         // localStorage.setItem("token_exp", expMs)
         // scheduleAutoLogout(expMs)

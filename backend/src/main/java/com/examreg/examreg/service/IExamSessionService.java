@@ -6,11 +6,11 @@ import com.examreg.examreg.dto.response.ExamSessionResponse;
 import com.examreg.examreg.dto.response.SubjectStatusResponse;
 
 public interface IExamSessionService {
-  public List<ExamSessionResponse> getExamSessionResponses(Long studentId);
+  public List<ExamSessionResponse> getExamSessionResponses(Long studentId, Long examId);
 
-  public List<ExamSessionResponse> getExamSessionResponsesBySubjectId(Long studentId, Long subjectId);
+  public List<ExamSessionResponse> getExamSessionResponsesBySubjectId(Long studentId, Long subjectId, Long examId);
 
   public void registerExamSession(Long examSessionId, Long studentId);
 
-  public List<SubjectStatusResponse> getStatusRegisterResponses(Long studentId);
+  public List<SubjectStatusResponse> getStatusRegisterResponses(Long studentId, Long examId);
 }

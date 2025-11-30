@@ -23,4 +23,7 @@ public class AddStudentSubjectStatusRequest {
 
   @NotNull(message = "status must be not null")
   private EligibilityStatus status;
+
+  @NotBlank(message = "examId must be not blank")
+  private String examCode;
 }

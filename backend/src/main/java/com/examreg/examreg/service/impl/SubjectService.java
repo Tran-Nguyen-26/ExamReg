@@ -47,12 +47,6 @@ public class SubjectService implements ISubjectService {
     subject.setCreditHour(subjectDTO.getCreditHour());
     subject.setDuration(subjectDTO.getDuration());
 
-    if (subjectDTO.getExamId() != null) {
-      Exam exam = examRepository.findById(subjectDTO.getExamId())
-          .orElseThrow(() -> new ResourceNotFoundException("Exam not found with id: " + subjectDTO.getExamId()));
-      subject.setExam(exam);
-    }
-
     Subject savedSubject = subjectRepository.save(subject);
     return subjectMapper.buildSubjectResponse(savedSubject);
   }
@@ -67,14 +61,6 @@ public class SubjectService implements ISubjectService {
     subject.setName(subjectDTO.getName());
     subject.setCreditHour(subjectDTO.getCreditHour());
     subject.setDuration(subjectDTO.getDuration());
-
-    if (subjectDTO.getExamId() != null) {
-      Exam exam = examRepository.findById(subjectDTO.getExamId())
-          .orElseThrow(() -> new ResourceNotFoundException("Exam not found with id: " + subjectDTO.getExamId()));
-      subject.setExam(exam);
-    } else {
-      subject.setExam(null);
-    }
 
     Subject updatedSubject = subjectRepository.save(subject);
     return subjectMapper.buildSubjectResponse(updatedSubject);
@@ -95,11 +81,11 @@ public class SubjectService implements ISubjectService {
         .collect(Collectors.toList());
   }
 
-  @Override
-  public List<SubjectResponse> getSubjectsByExamId(Long examId) {
-    return subjectRepository.findAll().stream()
-        .filter(subject -> subject.getExam() != null && subject.getExam().getId().equals(examId))
-        .map(subjectMapper::buildSubjectResponse)
-        .collect(Collectors.toList());
-  }
+  // @Override
+  // public List<SubjectResponse> getSubjectsByExamId(Long examId) {
+  //   return subjectRepository.findAll().stream()
+  //       .filter(subject -> subject.getExam() != null && subject.getExam().getId().equals(examId))
+  //       .map(subjectMapper::buildSubjectResponse)
+  //       .collect(Collectors.toList());
+  // }
 }

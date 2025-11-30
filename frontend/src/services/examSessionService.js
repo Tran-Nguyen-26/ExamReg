@@ -2,8 +2,8 @@ import { ExamSession } from "../models/ExamSession";
 import apiCall from "../utils/api";
 
 export const examSessionService = {
-  getExamSessions: async () => {
-    const response = await apiCall('/exam-sessions', {
+  getExamSessions: async (examId) => {
+    const response = await apiCall(`/exam-sessions/exam/${examId}`, {
       method: 'GET'
     })
 
@@ -11,8 +11,8 @@ export const examSessionService = {
     return examSessions;
   },
 
-  getExamSessionsBySubjectId: async (subjectId) => {
-    const response = await apiCall(`/exam-sessions/by-subject/${subjectId}`, {
+  getExamSessionsBySubjectId: async (subjectId, examId) => {
+    const response = await apiCall(`/exam-sessions/by-subject/${subjectId}/by-exam/${examId}`, {
       method: 'GET'
     })
     const examSessions = response.data.map(es => ExamSession.fromJSON(es))

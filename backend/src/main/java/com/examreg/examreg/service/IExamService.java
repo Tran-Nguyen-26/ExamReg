@@ -1,6 +1,8 @@
 package com.examreg.examreg.service;
 import com.examreg.examreg.dto.request.ExamRequest;
 import com.examreg.examreg.dto.response.ExamResponse;
+import com.examreg.examreg.models.Exam;
+
 import java.util.List;
 
 public interface IExamService {
@@ -15,4 +17,10 @@ public interface IExamService {
     ExamResponse closeExam(Long id);
 
     ExamResponse openExam(Long id);
+
+    Exam getExamById(Long id);
+
+    Exam getExamByExamCode(String examCode);
+
+    ExamResponse getExamIsOpen();
 }

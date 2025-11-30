@@ -5,6 +5,7 @@ const MyProvider = ({children}) => {
 
   const [user, setUser] = useState(null)
   const [isAuthLoaded, setIsAuthLoaded] = useState(false)
+  const [openExam, setOpenExam] = useState(null)
   const [selectedSubject, setSelectedSubject] = useState(null)
   const [selectedLocation, setSelectedLocation] = useState(null)
   const [selectedExamSession, setSelectedExamSession] = useState(null)
@@ -16,6 +17,13 @@ const MyProvider = ({children}) => {
       setUser(JSON.parse(storedUser))
     }
     setIsAuthLoaded(true)
+  }, [])
+
+  useEffect(() => {
+    const storedExam = localStorage.getItem('exam')
+    if (storedExam) {
+      setOpenExam(JSON.parse(storedExam))
+    }
   }, [])
 
   useEffect(() => {
@@ -32,6 +40,8 @@ const MyProvider = ({children}) => {
   const values = {
     user,
     setUser,
+    openExam,
+    setOpenExam,
     selectedSubject,
     setSelectedSubject,
     selectedLocation,

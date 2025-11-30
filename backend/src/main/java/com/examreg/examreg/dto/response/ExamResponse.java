@@ -17,4 +17,5 @@ public class ExamResponse {
     private LocalDate endDate;
     private String description;
     private String examSatus;
+    private boolean isOpen;
 }

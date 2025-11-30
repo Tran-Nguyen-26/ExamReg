@@ -33,8 +33,9 @@ public class ExamRegistrationService implements IExamRegistrationService {
   }
 
   @Override
-  public boolean existsByStudentIdAndExamSession_SubjectId(Long studentId, Long subjectId) {
-    return examRegistrationRepository.existsByStudentIdAndExamSession_SubjectId(studentId, subjectId);
+  public boolean existsByStudentIdAndExamSession_SubjectId_ExamId(Long studentId, Long subjectId, Long examId) {
+    return examRegistrationRepository
+      .existsByStudentIdAndExamSession_SubjectIdAndExamSession_ExamId(studentId, subjectId, examId);
   }
 
   @Override
@@ -43,16 +44,17 @@ public class ExamRegistrationService implements IExamRegistrationService {
   }
 
   @Override
-  public List<ExamRegistration> getExamRegistrationsByStudentId(Long studentId) {
-    return examRegistrationRepository.findByStudentId(studentId);
+  public List<ExamRegistration> getExamRegistrationsByStudentId(Long studentId, Long examId) {
+    return examRegistrationRepository.findByStudentIdAndExamSession_ExamId(studentId, examId);
   }
 
   @Override
-  public List<ExamRegistrationResponse> getExamRegistrationResponses(Long studentId) {
-    Map<Long, SubjectStatusResponse> statusMap = statusService.getSubjectStatusResponse(studentId)
+  public List<ExamRegistrationResponse> getExamRegistrationResponses(Long studentId, Long examId) {
+    Map<Long, SubjectStatusResponse> statusMap = statusService
+      .getSubjectStatusResponseByStudentIdAndExamId(studentId, examId)
       .stream()
       .collect(Collectors.toMap(s -> s.getSubject().getId(), Function.identity()));
-    List<ExamRegistration> examRegistrations = getExamRegistrationsByStudentId(studentId);
+    List<ExamRegistration> examRegistrations = getExamRegistrationsByStudentId(studentId, examId);
     return examRegistrations
       .stream()
       .map(e -> {

@@ -25,24 +25,26 @@ public class ExamSessionController {
   
   private final IExamSessionService examSessionService;
 
-  @GetMapping("")
+  @GetMapping("/exam/{examId}")
   @PreAuthorize("hasRole('STUDENT')")
   public ResponseEntity<ApiResponse<List<ExamSessionResponse>>> getAllExamSessions(
-    @AuthenticationPrincipal AppUserDetails studenDetails
+    @AuthenticationPrincipal AppUserDetails studenDetails,
+    @PathVariable Long examId
   ) {
-    List<ExamSessionResponse> response = examSessionService.getExamSessionResponses(studenDetails.getId());
+    List<ExamSessionResponse> response = examSessionService.getExamSessionResponses(studenDetails.getId(), examId);
     return ResponseEntity.ok(ApiResponse
       .success("Get examsessions successful",
       response));
   }
 
-  @GetMapping("/by-subject/{subjectId}")
+  @GetMapping("/by-subject/{subjectId}/by-exam/{examId}")
   public ResponseEntity<ApiResponse<List<ExamSessionResponse>>> getExamSessionsBySubjectId(
     @AuthenticationPrincipal AppUserDetails studenDetails,
-    @PathVariable Long subjectId
+    @PathVariable Long subjectId,
+    @PathVariable Long examId
   ) {
     List<ExamSessionResponse> response = examSessionService
-      .getExamSessionResponsesBySubjectId(studenDetails.getId(), subjectId);
+      .getExamSessionResponsesBySubjectId(studenDetails.getId(), subjectId, examId);
     return ResponseEntity.ok(ApiResponse
       .success("Get examsessions by subject successful",
       response));

@@ -29,6 +29,7 @@ const ExamRegister = () => {
 
 
   const {
+    openExam,
     selectedSubject,
     selectedLocation, 
     setSelectedLocation,
@@ -41,7 +42,7 @@ const ExamRegister = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const examSessionsBySubjectId = await getExamSessionsBySubjectId(subjectId)
+        const examSessionsBySubjectId = await getExamSessionsBySubjectId(subjectId, openExam.id)
         setExamSessions(examSessionsBySubjectId)
       } catch (error) {
         console.error("Failed to load exam sessions", error)

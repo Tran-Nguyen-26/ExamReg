@@ -94,4 +94,21 @@ public class ExamService implements IExamService {
             throw new IllegalArgumentException("Ngày bắt đầu phải trước ngày kết thúc!");
         }
     }
+
+    @Override
+    public Exam getExamById(Long id) {
+        return examRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Exam not found with id: " + id));
+    }
+
+    @Override
+    public Exam getExamByExamCode(String examCode) {
+        return examRepository.findByExamCode(examCode)
+            .orElseThrow(() -> new ResourceNotFoundException("Exam not found"));
+    }
+
+    @Override
+    public ExamResponse getExamIsOpen() {
+        return examMapper.buildExamResponse(examRepository.findByIsOpenTrue());
+    }
 }

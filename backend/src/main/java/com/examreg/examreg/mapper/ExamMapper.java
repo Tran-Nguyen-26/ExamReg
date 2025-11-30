@@ -15,6 +15,7 @@ public class ExamMapper {
             .endDate(exam.getEndDate())
             .examSatus(exam.getExamStatus())
             .description(exam.getDescription())
+            .isOpen(exam.isOpen())
             .build();
     }
 }

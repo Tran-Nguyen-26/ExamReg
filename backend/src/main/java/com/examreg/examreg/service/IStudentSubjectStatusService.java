@@ -7,9 +7,9 @@ import com.examreg.examreg.dto.response.SubjectStatusResponse;
 import com.examreg.examreg.models.StudentSubjectStatus;
 
 public interface IStudentSubjectStatusService {
-  public List<StudentSubjectStatus> getStudentSubjectStatusByStudentId(Long studentId);
+  public List<StudentSubjectStatus> getStudentSubjectStatusByStudentIdAndExamId(Long studentId, Long examId);
 
-  public List<SubjectStatusResponse> getSubjectStatusResponse(Long studentId);
+  public List<SubjectStatusResponse> getSubjectStatusResponseByStudentIdAndExamId(Long studentId, Long examId);
 
   public void addStudentSubjectStatus(AddStudentSubjectStatusRequest request);
 }

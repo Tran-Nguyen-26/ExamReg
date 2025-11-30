@@ -36,4 +36,8 @@ public class StudentSubjectStatus {
   @ManyToOne
   @JoinColumn(name = "subject_id")
   private Subject subject;
+
+  @ManyToOne
+  @JoinColumn(name = "exam_id")
+  private Exam exam;
 }

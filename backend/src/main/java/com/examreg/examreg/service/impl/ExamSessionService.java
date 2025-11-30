@@ -39,9 +39,9 @@ public class ExamSessionService implements IExamSessionService {
   private final IStudentService studentService;
   
   @Override
-  public List<ExamSessionResponse> getExamSessionResponses(Long studentId) {
+  public List<ExamSessionResponse> getExamSessionResponses(Long studentId, Long examId) {
 
-    Map<Long, SubjectStatusResponse> statusMap = statusService.getSubjectStatusResponse(studentId)
+    Map<Long, SubjectStatusResponse> statusMap = statusService.getSubjectStatusResponseByStudentIdAndExamId(studentId, examId)
       .stream()
       .collect(Collectors.toMap(s -> s.getSubject().getId(), Function.identity()));
 
@@ -77,8 +77,8 @@ public class ExamSessionService implements IExamSessionService {
   }
 
   @Override
-  public List<ExamSessionResponse> getExamSessionResponsesBySubjectId(Long studentId, Long subjectId) {
-    List<ExamSessionResponse> examSessionResponses = getExamSessionResponses(studentId);
+  public List<ExamSessionResponse> getExamSessionResponsesBySubjectId(Long studentId, Long subjectId, Long examId) {
+    List<ExamSessionResponse> examSessionResponses = getExamSessionResponses(studentId, examId);
     return examSessionResponses
       .stream()
       .filter(es -> es.getSubjectStatus().getSubject().getId().equals(subjectId))
@@ -103,14 +103,15 @@ public class ExamSessionService implements IExamSessionService {
       throw new BadRequestException("Bạn đã đăng kí ca thi này rồi");
     }
 
+    Long examId = examSession.getExam().getId();
     Long subjectId = examSession.getSubject().getId();
-    boolean registeredSameSubject = examRegistrationService.existsByStudentIdAndExamSession_SubjectId(studentId, subjectId);
+    boolean registeredSameSubject = examRegistrationService.existsByStudentIdAndExamSession_SubjectId_ExamId(studentId, subjectId, examId);
     if (registeredSameSubject) {
       throw new BadRequestException("Bạn đã đăng kí ca thi có môn học này");
     }
 
     //conflict time
-    List<ExamRegistration> existingRegistrations = examRegistrationService.getExamRegistrationsByStudentId(studentId);
+    List<ExamRegistration> existingRegistrations = examRegistrationService.getExamRegistrationsByStudentId(studentId, examId);
     LocalDateTime start =  LocalDateTime.of(examSession.getDate(), examSession.getStarTime());
     LocalDateTime end = start.plusMinutes(examSession.getSubject().getDuration());
     boolean overlap = existingRegistrations.stream().anyMatch(reg -> {
@@ -135,12 +136,12 @@ public class ExamSessionService implements IExamSessionService {
     examRegistrationService.saveExamRegistration(examRegistration);
   }
 
-  public List<SubjectStatusResponse> getStatusRegisterResponses(Long studentId) {
-    List<ExamRegistration> examRegistrations = examRegistrationService.getExamRegistrationsByStudentId(studentId);
+  public List<SubjectStatusResponse> getStatusRegisterResponses(Long studentId, Long examId) {
+    List<ExamRegistration> examRegistrations = examRegistrationService.getExamRegistrationsByStudentId(studentId, examId);
     Set<Long> registeredSubjectIds = examRegistrations.stream()
       .map(eR -> eR.getExamSession().getSubject().getId())
       .collect(Collectors.toSet());
-    List<SubjectStatusResponse> ssRes = statusService.getSubjectStatusResponse(studentId);
+    List<SubjectStatusResponse> ssRes = statusService.getSubjectStatusResponseByStudentIdAndExamId(studentId, examId);
     return ssRes.stream()
       .map(status -> {
         boolean registered = registeredSubjectIds.contains(status.getSubject().getId());

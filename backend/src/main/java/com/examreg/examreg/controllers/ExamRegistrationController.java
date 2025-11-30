@@ -24,12 +24,13 @@ public class ExamRegistrationController {
   
   private final IExamRegistrationService examRegistrationService;
 
-  @GetMapping("")
+  @GetMapping("/exam/{examId}")
   public ResponseEntity<ApiResponse<List<ExamRegistrationResponse>>> getAllExamRegistrations(
-    @AuthenticationPrincipal AppUserDetails studenDetails
+    @AuthenticationPrincipal AppUserDetails studenDetails,
+    @PathVariable Long examId
   ) {
     List<ExamRegistrationResponse> response = examRegistrationService
-      .getExamRegistrationResponses(studenDetails.getId());
+      .getExamRegistrationResponses(studenDetails.getId(), examId);
     return ResponseEntity.ok(ApiResponse
       .success("Get exam registration successful",
       response));

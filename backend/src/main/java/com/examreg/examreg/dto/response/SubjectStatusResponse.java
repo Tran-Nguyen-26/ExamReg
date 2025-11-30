@@ -16,4 +16,5 @@ public class SubjectStatusResponse {
   private EligibilityStatus status;
   private SubjectResponse subject;
   private boolean registered; //dung cho page home
+  private Long examId;
 }
