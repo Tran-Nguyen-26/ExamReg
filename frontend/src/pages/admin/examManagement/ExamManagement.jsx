@@ -5,13 +5,16 @@ import ExamCard from "../../../components/admin/examCard/ExamCard";
 import { IoMdAdd } from "react-icons/io";
 import CreateExamModal from "../../../components/admin/createExamModal/CreateExamModal";
 import EditExamModal from "../../../components/admin/editExamModal/EditExamModal";
+import AddExamSubjectsModal from "../../../components/admin/addExamSubjectsModal/AddExamSubjectsModal";
 import './Style-ExamManagement.css'
 import {examService} from "../../../services/examService"
+import { courseService } from "../../../services/courseService";
 import { FaClipboardList } from "react-icons/fa";
 
 const ExamManagement = () => {
     const [isCreateExamModal, setIsCreateExamModal] = useState(false);
     const [isEditExamModal, setIsEditExamModal] = useState(false);
+    const [isAddExamSubjectsModal, setIsAddExamSubjectsModal] = useState(false);
     const [selectedExam, setSelectedExam] = useState(null);
     const [exams, setExams] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -53,6 +56,7 @@ const ExamManagement = () => {
 
     useEffect(() => {
         loadExams();
+        loadSubjects();
     }, []);
     const handleCreateExam = () => {
         setIsCreateExamModal(true);
@@ -71,6 +75,13 @@ const ExamManagement = () => {
         setSelectedExam(null);
     };
     
+    const handleAddSubject = () => {
+        setIsAddExamSubjectsModal(true)
+    }
+
+    const closeAddSubject = () => {
+        setIsAddExamSubjectsModal(false);
+    }
     // Handler để lưu thay đổi
     const handleUpdateExam = async (updatedExam) => {
         try {
@@ -149,10 +160,21 @@ const ExamManagement = () => {
         alert(`Xem chi tiết: ${exam.name}`);
     };
 
-    const handleAddSubject = (exam) => {
-        alert(`Thêm môn thi cho: ${exam.name}`);
-    };
+    const [availableSubjects, setAvailableSubjects] = useState([]);
 
+    const loadSubjects = async () => {
+        try {
+            setLoading(true);
+            const response = await courseService.getAll();
+
+            setAvailableSubjects(response)
+        } catch (error) {
+            console.error('Error loading subjects:', error);
+            alert('Lỗi khi tải danh sách học phần!');
+        } finally {
+            setLoading(false);
+        }
+    };
     return (
         <div className="page">
             <Header/>
@@ -201,6 +223,10 @@ const ExamManagement = () => {
                     onSubmit={handleUpdateExam}
                 />
             )}
+            {isAddExamSubjectsModal && (<AddExamSubjectsModal
+            onClose={closeAddSubject}
+            availableSubjects={availableSubjects}
+            />)}
         </div>
     )
 }

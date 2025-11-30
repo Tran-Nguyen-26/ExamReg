@@ -58,7 +58,7 @@
     margin: 0;
 }
 .create-exam-modal-close-btn {
-    background: none;
+  background: none;
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
@@ -123,22 +123,7 @@
   gap: 1rem;
 }
 
-/* Input with Icon */
-.create-exam-input-with-icon {
-  position: relative;
-}
-.create-exam-input-icon {
-  position: absolute;
-  left: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #9ca3af;
-  font-size: 1.25rem;
-  pointer-events: none;
-}
-.create-exam-input-with-icon .create-exam-input-icon {
-  padding-left: 3rem;
-}
+
 .create-exam-modal-footer {
   display: flex;
   justify-content: flex-end;
@@ -177,6 +162,3 @@
   box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3);
 }
 
-.create-exam-modal-btn-submit:active {
-  transform: translateY(0);
-}
