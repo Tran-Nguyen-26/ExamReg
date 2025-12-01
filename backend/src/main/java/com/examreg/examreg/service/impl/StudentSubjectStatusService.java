@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.examreg.examreg.dto.request.AddStudentSubjectStatusRequest;
+import com.examreg.examreg.dto.response.ConditionResponse;
 import com.examreg.examreg.dto.response.SubjectStatusResponse;
 import com.examreg.examreg.exceptions.BadRequestException;
+import com.examreg.examreg.mapper.ConditionMapper;
 import com.examreg.examreg.mapper.SubjectStatusMapper;
 import com.examreg.examreg.models.Exam;
 import com.examreg.examreg.models.Student;
@@ -26,6 +28,7 @@ public class StudentSubjectStatusService implements IStudentSubjectStatusService
   
   private final StudentSubjectStatusRepository statusRepository;
   private final SubjectStatusMapper statusMapper;
+  private final ConditionMapper conditionMapper;
   private final IStudentService studentService;
   private final ISubjectService subjectService;
   private final IExamService examService;
@@ -61,5 +64,13 @@ public class StudentSubjectStatusService implements IStudentSubjectStatusService
       .build();
     
     statusRepository.save(ssStatus);
+  }
+
+  @Override
+  public List<ConditionResponse> getStudentsCondition(Long examId, Long subjectId) {
+    List<StudentSubjectStatus> ssStatus = statusRepository.findByExam_IdAndSubject_Id(examId, subjectId);
+    return ssStatus.stream()
+      .map(conditionMapper::buildConditionResponse)
+      .toList();
   }
 }

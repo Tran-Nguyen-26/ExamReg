@@ -10,5 +10,13 @@ export const useSubjectStatus = () => {
     }
   }
 
-  return {getSubjectStatus}
+  const getStudentsCondition = async (subjectId, examId) => {
+    try {
+      return await subjectStatusService.getStudentsCondition(subjectId, examId)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  return {getSubjectStatus, getStudentsCondition}
 }

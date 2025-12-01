@@ -20,5 +20,4 @@ public interface ISubjectService {
 
   public List<SubjectResponse> getAllSubjects();
   
-  // public List<SubjectResponse> getSubjectsByExamId(Long examId);
 }
