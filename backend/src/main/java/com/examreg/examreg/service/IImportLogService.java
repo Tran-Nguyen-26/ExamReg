@@ -10,5 +10,5 @@ public interface IImportLogService {
   
   void importStudents(MultipartFile file);
 
-  void importEligibleStudentsForSubject(MultipartFile file, String subjectCode);
+  void importEligibleStudentsForSubject(MultipartFile file, String subjectCode, Long examId);
 }

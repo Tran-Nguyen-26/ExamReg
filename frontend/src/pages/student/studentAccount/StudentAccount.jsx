@@ -165,7 +165,12 @@ const StudentAccount = () => {
               ))
             }
           </div>
-          <div className='tab-logout' onClick={handleLogout}>
+          <div className='tab-logout' onClick={() => {
+            const confirmLogout = window.confirm("Sau khi đăng xuất, 20 phút sau sẽ được đăng nhập lại")
+            if (confirmLogout) {
+              handleLogout()
+            }
+          }}>
             <IoIosLogOut/>
             <span>Đăng xuất</span>
           </div>

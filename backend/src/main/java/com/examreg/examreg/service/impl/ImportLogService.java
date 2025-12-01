@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -19,6 +21,7 @@ import com.examreg.examreg.dto.request.AddStudentRequest;
 import com.examreg.examreg.dto.request.AddStudentSubjectStatusRequest;
 import com.examreg.examreg.enums.EligibilityStatus;
 import com.examreg.examreg.enums.Gender;
+import com.examreg.examreg.service.IExamService;
 import com.examreg.examreg.service.IImportLogService;
 import com.examreg.examreg.service.IStudentService;
 import com.examreg.examreg.service.IStudentSubjectStatusService;
@@ -31,6 +34,7 @@ public class ImportLogService implements IImportLogService {
 
   private final IStudentService studentService;
   private final IStudentSubjectStatusService statusService;
+  private final IExamService examService;
 
   // @Override
   // @Async("fileStudentExecutor")
@@ -104,9 +108,9 @@ public class ImportLogService implements IImportLogService {
   }
 
   @Override
-  public void importEligibleStudentsForSubject(MultipartFile file, String subjectCode) {
+  public void importEligibleStudentsForSubject(MultipartFile file, String subjectCode, Long examId) {
     try {
-      List<AddStudentSubjectStatusRequest> statusRequests = excelToSssRequest(file.getInputStream(), subjectCode);
+      List<AddStudentSubjectStatusRequest> statusRequests = excelToSssRequest(file.getInputStream(), subjectCode, examId);
       for (AddStudentSubjectStatusRequest sssRequest : statusRequests) {
         statusService.addStudentSubjectStatus(sssRequest);
       }
@@ -115,7 +119,7 @@ public class ImportLogService implements IImportLogService {
     }
   }
   
-  private List<AddStudentSubjectStatusRequest> excelToSssRequest(InputStream is, String subjectCode) {
+  private List<AddStudentSubjectStatusRequest> excelToSssRequest(InputStream is, String subjectCode, Long examId) {
     try (Workbook workbook = new XSSFWorkbook(is)) {
       Sheet sheet = null;
       for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
@@ -132,7 +136,7 @@ public class ImportLogService implements IImportLogService {
       for (Row row : sheet) {
         if (row.getRowNum() == 0 || row == null || row.getCell(0) == null)
           continue;
-        if ("STT".equalsIgnoreCase(row.getCell(0).toString().trim()) || row.getRowNum() < 2)
+        if ("STT".equalsIgnoreCase(row.getCell(0).toString().trim()) || row.getRowNum() < 4)
           continue;
         
         try {
@@ -140,11 +144,19 @@ public class ImportLogService implements IImportLogService {
             .getCell(3)
             .getStringCellValue()
             .equalsIgnoreCase("Đủ điều kiện") ? EligibilityStatus.ELIGIBLE : EligibilityStatus.INELIGIBLE;
+          
+          Cell cell = row.getCell(4);
+          String reason = null;
+          if (cell != null && cell.getCellType() != CellType.BLANK) {
+            reason = cell.toString().trim();
+          }
 
           AddStudentSubjectStatusRequest ssStatus = AddStudentSubjectStatusRequest.builder()
             .studentCode(String.valueOf((long)row.getCell(1).getNumericCellValue()))
             .subjectCode(subjectCode)
             .status(status)
+            .examId(examId)
+            .reason(reason)
             .build();
           
             sssRequests.add(ssStatus);

@@ -40,4 +40,6 @@ public class StudentSubjectStatus {
   @ManyToOne
   @JoinColumn(name = "exam_id")
   private Exam exam;
+
+  private String reason;
 }

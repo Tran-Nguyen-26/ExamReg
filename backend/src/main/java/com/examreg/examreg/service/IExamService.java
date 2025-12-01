@@ -23,4 +23,6 @@ public interface IExamService {
     Exam getExamByExamCode(String examCode);
 
     ExamResponse getExamIsOpen();
+
+    void addSubjectsToExam(Long examId, List<Long> subjectIds);
 }

@@ -131,8 +131,8 @@ const ExamInformation = () => {
                           </button>
                         </div>
                         <button onClick={handleAddSubject} className="btn-add-subject">
-                        <IoMdAdd className="icon-add-subject" />
-                        <span>Thêm môn thi</span>
+                          <IoMdAdd className="icon-add-subject" />
+                          <span>Thêm môn thi</span>
                         </button> 
                     </div> 
                     <SubjectTableExam

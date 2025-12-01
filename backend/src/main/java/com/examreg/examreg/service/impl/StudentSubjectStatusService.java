@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.examreg.examreg.dto.request.AddStudentSubjectStatusRequest;
 import com.examreg.examreg.dto.response.SubjectStatusResponse;
+import com.examreg.examreg.exceptions.BadRequestException;
 import com.examreg.examreg.mapper.SubjectStatusMapper;
 import com.examreg.examreg.models.Exam;
 import com.examreg.examreg.models.Student;
@@ -46,12 +47,17 @@ public class StudentSubjectStatusService implements IStudentSubjectStatusService
   public void addStudentSubjectStatus(AddStudentSubjectStatusRequest request) {
     Student student = studentService.getStudentByStudentCode(request.getStudentCode());
     Subject subject = subjectService.getSubjectBySubjectCode(request.getSubjectCode());
-    Exam exam = examService.getExamByExamCode(request.getExamCode());
+    Exam exam = examService.getExamById(request.getExamId());
+    boolean existsSSS = statusRepository.existsByStudentAndSubjectAndExam(student, subject, exam);
+    if (existsSSS) {
+      throw new BadRequestException("Đã tồn tại bản ghi");
+    }
     StudentSubjectStatus ssStatus = StudentSubjectStatus.builder()
       .status(request.getStatus())
       .student(student)
       .subject(subject)
       .exam(exam)
+      .reason(request.getReason())
       .build();
     
     statusRepository.save(ssStatus);

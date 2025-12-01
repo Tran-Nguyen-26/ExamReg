@@ -92,4 +92,13 @@ public class ExamController {
                 ApiResponse.success("Get Exam open successfully", response)
         );
     }
+
+    @PostMapping("/{examId}/subjects")
+    public ResponseEntity<ApiResponse<?>> addSubjectsToExam(
+        @PathVariable Long examId,
+        @RequestBody List<Long> subjectIds
+    ) {
+        examService.addSubjectsToExam(examId, subjectIds);
+        return ResponseEntity.ok(ApiResponse.success("Add subjects to exam successful"));
+    }
 }

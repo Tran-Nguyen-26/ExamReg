@@ -75,7 +75,8 @@ const ExamManagement = () => {
         setSelectedExam(null);
     };
     
-    const handleAddSubject = () => {
+    const handleAddSubject = (exam) => {
+        setSelectedExam(exam)
         setIsAddExamSubjectsModal(true)
     }
 
@@ -197,7 +198,7 @@ const ExamManagement = () => {
                                     key={exam.id}
                                     exam={exam}
                                     onViewDetail={handleViewDetail}
-                                    onAddSubject={handleAddSubject}
+                                    onAddSubject={() => handleAddSubject(exam)}
                                     onEdit={handleEdit}
                                     onClose={handleClose}
                                     onDelete={handleDelete}
@@ -226,6 +227,7 @@ const ExamManagement = () => {
             {isAddExamSubjectsModal && (<AddExamSubjectsModal
             onClose={closeAddSubject}
             availableSubjects={availableSubjects}
+            exam={selectedExam}
             />)}
         </div>
     )

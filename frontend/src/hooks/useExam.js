@@ -17,5 +17,14 @@ export const useExam  = () => {
     }
   }
 
-  return {getExamIsOpen}
+  const addSubjectsToExam = async (examId, subjectIds) => {
+    try {
+      const response = await examService.addSubjectsToExam(examId, subjectIds)
+      return response
+    } catch (error) {
+      throw error
+    }
+  }
+
+  return {getExamIsOpen, addSubjectsToExam}
 }

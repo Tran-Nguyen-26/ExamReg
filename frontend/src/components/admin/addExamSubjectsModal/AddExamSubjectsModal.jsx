@@ -4,7 +4,12 @@ import { IoIosClose } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
 import { IoAddOutline } from "react-icons/io5";
 import { TiTickOutline } from "react-icons/ti";
-const AddExamSubjectsModal = ({onClose, availableSubjects}) => {
+import { useExam } from '../../../hooks/useExam';
+
+const AddExamSubjectsModal = ({onClose, availableSubjects, exam}) => {
+
+    const { addSubjectsToExam } = useExam()
+
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedSubjects, setSelectedSubjects] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -26,15 +31,20 @@ const AddExamSubjectsModal = ({onClose, availableSubjects}) => {
     // Handle select all
     const handleSelectAll = () => {
         if (selectedSubjects.length === filteredSubjects.length) {
-        setSelectedSubjects([]);
+            setSelectedSubjects([]);
         } else {
-        setSelectedSubjects(filteredSubjects.map(s => s.id));
+            setSelectedSubjects(filteredSubjects.map(s => s.id));
         }
     };
 
     // Handle add single subject
-    const handleAddSingle = (subject) => {
-        onAdd([subject]);
+    const handleAddSingle = (subjectId) => {
+        try {
+            addSubjectsToExam(exam.id, [subjectId])
+        } catch (error) {
+            console.log("Add subject failed ", error)
+            throw error
+        }
     };
 
     // Handle add multiple subjects
@@ -46,14 +56,14 @@ const AddExamSubjectsModal = ({onClose, availableSubjects}) => {
 
         setLoading(true);
         
-        const subjectsToAdd = availableSubjects.filter(s => 
-        selectedSubjects.includes(s.id)
-        );
+        const subjectIdsToAdd = availableSubjects
+            .filter(s => selectedSubjects.includes(s.id))
+            .map(s => s.id)
         
         setTimeout(() => {
-        setLoading(false);
-        onAdd(subjectsToAdd);
-        onClose();
+            setLoading(false);
+            addSubjectsToExam(exam.id, subjectIdsToAdd);
+            onClose();
         }, 500);
     };
 
@@ -130,7 +140,7 @@ const AddExamSubjectsModal = ({onClose, availableSubjects}) => {
                                     <td>
                                         <button
                                         className="add-subject-btn-add-single"
-                                        onClick={() => handleAddSingle(subject)}
+                                        onClick={() => handleAddSingle(subject.id)}
                                         title="Thêm môn này"
                                         >
                                         <IoAddOutline className='add-subject-icon-add-single'/>

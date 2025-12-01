@@ -56,5 +56,13 @@ export const examService = {
             method: 'GET'
         })
         return Exam.fromJSON(response.data)
+    },
+
+    addSubjectsToExam: async (examId, subjectsIds) => {
+        const response = await apiCall(`/exams/${examId}/subjects`, {
+            method: 'POST',
+            body: JSON.stringify(subjectsIds)
+        })
+        return response.data
     }
 }

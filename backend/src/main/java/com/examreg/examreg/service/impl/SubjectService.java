@@ -10,9 +10,7 @@ import com.examreg.examreg.dto.request.SubjectRequest;
 import com.examreg.examreg.dto.response.SubjectResponse;
 import com.examreg.examreg.exceptions.ResourceNotFoundException;
 import com.examreg.examreg.mapper.SubjectMapper;
-import com.examreg.examreg.models.Exam;
 import com.examreg.examreg.models.Subject;
-import com.examreg.examreg.repository.ExamRepository;
 import com.examreg.examreg.repository.SubjectRepository;
 import com.examreg.examreg.service.ISubjectService;
 
@@ -23,7 +21,6 @@ import lombok.RequiredArgsConstructor;
 public class SubjectService implements ISubjectService {
 
   private final SubjectRepository subjectRepository;
-  private final ExamRepository examRepository;
   private final SubjectMapper subjectMapper;
 
   @Override
@@ -80,12 +77,4 @@ public class SubjectService implements ISubjectService {
         .map(subjectMapper::buildSubjectResponse)
         .collect(Collectors.toList());
   }
-
-  // @Override
-  // public List<SubjectResponse> getSubjectsByExamId(Long examId) {
-  //   return subjectRepository.findAll().stream()
-  //       .filter(subject -> subject.getExam() != null && subject.getExam().getId().equals(examId))
-  //       .map(subjectMapper::buildSubjectResponse)
-  //       .collect(Collectors.toList());
-  // }
 }

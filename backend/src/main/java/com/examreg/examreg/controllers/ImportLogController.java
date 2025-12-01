@@ -28,13 +28,14 @@ public class ImportLogController {
     return ResponseEntity.ok(ApiResponse.success("Import student accounts successful"));
   }
 
-  @PostMapping("/subjects/{subjectCode}")
+  @PostMapping("/exam/{examId}/subjects/{subjectCode}")
   @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<ApiResponse<?>> importEligibleStudentsForSubject(
+    @PathVariable Long examId,
     @PathVariable String subjectCode,
     @RequestParam MultipartFile file
   ) {
-    importLogService.importEligibleStudentsForSubject(file, subjectCode);
+    importLogService.importEligibleStudentsForSubject(file, subjectCode, examId);
     return ResponseEntity.ok(ApiResponse.success("Import student subject status successful"));
   }
 }
