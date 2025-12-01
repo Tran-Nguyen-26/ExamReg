@@ -3,6 +3,11 @@ import Header from "../../../components/admin/header/Header";
 import Sidebar from "../../../components/admin/sidebar/Sidebar";
 import './Style-ExamEligibility.css'
 
+const sampleExams = [
+  { id: 1, name: 'Kỳ thi cuối kỳ - Học kỳ 1 2024-2025' },
+  { id: 2, name: 'Kỳ thi cuối kỳ - Học kỳ 2 2024-2025' },
+]
+
 const sampleSubjects = [
   { id: 'IT4001', name: 'IT4001 - Cơ sở dữ liệu' },
   { id: 'IT4002', name: 'IT4002 - Lập trình nâng cao' },
@@ -21,6 +26,7 @@ const sampleNotEligible = [
 ];
 
 const ExamEligibility = () => {
+  const [exam, setExam] = useState(sampleExams[0].id);
   const [subject, setSubject] = useState(sampleSubjects[0].id);
   const [activeTab, setActiveTab] = useState('eligible');
   const [eligibleList] = useState(sampleEligible);
@@ -36,6 +42,15 @@ const ExamEligibility = () => {
 
           <div className="card">
             <div className="form-row">
+              <label className="label">Chọn kỳ thi</label>
+              <select className="subject-select" value={exam} onChange={e => setExam(e.target.value)}>
+                {sampleExams.map(e => (
+                  <option key={e.id} value={e.id}>{e.name}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="form-row">
               <label className="label">Chọn môn học</label>
               <select className="subject-select" value={subject} onChange={e => setSubject(e.target.value)}>
                 {sampleSubjects.map(s => (
@@ -45,16 +60,6 @@ const ExamEligibility = () => {
             </div>
 
             <div className="actions-row">
-              <button className="btn btn-success btn-lg d-flex align-items-center gap-2 custom-action">
-                <i className="fas fa-upload"></i>
-                <span>Import SV đủ điều kiện (Excel)</span>
-              </button>
-
-              <button className="btn btn-danger btn-lg d-flex align-items-center gap-2 custom-action">
-                <i className="fas fa-upload"></i>
-                <span>Import SV không đủ điều kiện (Excel)</span>
-              </button>
-
               <button className="btn btn-primary btn-lg d-flex align-items-center gap-2 custom-action">
                 <i className="fas fa-download"></i>
                 <span>Xuất danh sách (Excel)</span>
@@ -96,15 +101,6 @@ const ExamEligibility = () => {
                   )}
                 </tbody>
               </table>
-            </div>
-
-            <div className="guide">
-              <h3>Hướng dẫn import dữ liệu từ Excel</h3>
-              <ul>
-                <li>File Excel phải có các cột: Mã sinh viên, Họ tên, Lớp</li>
-                <li>Với danh sách "Đủ điều kiện" — hệ thống sẽ gán trạng thái phù hợp.</li>
-                <li>Với danh sách "Không đủ điều kiện" — cung cấp cột "Lý do" nếu cần.</li>
-              </ul>
             </div>
 
           </div>
