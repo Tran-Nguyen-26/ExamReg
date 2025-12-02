@@ -4,9 +4,12 @@ import { useState, useEffect } from "react";
 import { MdOutlinePeopleAlt } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import { FaTrashCan } from "react-icons/fa6";
+import EditExamSessionModal from "../editExamSessionModal/EditExamSessionModal";
 const SessionTable = ({sessions}) => {
     const [openDropdown, setOpenDropdown] = useState(null);
     const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+    const [isEditExamSessionModal, setIsEditExamSessionModal] = useState(false);
+
 
     const toggleDropdown = (sessionId, event) => {
         if (openDropdown === sessionId) {
@@ -113,7 +116,7 @@ const SessionTable = ({sessions}) => {
                     <button 
                         className="session-dropdown-item"
                         onClick={() => {
-                            console.log('Chỉnh sửa:', openDropdown);
+                            setIsEditExamSessionModal(true);
                             setOpenDropdown(null);
                         }}
                     >
@@ -132,6 +135,8 @@ const SessionTable = ({sessions}) => {
                     </button>
                 </div>
             )}
+            {isEditExamSessionModal && (<EditExamSessionModal
+            onClose={() => {setIsEditExamSessionModal(false)}}/>)}
         </div>
         </>
     )
