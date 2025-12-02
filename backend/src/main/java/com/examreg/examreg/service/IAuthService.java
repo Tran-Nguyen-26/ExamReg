@@ -11,4 +11,8 @@ public interface IAuthService {
   public void changePasswordFirstTime(Long studentId, ChangePasswordFirstimeRequest request);
 
   public void logout(String token);
+
+  public void sendResetPasswordLink(String email);
+
+  public void updatePassword(String token, String newPassword);
 }

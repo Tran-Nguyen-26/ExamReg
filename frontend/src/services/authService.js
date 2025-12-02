@@ -28,5 +28,20 @@ export const authService = {
     localStorage.removeItem('token')
     localStorage.removeItem('user')
     window.location.href = '/login'
+  },
+
+  forgotPassword: async(email) => {
+    const response = await apiCall(`/auth/forgot-password?email=${encodeURIComponent(email)}`, {
+      method: 'POST'
+    }, false)
+    return response
+  },
+
+  resetPassword: async(token, newPassword) => {
+    const response = await apiCall('/auth/reset-password', {
+      method: 'POST',
+      body: JSON.stringify({token, newPassword})
+    }, false)
+    return response
   }
 }

@@ -1,9 +1,11 @@
 import './Style-Login.css'
 import logo_university from '../../assets/logo_uet.webp'
-import { useNavigate } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAuth } from '../../hooks/useAuth'
 import { useExam } from '../../hooks/useExam'
+import ForgotPassword from '../../components/login/forgotpassword/ForgotPassword'
+import { useSearchParams } from 'react-router-dom'
+import ResetPassword from '../../components/login/resetpassword/ResetPassword'
 
 
 const Login = () => {
@@ -11,9 +13,19 @@ const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showError, setShowError] = useState('')
-  const navigate = useNavigate()
+  const [forgotPassword, setForgotPassword] = useState(false)
+  const [resetPassword, setResetPassword] = useState(false)
   const { login } = useAuth() 
   const { getExamIsOpen } = useExam()
+
+  const [searchParams] = useSearchParams()
+  const token = searchParams.get('token')
+
+  useEffect(() => {
+    if (token) {
+      setResetPassword(true)
+    }
+  }, [token])
   
 
   const handleFocusPassword = (e) => {
@@ -35,7 +47,8 @@ const Login = () => {
   }
 
   return (
-    <div className="login">
+    <div className='login-page'>
+    <div className={`login ${(forgotPassword || resetPassword) ? 'blur': ''}`}>
       <div className='left-panel'>
         <img src={logo_university} alt="" />
         <span>Hệ thống đăng kí dự thi</span>
@@ -70,11 +83,29 @@ const Login = () => {
             </p>
           </div>
           <p className='forgot-password'>
-            <span>Quên mật khẩu</span>
+            <span onClick={() => setForgotPassword(true)}>Quên mật khẩu</span>
           </p>
           <button type='submit'></button>
         </form>
       </div>
+    </div>
+    {
+      forgotPassword && (
+        <ForgotPassword 
+          isForgotPassword={forgotPassword}
+          onCloseForgotPassword={setForgotPassword}
+        />
+      )
+    }
+    {
+      resetPassword && (
+        <ResetPassword
+          token={token}
+          isResetPassword={resetPassword}
+          onCloseResetPassword={setResetPassword}
+        />
+      )
+    }
     </div>
   )
 }

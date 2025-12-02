@@ -60,5 +60,21 @@ export const useAuth = () => {
     }
   }
 
-  return {login, changePasswordFirstTime, logout}
+  const forgotPassword = async (email) => {
+    try {
+      await authService.forgotPassword(email)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  const resetPassword = async (token, newPasword) => {
+    try {
+      await authService.resetPassword(token, newPasword)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  return {login, changePasswordFirstTime, logout, forgotPassword, resetPassword}
 }
