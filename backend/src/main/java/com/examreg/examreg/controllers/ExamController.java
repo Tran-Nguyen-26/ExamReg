@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import com.examreg.examreg.dto.request.ExamRequest;
 import com.examreg.examreg.dto.response.ApiResponse;
 import com.examreg.examreg.dto.response.ExamResponse;
+import com.examreg.examreg.dto.response.SubjectResponse;
 import com.examreg.examreg.service.IExamService;
 
 import jakarta.validation.Valid;
@@ -100,5 +101,11 @@ public class ExamController {
     ) {
         examService.addSubjectsToExam(examId, subjectIds);
         return ResponseEntity.ok(ApiResponse.success("Add subjects to exam successful"));
+    }
+
+    @GetMapping("/{examId}/subjects")
+    public ResponseEntity<ApiResponse<?>> getSubjectsByExamId(@PathVariable Long examId) {
+        List<SubjectResponse> responses = examService.getSubjectsByExamId(examId);
+        return ResponseEntity.ok(ApiResponse.success("Get subjects success", responses));
     }
 }

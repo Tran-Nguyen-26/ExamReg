@@ -64,5 +64,12 @@ export const examService = {
             body: JSON.stringify(subjectsIds)
         })
         return response.data
+    },
+
+    getSubjectsByExamId: async (examId) => {
+        const response = await apiCall(`/exams/${examId}/subjects`, {
+            method: 'GET'
+        })
+        return response.data
     }
 }

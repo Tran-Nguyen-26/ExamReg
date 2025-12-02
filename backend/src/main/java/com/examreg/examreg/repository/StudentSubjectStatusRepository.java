@@ -17,4 +17,6 @@ public interface StudentSubjectStatusRepository extends JpaRepository<StudentSub
 
   boolean existsByStudentAndSubjectAndExam(Student student, Subject subject, Exam exam);
 
+  List<StudentSubjectStatus> findByExam_IdAndSubject_Id(Long examId, Long subjectId);
+
 }

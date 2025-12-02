@@ -7,11 +7,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.examreg.examreg.dto.request.ExamRequest;
 import com.examreg.examreg.dto.response.ExamResponse;
+import com.examreg.examreg.dto.response.SubjectResponse;
 import com.examreg.examreg.exceptions.BadRequestException;
 import com.examreg.examreg.exceptions.ResourceNotFoundException;
 import com.examreg.examreg.models.Exam;
 import com.examreg.examreg.models.Subject;
 import com.examreg.examreg.mapper.ExamMapper;
+import com.examreg.examreg.mapper.SubjectMapper;
 import com.examreg.examreg.repository.ExamRepository;
 import com.examreg.examreg.repository.SubjectRepository;
 import com.examreg.examreg.service.IExamService;
@@ -25,6 +27,7 @@ public class ExamService implements IExamService {
     private final ExamRepository examRepository;
     private final ExamMapper examMapper;
     private final SubjectRepository subjectRepository;
+    private final SubjectMapper subjectMapper;
 
     @Override
     @Transactional
@@ -139,5 +142,13 @@ public class ExamService implements IExamService {
             exam.getSubjects().add(subject);
         }
         examRepository.save(exam);
+    }
+
+    @Override
+    public List<SubjectResponse> getSubjectsByExamId(Long examId) {
+        return subjectRepository.findByExamId(examId)
+            .stream()
+            .map(subjectMapper::buildSubjectResponse)
+            .toList();
     }
 }

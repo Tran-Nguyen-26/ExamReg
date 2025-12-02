@@ -59,7 +59,7 @@
   font-size: 1.375rem;
   font-weight: 700;
   color: #111827;
-  margin: 0;
+  margin: 0 0 0.5rem 0;
 }
 
 /* Body */
@@ -175,6 +175,8 @@ select.add-student-form-input {
 
 .add-student-modal-footer .btn-add:hover {
   background-color: #1d4ed8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3);
 }
 
 .add-student-modal-footer .btn-add:disabled,

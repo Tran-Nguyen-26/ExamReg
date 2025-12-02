@@ -6,10 +6,14 @@ import { IoMdAdd } from "react-icons/io";
 import SessionTable from "../../../components/admin/sessionTable/SessionTable";
 import { useState } from "react";
 import { IoIosSearch } from "react-icons/io";
+import AddExamSessionModal from "../../../components/admin/addExamSessionModal/AddExamSessionModal";
 import './Style-SubjectSessions.css';
 
 const SubjectSessions = () => {
     const navigate = useNavigate();
+    const [isAddExamSessionModal, setIsAddExamSessionModal] = useState(false);
+
+
     const [sessions] = useState([
     {
       id: 1,
@@ -46,7 +50,7 @@ const SubjectSessions = () => {
                         </div>
                         <h1 className="subject-title">Giải tích 1 - MATH101</h1>
                     </div>
-                    <button className="btn-add-session">
+                    <button className="btn-add-session" onClick={() => setIsAddExamSessionModal(true)}>
                         <IoMdAdd className="icon-add-session"/>
                         <span>Tạo ca thi mới</span>
                     </button>
@@ -55,6 +59,11 @@ const SubjectSessions = () => {
                 sessions={sessions}
                 />
             </div>
+            {isAddExamSessionModal && (
+                <AddExamSessionModal
+                onClose={() => setIsAddExamSessionModal(false)}
+                />
+            )}
         </div>
         </>
     )
