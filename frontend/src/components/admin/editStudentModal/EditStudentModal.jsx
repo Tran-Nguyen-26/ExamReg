@@ -18,11 +18,6 @@ const EditStudentModal = ({ student, onClose, onSubmit }) => {
 
   useEffect(() => {
       if (student) {
-        // Convert Vietnamese date format (DD/MM/YYYY) to YYYY-MM-DD for input
-        // const convertDate = (dateStr) => {
-        //   const [day, month, year] = dateStr.split('/');
-        //   return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-        // };
 
         const convertGender = (gender) => {
           if (gender === 'Nam') return 'MALE';

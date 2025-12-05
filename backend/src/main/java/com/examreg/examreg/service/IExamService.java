@@ -1,6 +1,7 @@
 package com.examreg.examreg.service;
 import com.examreg.examreg.dto.request.ExamRequest;
 import com.examreg.examreg.dto.response.ExamResponse;
+import com.examreg.examreg.dto.response.SubjectResponse;
 import com.examreg.examreg.models.Exam;
 
 import java.util.List;
@@ -25,4 +26,6 @@ public interface IExamService {
     ExamResponse getExamIsOpen();
 
     void addSubjectsToExam(Long examId, List<Long> subjectIds);
+
+    List<SubjectResponse> getSubjectsOfExam(Long examId);
 }

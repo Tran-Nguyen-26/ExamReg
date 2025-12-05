@@ -169,7 +169,7 @@ const AddExamSubjectsModal = ({onClose, availableSubjects, exam}) => {
                         </>
                         ) : (
                         <>
-                            ✓ Thêm đã chọn ({selectedSubjects.length})
+                            Thêm đã chọn ({selectedSubjects.length})
                         </>
                         )}
                     </button>

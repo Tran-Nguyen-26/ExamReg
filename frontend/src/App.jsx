@@ -33,8 +33,8 @@ const AnimatedRoutes = () => {
         <Route path="/admin/student-management" element={<StudentManagement/>}></Route>
         <Route path="/admin/course-management" element={<CourseManagement/>}></Route>
         <Route path="/admin/exam-management" element={<ExamManagement/>}></Route>
-        <Route path="/admin/exam-management/exam-info" element={<ExamInformation/>}></Route>
-        <Route path="/admin/exam-management/exam-info/sessions" element={<SubjectSessions/>}></Route>
+        <Route path="/admin/exam-management/exam-info/:examId" element={<ExamInformation/>}></Route>
+        <Route path="/admin/exam-management/exam-info/:examId/subject/:subjectId/sessions" element={<SubjectSessions/>}></Route>
         <Route path="/admin/exam-eligibility" element={<ExamEligibility/>}></Route>
         <Route path="/admin/report" element={<Report/>}></Route>
       </Routes>

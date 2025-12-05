@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.examreg.examreg.dto.response.ExamSessionResponse;
 import com.examreg.examreg.enums.ExamSessionStatus;
+import com.examreg.examreg.models.Exam;
 import com.examreg.examreg.models.ExamSession;
 import com.examreg.examreg.models.StudentSubjectStatus;
 
@@ -16,16 +17,27 @@ import lombok.RequiredArgsConstructor;
 public class ExamSessionMapper {
 
   private final RoomMapper roomMapper;
+  private final SubjectMapper subjectMapper;
+  private final ExamMapper examMapper;
   private final SubjectStatusMapper statusMapper;
 
   public ExamSessionResponse buildExamSessionResponse(ExamSession examSession) {
     return ExamSessionResponse.builder()
       .id(examSession.getId())
-      .examSessionCode(examSession.getExamSessionCode())
       .date(examSession.getDate())
       .capacity(examSession.getCapacity())
-      .startTime(examSession.getStarTime())
-      .room(roomMapper.buildRoomResponse(examSession.getRoom()))
+      .startTime(examSession.getStartTime())
+      .registeredCount(examSession.getRegisteredCount())
+      .isFull(examSession.isFull())
+      .subjectId(examSession.getSubject().getId())
+      .subjectCode(examSession.getSubject().getSubjectCode())
+      .subjectName(examSession.getSubject().getName())
+      .roomId(examSession.getRoom().getId())
+      .roomName(examSession.getRoom().getName())
+      .locationId(examSession.getRoom().getLocation().getId())
+      .locationName(examSession.getRoom().getLocation().getName())
+      .examId(examSession.getExam().getId())
+      .examName(examSession.getExam().getExamName())
       .build();
   }
 

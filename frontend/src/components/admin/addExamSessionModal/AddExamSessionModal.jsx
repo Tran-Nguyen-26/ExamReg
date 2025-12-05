@@ -1,9 +1,11 @@
 import './Style-AddExamSessionModal.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { roomLocationService } from '../../../services/roomLocationService';
+import { examSessionService } from '../../../services/examSessionService';
 
 const AddExamSessionModal = ({ onClose, onSave, subjectInfo }) => {
   const [formData, setFormData] = useState({
-    examDate: '',
+    date: '',
     startTime: '',
     room: '',
     location: '',
@@ -14,20 +16,45 @@ const AddExamSessionModal = ({ onClose, onSave, subjectInfo }) => {
   const [error, setError] = useState('');
 
   // Danh sách phòng thi có sẵn
-  const availableRooms = [
-    '101', '102', '103', '104', '105',
-    '201', '202', '203', '204', '205',
-    '301', '302', '303', '304', '305'
-  ];
+  const [availableRooms,setAvailableRooms] = useState([]);
 
   // Danh sách địa điểm thi
-  const availableLocations = [
-    'Tòa nhà A',
-    'Tòa nhà B',
-    'Tòa nhà C',
-    'Tòa nhà D',
-    'Tòa nhà E'
-  ];
+  const [availableLocations, setAvailableLocations] = useState([]);
+
+  useEffect(() => {
+    fetchLocations();
+  }, []);
+
+  useEffect(() => {
+    if (formData.location) {
+      fetchRoomsByLocation(formData.location);
+    } else {
+      setAvailableRooms([]);
+      setFormData(prev => ({ ...prev, room: '' }));
+    }
+  }, [formData.location]);
+
+  const fetchLocations = async () => {
+    try {
+      const data = await roomLocationService.getAllLocations();
+      setAvailableLocations(data);
+    } catch (err) {
+      console.error('Error loading locations:', err);
+      setError('Không thể tải danh sách địa điểm. Vui lòng thử lại!');
+    }
+  };
+
+  const fetchRoomsByLocation = async (locationId) => {
+    try {
+      const response = await roomLocationService.getRoomsByLocationId(locationId);
+      setAvailableRooms(response);
+    } catch (err) {
+      console.error('Error loading rooms:', err);
+      setError('Không thể tải danh sách phòng. Vui lòng thử lại!');
+      setAvailableRooms([]);
+    }
+  };
+  
 
   const handleChange = (field, value) => {
     setFormData(prev => ({
@@ -38,7 +65,7 @@ const AddExamSessionModal = ({ onClose, onSave, subjectInfo }) => {
   };
 
   const validateForm = () => {
-    if (!formData.examDate) {
+    if (!formData.date) {
       setError('Vui lòng chọn ngày thi!');
       return false;
     }
@@ -70,11 +97,30 @@ const AddExamSessionModal = ({ onClose, onSave, subjectInfo }) => {
     setError('');
 
     // Simulate API call
-    setTimeout(() => {
-      setLoading(false);
-      onSave(formData);
+    try {
+      // Prepare data for API
+      const sessionData = {
+        date: formData.date,
+        startTime: formData.startTime,
+        roomId: parseInt(formData.room),
+        subjectId: parseInt(subjectInfo.subjectId),
+        examId: parseInt(subjectInfo.examId),
+        capacity: parseInt(formData.capacity)
+      };
+
+      // Call API to create exam session
+      await examSessionService.createExamSession(sessionData);
+      
+      // Success callback
+      onSave(sessionData);
+      alert('Tạo ca thi thành công!');
       onClose();
-    }, 500);
+    } catch (err) {
+      console.error('Error creating exam session:', err);
+      setError(err.message || 'Có lỗi xảy ra khi tạo ca thi!');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -107,6 +153,9 @@ const AddExamSessionModal = ({ onClose, onSave, subjectInfo }) => {
                     <input
                     type="text"
                     className="add-exam-session-form-input"
+                    value={subjectInfo.subjectName}
+                    readOnly
+                    disabled
                     />
                 </div>
                 <div className="form-group">
@@ -132,8 +181,8 @@ const AddExamSessionModal = ({ onClose, onSave, subjectInfo }) => {
                     <input
                     type="date"
                     className="add-exam-session-form-input"
-                    value={formData.examDate}
-                    onChange={(e) => handleChange('examDate', e.target.value)}
+                    value={formData.date}
+                    onChange={(e) => handleChange('date', e.target.value)}
                     disabled={loading}
                     />
                 </div>
@@ -164,7 +213,7 @@ const AddExamSessionModal = ({ onClose, onSave, subjectInfo }) => {
                     >
                     <option value="">Chọn địa điểm</option>
                     {availableLocations.map(location => (
-                        <option key={location} value={location}>{location}</option>
+                        <option key={location.id} value={location.id}>{location.name}</option>
                     ))}
                     </select>
                 </div>
@@ -181,7 +230,7 @@ const AddExamSessionModal = ({ onClose, onSave, subjectInfo }) => {
                     >
                     <option value="">Chọn phòng thi</option>
                     {availableRooms.map(room => (
-                        <option key={room} value={room}>{room}</option>
+                        <option key={room.id} value={room.id}>{room.name}</option>
                     ))}
                     </select>
                 </div>

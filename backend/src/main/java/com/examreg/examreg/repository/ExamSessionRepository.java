@@ -18,4 +18,6 @@ public interface ExamSessionRepository extends JpaRepository<ExamSession, Long> 
   @Lock(LockModeType.PESSIMISTIC_WRITE)
   @Query("SELECT e FROM ExamSession e WHERE e.id = :id")
   ExamSession findByIdForUpdate(Long id);
+
+  List<ExamSession> findBySubjectIdAndExamId(Long subjectId, Long examId);
 }

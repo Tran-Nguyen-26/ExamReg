@@ -17,14 +17,20 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ExamSessionResponse {
   private Long id;
-  private String examSessionCode;
-  @JsonFormat(pattern = "dd/MM/yyyy")
   private LocalDate date;
-  private int capacity;
-  private int registeredCount;
-  @JsonFormat(pattern = "HH:mm")
   private LocalTime startTime;
-  private RoomResponse room;
+  private int capacity;
+  private boolean isFull;
+  private int registeredCount;
+  private Long subjectId;
+  private String subjectCode;
+  private String subjectName;
+  private Long roomId;
+  private String roomName;
+  private Long locationId;
+  private String locationName;
+  private Long examId;
+  private String examName;
   private SubjectStatusResponse subjectStatus;
   private ExamSessionStatus status;
 }
