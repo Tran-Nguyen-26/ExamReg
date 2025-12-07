@@ -7,5 +7,11 @@ export const courseService = {
             method: 'GET'
         })
         return response.data
+    },
+    getSubjectById: async (subjectId) => {
+        const response = await apiCall(`/subjects/${subjectId}`, {
+            method: 'GET'
+        })
+        return response.data
     }
 }

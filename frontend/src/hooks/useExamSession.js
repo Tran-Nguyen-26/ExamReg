@@ -13,7 +13,7 @@ export const useExamSession = () => {
 
   const getExamSessionsBySubjectId = async (subjectId, examId) => {
     try {
-      const examSessions = await examSessionService.getExamSessionsBySubjectId(subjectId, examId)
+      const examSessions = await examSessionService.getExamSessionsBySubjectIdForStudent(subjectId, examId)
       return examSessions
     } catch (error) {
       throw error

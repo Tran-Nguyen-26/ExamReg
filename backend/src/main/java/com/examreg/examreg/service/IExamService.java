@@ -27,5 +27,5 @@ public interface IExamService {
 
     void addSubjectsToExam(Long examId, List<Long> subjectIds);
 
-    List<SubjectResponse> getSubjectsByExamId(Long examId);
+    List<SubjectResponse> getSubjectsOfExam(Long examId);
 }

@@ -65,11 +65,11 @@ export const examService = {
         })
         return response.data
     },
-
-    getSubjectsByExamId: async (examId) => {
+    
+    getSubjectsOfExam: async (examId) => {
         const response = await apiCall(`/exams/${examId}/subjects`, {
-            method: 'GET'
+            medthod: 'GET',
         })
-        return response.data
+        return response.data;
     }
 }

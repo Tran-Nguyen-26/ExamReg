@@ -15,5 +15,5 @@ public class ExamRegistrationResponse {
   private Long id;
   private Long studentId;
   private LocalDateTime registeredAt;
-  private ExamSessionResponse examSession;
+  private ExamSessionResponseForStudent examSession;
 }
