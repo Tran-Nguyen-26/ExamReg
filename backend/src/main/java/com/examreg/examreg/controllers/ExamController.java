@@ -37,7 +37,6 @@ public class ExamController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT')")
     public ResponseEntity<ApiResponse<List<ExamResponse>>> getAllExams() {
         List<ExamResponse> exams = examService.getAllExams();
         

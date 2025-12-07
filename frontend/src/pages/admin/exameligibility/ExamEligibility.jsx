@@ -28,8 +28,6 @@ const sampleNotEligible = [
 const ExamEligibility = () => {
   const [exam, setExam] = useState(sampleExams[0].id);
   const [subject, setSubject] = useState(sampleSubjects[0].id);
-  const [activeTab, setActiveTab] = useState('eligible');
-  const [eligibleList] = useState(sampleEligible);
   const [notEligibleList] = useState(sampleNotEligible);
 
   return (
@@ -66,11 +64,6 @@ const ExamEligibility = () => {
               </button>
             </div>
 
-            <div className="tabs">
-              <button className={`tab ${activeTab === 'eligible' ? 'active' : ''}`} onClick={() => setActiveTab('eligible')}>Đủ điều kiện ({eligibleList.length})</button>
-              <button className={`tab ${activeTab === 'not' ? 'active' : ''}`} onClick={() => setActiveTab('not')}>Không đủ điều kiện ({notEligibleList.length})</button>
-            </div>
-
             <div className="table-wrap">
               <table className="student-table">
                 <thead>
@@ -84,17 +77,17 @@ const ExamEligibility = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {(activeTab === 'eligible' ? eligibleList : notEligibleList).map((s, idx) => (
+                  {notEligibleList.map((s, idx) => (
                     <tr key={s.id}>
                       <td>{idx + 1}</td>
                       <td>{s.code}</td>
                       <td>{s.name}</td>
                       <td>{s.class}</td>
-                      <td><span className={`status ${activeTab === 'eligible' ? 'status-yes' : 'status-no'}`}>{activeTab === 'eligible' ? 'Đủ điều kiện' : 'Không đủ điều kiện'}</span></td>
+                      <td><span className="status status-no">Không đủ điều kiện</span></td>
                       <td>{s.reason || '-'}</td>
                     </tr>
                   ))}
-                  { (activeTab === 'eligible' ? eligibleList : notEligibleList).length === 0 && (
+                  {notEligibleList.length === 0 && (
                     <tr>
                       <td colSpan={6} style={{textAlign:'center', padding:'2rem'}}>Không có dữ liệu</td>
                     </tr>
