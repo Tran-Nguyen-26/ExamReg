@@ -145,10 +145,15 @@ public class ExamService implements IExamService {
     }
 
     @Override
-    public List<SubjectResponse> getSubjectsByExamId(Long examId) {
-        return subjectRepository.findByExamId(examId)
-            .stream()
+    public List<SubjectResponse> getSubjectsOfExam(Long examId) {
+        Exam exam = getExamById(examId);
+
+        if (exam.getSubjects() == null || exam.getSubjects().isEmpty()) {
+        return new ArrayList<>();
+        }
+
+        return exam.getSubjects().stream()
             .map(subjectMapper::buildSubjectResponse)
-            .toList();
+            .collect(Collectors.toList());
     }
 }

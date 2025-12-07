@@ -13,7 +13,7 @@ const ExamCard = ({ exam, onViewDetail, onAddSubject, onEdit, onClose, onOpen, o
   const navigate = useNavigate();
   
   const handleViewClick = () => {
-    navigate("/admin/exam-management/exam-info")
+    navigate(`/admin/exam-management/exam-info/${exam.id}`)
   }
 
   const handleButtonClick = (e, action) => {

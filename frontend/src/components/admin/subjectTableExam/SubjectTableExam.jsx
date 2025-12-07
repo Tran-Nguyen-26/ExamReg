@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import './Style-SubjectTableExam.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const SubjectTableExam = ({subjects, onDelete}) => {
     const navigate = useNavigate();
+    const { examId } = useParams();
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
     
@@ -53,10 +54,10 @@ const SubjectTableExam = ({subjects, onDelete}) => {
                                         {startIndex + index + 1}
                                     </td>
                                     <td className='subject-table-cell subject-code'>
-                                        {subject.code}
+                                        {subject.subjectCode}
                                     </td>
                                     <td className='subject-table-cell subject-table-name'>{subject.name}</td>
-                                    <td className='subject-table-cell subject-sessions' onClick={()=>navigate("/admin/exam-management/exam-info/sessions/")}>{subject.sessions}</td>
+                                    <td className='subject-table-cell subject-sessions' onClick={()=>navigate(`/admin/exam-management/exam-info/${examId}/subject/${subject.id}/sessions`)}>{subject.sessions}</td>
                                     <td className='subject-table-cell'>
                                         {subject.creditHour}
                                     </td>

@@ -104,8 +104,11 @@ public class ExamController {
     }
 
     @GetMapping("/{examId}/subjects")
-    public ResponseEntity<ApiResponse<?>> getSubjectsByExamId(@PathVariable Long examId) {
-        List<SubjectResponse> responses = examService.getSubjectsByExamId(examId);
-        return ResponseEntity.ok(ApiResponse.success("Get subjects success", responses));
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
+    public ResponseEntity<ApiResponse<List<SubjectResponse>>> getSubjectsOfExam(
+        @PathVariable Long examId
+    ) {
+        List<SubjectResponse> subjects = examService.getSubjectsOfExam(examId);
+        return ResponseEntity.ok(ApiResponse.success("Subjects retrieved successfully", subjects));
     }
 }

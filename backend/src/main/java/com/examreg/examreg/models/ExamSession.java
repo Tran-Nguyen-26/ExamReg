@@ -13,38 +13,50 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 @Entity
+@Builder
 public class ExamSession {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private String examSessionCode;
-
-  @JsonFormat(pattern = "dd/MM/yyyy")
   private LocalDate date;
+
+  private LocalTime startTime;
 
   private int capacity;
 
-  @JsonFormat(pattern = "HH:mm")
-  private LocalTime starTime;
+  private int registeredCount = 0;
 
   @ManyToOne
-  @JoinColumn(name = "exam_id")
-  private Exam exam;
+  @JoinColumn(name = "subject_id")
+  private Subject subject;
 
   @ManyToOne
   @JoinColumn(name = "room_id")
   private Room room;
 
   @ManyToOne
-  @JoinColumn(name = "subject_id")
-  private Subject subject;
+  @JoinColumn(name = "exam_id")
+  private Exam exam;
 
   @OneToMany(mappedBy = "examSession")
   private List<ExamRegistration> examRegistrations;
+
+  public boolean isFull() {
+    return registeredCount >= capacity;
+  }
+
+  public boolean hasAvailableSlots() {
+    return registeredCount < capacity;
+  }
 }

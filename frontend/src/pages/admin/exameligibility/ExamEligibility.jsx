@@ -42,7 +42,7 @@ const ExamEligibility = () => {
     const fetchSubjects = async () => {
       if (!exam) return 
       try {
-        const subjectData = await examService.getSubjectsByExamId(exam.id)
+        const subjectData = await examService.getSubjectsOfExam(exam.id)
         const subjectResponses = subjectData.map(sub => Subject.fromJSON(sub))
         setSubjects(subjectResponses)
 
