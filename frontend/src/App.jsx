@@ -54,8 +54,6 @@ const App = () => {
           <Route path="/student/ticket" element={<ExamTicket/>}></Route>
           <Route path="/student/exam-schedule" element={<ExamSchedule/>}></Route>
           <Route path="/admin/student-management" element={<StudentManagement/>}></Route>
-          <Route path="/admin/course-management" element={<CourseManagement/>}></Route>
-          <Route path="/admin/report" element={<Report/>}></Route>
           <Route path="/admin/exam-eligibility" element={<ExamEligibility/>}></Route>
         </Routes>
         <ScrollToTop/>

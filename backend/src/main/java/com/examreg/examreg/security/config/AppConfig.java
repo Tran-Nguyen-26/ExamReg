@@ -70,7 +70,7 @@ public class AppConfig {
       .exceptionHandling(ex -> ex.authenticationEntryPoint(authEntryPoint))
       .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
       .authorizeHttpRequests(auth -> auth
-        .requestMatchers("/api/v1/auth/login", "/api/v1/subjects/**").permitAll().anyRequest().authenticated());
+        .requestMatchers("/api/v1/auth/login", "/api/v1/subjects/**", "/api/v1/reports/**", "/api/v1/exams").permitAll().anyRequest().authenticated());
     http.authenticationProvider(authenticationProvider());
     http.addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     return http.build();
