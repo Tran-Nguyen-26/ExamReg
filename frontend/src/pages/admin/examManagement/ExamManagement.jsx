@@ -75,12 +75,14 @@ const ExamManagement = () => {
         setSelectedExam(null);
     };
     
-    const handleAddSubject = () => {
+    const handleAddSubject = (exam) => {
         setIsAddExamSubjectsModal(true)
+        setSelectedExam(exam);
     }
 
     const closeAddSubject = () => {
         setIsAddExamSubjectsModal(false);
+        setSelectedExam(null);
     }
     // Handler để lưu thay đổi
     const handleUpdateExam = async (updatedExam) => {
@@ -226,6 +228,7 @@ const ExamManagement = () => {
             {isAddExamSubjectsModal && (<AddExamSubjectsModal
             onClose={closeAddSubject}
             availableSubjects={availableSubjects}
+            exam={selectedExam}
             />)}
         </div>
     )
