@@ -29,7 +29,7 @@ const CourseManagement = () => {
         try {
             setLoading(true);
             setError(null);
-            const response = await apiCall('/subjects', { method: 'GET' }, false);
+            const response = await apiCall('/subjects', { method: 'GET' }, true);
             console.log('API Response:', response);
             if (response.data) {
                 console.log('Subjects data:', response.data);
@@ -66,7 +66,7 @@ const CourseManagement = () => {
             const response = await apiCall('/subjects', {
                 method: 'POST',
                 body: JSON.stringify(subjectData)
-            }, false);
+            }, true);
 
             if (response.data) {
                 alert('Thêm môn học thành công!');
@@ -106,7 +106,7 @@ const CourseManagement = () => {
             const response = await apiCall(`/subjects/${selectedCourse.id}`, {
                 method: 'PUT',
                 body: JSON.stringify(subjectData)
-            }, false);
+            }, true);
 
             if (response.data) {
                 alert('Cập nhật môn học thành công!');
@@ -124,7 +124,7 @@ const CourseManagement = () => {
             try {
                 const response = await apiCall(`/subjects/${subject.id}`, {
                     method: 'DELETE'
-                }, false);
+                }, true);
 
                 if (response.data) {
                     alert('Xóa môn học thành công!');

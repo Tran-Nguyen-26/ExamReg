@@ -17,6 +17,10 @@ const ExamSession = ({data, isSelected, onSelect}) => {
         <span>{data.room.name}</span>
       </div>
       <div className='session-info'>
+        <span>Số lượng:</span>
+        <span>{`${data.registeredCount}/${data.capacity}`}</span>
+      </div>
+      <div className='session-info'>
         <span>Trạng thái:</span>
         <span className={`status ${data.status === "AVAILABLE" ? 'available' : "full"}`}>
           {data.status === 'AVAILABLE' ? 'Còn chỗ': 'Hết chỗ'}

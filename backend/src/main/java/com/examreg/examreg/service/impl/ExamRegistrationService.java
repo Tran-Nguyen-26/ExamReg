@@ -33,21 +33,28 @@ public class ExamRegistrationService implements IExamRegistrationService {
   }
 
   @Override
+  public boolean existsByStudentIdAndExamSession_SubjectId_ExamId(Long studentId, Long subjectId, Long examId) {
+    return examRegistrationRepository
+      .existsByStudentIdAndExamSession_SubjectIdAndExamSession_ExamId(studentId, subjectId, examId);
+  }
+
+  @Override
   public int getRegisteredCount(Long examSessionId) {
     return examRegistrationRepository.countByExamSessionId(examSessionId);
   }
 
   @Override
-  public List<ExamRegistration> getExamRegistrationsByStudentId(Long studentId) {
-    return examRegistrationRepository.findByStudentId(studentId);
+  public List<ExamRegistration> getExamRegistrationsByStudentId(Long studentId, Long examId) {
+    return examRegistrationRepository.findByStudentIdAndExamSession_ExamId(studentId, examId);
   }
 
   @Override
-  public List<ExamRegistrationResponse> getExamRegistrationResponses(Long studentId) {
-    Map<Long, SubjectStatusResponse> statusMap = statusService.getSubjectStatusResponse(studentId)
+  public List<ExamRegistrationResponse> getExamRegistrationResponses(Long studentId, Long examId) {
+    Map<Long, SubjectStatusResponse> statusMap = statusService
+      .getSubjectStatusResponseByStudentIdAndExamId(studentId, examId)
       .stream()
       .collect(Collectors.toMap(s -> s.getSubject().getId(), Function.identity()));
-    List<ExamRegistration> examRegistrations = getExamRegistrationsByStudentId(studentId);
+    List<ExamRegistration> examRegistrations = getExamRegistrationsByStudentId(studentId, examId);
     return examRegistrations
       .stream()
       .map(e -> {
@@ -62,10 +69,8 @@ public class ExamRegistrationService implements IExamRegistrationService {
 
   @Override
   public void deleteExamRegistration(Long examRegistrationId, Long studentId) {
-    List<ExamRegistration> examRegistrations = getExamRegistrationsByStudentId(studentId);
-    boolean exists = examRegistrations.stream()
-      .anyMatch(reg -> reg.getId().equals(examRegistrationId));
-    if (exists) {
+    boolean alreadyExamRegistration = examRegistrationRepository.existsByIdAndStudentId(examRegistrationId, studentId);
+    if (alreadyExamRegistration) {
       examRegistrationRepository.deleteById(examRegistrationId);
     } else {
       throw new ResourceNotFoundException("ExamRegistration not found for this student");

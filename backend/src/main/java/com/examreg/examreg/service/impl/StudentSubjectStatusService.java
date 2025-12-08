@@ -4,11 +4,21 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.examreg.examreg.dto.request.AddStudentSubjectStatusRequest;
+import com.examreg.examreg.dto.response.ConditionResponse;
 import com.examreg.examreg.dto.response.SubjectStatusResponse;
+import com.examreg.examreg.exceptions.BadRequestException;
+import com.examreg.examreg.mapper.ConditionMapper;
 import com.examreg.examreg.mapper.SubjectStatusMapper;
+import com.examreg.examreg.models.Exam;
+import com.examreg.examreg.models.Student;
 import com.examreg.examreg.models.StudentSubjectStatus;
+import com.examreg.examreg.models.Subject;
 import com.examreg.examreg.repository.StudentSubjectStatusRepository;
+import com.examreg.examreg.service.IExamService;
+import com.examreg.examreg.service.IStudentService;
 import com.examreg.examreg.service.IStudentSubjectStatusService;
+import com.examreg.examreg.service.ISubjectService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,17 +28,49 @@ public class StudentSubjectStatusService implements IStudentSubjectStatusService
   
   private final StudentSubjectStatusRepository statusRepository;
   private final SubjectStatusMapper statusMapper;
+  private final ConditionMapper conditionMapper;
+  private final IStudentService studentService;
+  private final ISubjectService subjectService;
+  private final IExamService examService;
 
   @Override
-  public List<StudentSubjectStatus> getStudentSubjectStatusByStudentId(Long studentId) {
-    return statusRepository.findAllByStudentId(studentId);
+  public List<StudentSubjectStatus> getStudentSubjectStatusByStudentIdAndExamId(Long studentId, Long examId) {
+    return statusRepository.findAllByStudent_IdAndExam_Id(studentId, examId);
   }
 
   @Override
-  public List<SubjectStatusResponse> getSubjectStatusResponse(Long studentId) {
-    return statusRepository.findAllByStudentId(studentId)
+  public List<SubjectStatusResponse> getSubjectStatusResponseByStudentIdAndExamId(Long studentId, Long examId) {
+    return statusRepository.findAllByStudent_IdAndExam_Id(studentId, examId)
       .stream()
       .map(statusMapper::buildSubjectStatusReponse)
+      .toList();
+  }
+
+  @Override
+  public void addStudentSubjectStatus(AddStudentSubjectStatusRequest request) {
+    Student student = studentService.getStudentByStudentCode(request.getStudentCode());
+    Subject subject = subjectService.getSubjectBySubjectCode(request.getSubjectCode());
+    Exam exam = examService.getExamById(request.getExamId());
+    boolean existsSSS = statusRepository.existsByStudentAndSubjectAndExam(student, subject, exam);
+    if (existsSSS) {
+      throw new BadRequestException("Đã tồn tại bản ghi");
+    }
+    StudentSubjectStatus ssStatus = StudentSubjectStatus.builder()
+      .status(request.getStatus())
+      .student(student)
+      .subject(subject)
+      .exam(exam)
+      .reason(request.getReason())
+      .build();
+    
+    statusRepository.save(ssStatus);
+  }
+
+  @Override
+  public List<ConditionResponse> getStudentsCondition(Long examId, Long subjectId) {
+    List<StudentSubjectStatus> ssStatus = statusRepository.findByExam_IdAndSubject_Id(examId, subjectId);
+    return ssStatus.stream()
+      .map(conditionMapper::buildConditionResponse)
       .toList();
   }
 }

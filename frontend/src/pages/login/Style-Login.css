@@ -1,3 +1,7 @@
+.login-page {
+  position: relative;
+}
+
 .login {
   width: 100vw;
   height: 100vh;
@@ -8,6 +12,11 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
+}
+
+.login.blur {
+  filter: blur(4px);
+  pointer-events: none;
 }
 
 .left-panel {

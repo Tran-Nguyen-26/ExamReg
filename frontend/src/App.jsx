@@ -33,8 +33,9 @@ const AnimatedRoutes = () => {
         <Route path="/admin/student-management" element={<StudentManagement/>}></Route>
         <Route path="/admin/course-management" element={<CourseManagement/>}></Route>
         <Route path="/admin/exam-management" element={<ExamManagement/>}></Route>
-        <Route path="/admin/exam-management/exam-info" element={<ExamInformation/>}></Route>
-        <Route path="/admin/exam-management/exam-info/sessions" element={<SubjectSessions/>}></Route>
+        <Route path="/admin/exam-management/exam-info/:examId" element={<ExamInformation/>}></Route>
+        <Route path="/admin/exam-management/exam-info/:examId/subject/:subjectId/sessions" element={<SubjectSessions/>}></Route>
+        <Route path="/admin/exam-eligibility" element={<ExamEligibility/>}></Route>
         <Route path="/admin/report" element={<Report/>}></Route>
       </Routes>
     </AnimatePresence>
@@ -47,7 +48,7 @@ const App = () => {
   return (
     <Provider> 
       <BrowserRouter>
-        <Routes>
+        {/* <Routes>
           <Route path="/" element={<Navigate to ="/admin/student-management"/>}></Route>
           <Route path="/student/home" element={<Home/>}></Route>
           <Route path="/student/register" element={<ExamRegister/>}></Route>
@@ -55,7 +56,7 @@ const App = () => {
           <Route path="/student/exam-schedule" element={<ExamSchedule/>}></Route>
           <Route path="/admin/student-management" element={<StudentManagement/>}></Route>
           <Route path="/admin/exam-eligibility" element={<ExamEligibility/>}></Route>
-        </Routes>
+        </Routes> */}
         <ScrollToTop/>
         <AnimatedRoutes/>
       </BrowserRouter>

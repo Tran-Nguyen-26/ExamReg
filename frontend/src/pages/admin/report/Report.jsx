@@ -31,7 +31,7 @@ const Report = () => {
     const fetchExams = async () => {
         try {
             setLoading(true);
-            const response = await apiCall('/exams', { method: 'GET' }, false);
+            const response = await apiCall('/exams', { method: 'GET' }, true);
             console.log('Exams response:', response);
             if (response.data && response.data.length > 0) {
                 setExams(response.data);
@@ -48,7 +48,7 @@ const Report = () => {
     const fetchReportStats = async (examId) => {
         try {
             setLoading(true);
-            const response = await apiCall(`/reports/exam/${examId}`, { method: 'GET' }, false);
+            const response = await apiCall(`/reports/exam/${examId}`, { method: 'GET' }, true);
             console.log('Report stats response:', response);
             if (response.data) {
                 setStats({

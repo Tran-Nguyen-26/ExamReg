@@ -1,22 +1,54 @@
 import "./Style-SessionTable.css"
 import { PiDotsThreeCircle } from "react-icons/pi";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { MdOutlinePeopleAlt } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import { FaTrashCan } from "react-icons/fa6";
-const SessionTable = ({sessions}) => {
+import EditExamSessionModal from "../editExamSessionModal/EditExamSessionModal";
+import { examSessionService } from "../../../services/examSessionService";
+
+const SessionTable = ({sessions, onSave}) => {
     const [openDropdown, setOpenDropdown] = useState(null);
     const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+    const [isEditExamSessionModal, setIsEditExamSessionModal] = useState(false);
+    const [selectedSession, setSelectedSession] = useState(null);
+    const dropdownRef = useRef(null);
+
+    const handleEditClick = (session) => {
+        console.log("selectedSession =", session);
+        setSelectedSession(session);
+        setIsEditExamSessionModal(true)
+    }
 
     const toggleDropdown = (sessionId, event) => {
         if (openDropdown === sessionId) {
             setOpenDropdown(null);
         } else {
             const rect = event.currentTarget.getBoundingClientRect();
-            setDropdownPosition({
-                top: rect.bottom + 5,
-                left: rect.right - 180 // 180 là width của dropdown
-            });
+            const dropdownWidth = 180;
+            const dropdownHeight = 150; // Ước tính chiều cao dropdown
+            const viewportHeight = window.innerHeight;
+            const viewportWidth = window.innerWidth;
+            
+            // Tính toán vị trí top
+            let top = rect.bottom + 5;
+            // Nếu dropdown sẽ bị tràn xuống dưới viewport, hiển thị phía trên
+            if (top + dropdownHeight > viewportHeight) {
+                top = rect.top - dropdownHeight - 5;
+            }
+            
+            // Tính toán vị trí left
+            let left = rect.right - dropdownWidth;
+            // Nếu dropdown bị tràn ra ngoài bên trái, điều chỉnh
+            if (left < 0) {
+                left = rect.left;
+            }
+            // Nếu dropdown bị tràn ra ngoài bên phải, điều chỉnh
+            if (left + dropdownWidth > viewportWidth) {
+                left = viewportWidth - dropdownWidth - 10;
+            }
+            
+            setDropdownPosition({ top, left });
             setOpenDropdown(sessionId);
         }
     };
@@ -24,7 +56,6 @@ const SessionTable = ({sessions}) => {
     // Xử lý click ra ngoài
     useEffect(() => {
         const handleClickOutside = (event) => {
-            // Kiểm tra nếu click không phải vào dropdown hoặc icon
             if (openDropdown && 
                 !event.target.closest('.session-dropdown-menu') && 
                 !event.target.closest('.session-table-action')) {
@@ -32,14 +63,43 @@ const SessionTable = ({sessions}) => {
             }
         };
 
-        // Thêm event listener
         document.addEventListener('mousedown', handleClickOutside);
         
-        // Cleanup
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [openDropdown]);
+
+    // Xử lý khi scroll - cập nhật vị trí dropdown
+    useEffect(() => {
+        const handleScroll = () => {
+            if (openDropdown) {
+                setOpenDropdown(null); // Đóng dropdown khi scroll
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll, true); // true để catch cả scroll trong container
+        
+        return () => {
+            window.removeEventListener('scroll', handleScroll, true);
+        };
+    }, [openDropdown]);
+
+    const handleDeleteClick = async (sessionId) => {
+        const ok = window.confirm("Bạn có chắc muốn xóa ca thi này không?");
+        if (!ok) return;
+
+        try {
+        await examSessionService.delete(sessionId);
+        if (onSave) {
+            const newSessions = sessions.filter((s) => s.id !== sessionId);
+            onSave(newSessions);
+        }
+        } catch (err) {
+        console.error("Delete exam session error:", err);
+        alert(err?.message || "Xóa ca thi thất bại!");
+        }
+    };
 
     return (
         <>
@@ -91,9 +151,10 @@ const SessionTable = ({sessions}) => {
                 </table>
             </div>
             
-            {/* Dropdown nằm ngoài table */}
+            {/* Dropdown với position fixed */}
             {openDropdown && (
                 <div 
+                    ref={dropdownRef}
                     className="session-dropdown-menu"
                     style={{
                         top: `${dropdownPosition.top}px`,
@@ -113,7 +174,8 @@ const SessionTable = ({sessions}) => {
                     <button 
                         className="session-dropdown-item"
                         onClick={() => {
-                            console.log('Chỉnh sửa:', openDropdown);
+                            const session = sessions.find((s) => s.id === openDropdown);
+                            if (session) handleEditClick(session);
                             setOpenDropdown(null);
                         }}
                     >
@@ -123,8 +185,9 @@ const SessionTable = ({sessions}) => {
                     <button 
                         className="session-dropdown-item session-dropdown-item-danger"
                         onClick={() => {
-                            console.log('Xóa:', openDropdown);
+                            const id = openDropdown;
                             setOpenDropdown(null);
+                            handleDeleteClick(id);
                         }}
                     >
                         <FaTrashCan className="session-delete-icon "/>
@@ -132,6 +195,11 @@ const SessionTable = ({sessions}) => {
                     </button>
                 </div>
             )}
+            {isEditExamSessionModal && (<EditExamSessionModal
+            onClose={() => {setIsEditExamSessionModal(false)}}
+            session={selectedSession}
+            onSave={onSave}/>)
+            }
         </div>
         </>
     )

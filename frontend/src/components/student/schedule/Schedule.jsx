@@ -7,7 +7,7 @@ import logo_download from '../../../assets/logo_download.png'
 import logo_print from '../../../assets/logo_print.png'
 import logo_remove from '../../../assets/logo_remove.png'
 
-const Schedule = ({ data, onCancel }) => {
+const Schedule = ({ data, onCancel, onDownload, onPrint }) => {
   return (
     <div className='exam-session-schedule'>
       <div className='subject-header'>
@@ -41,11 +41,11 @@ const Schedule = ({ data, onCancel }) => {
         </div>
       </div>
       <div className='action-buttons'>
-        <div className='action-button button-download'>
+        <div className='action-button button-download' onClick={() => onDownload(data)}>
           <img src={logo_download} alt="" />
           <span>Tải phiếu</span>
         </div>
-        <div className='action-button button-print'>
+        <div className='action-button button-print' onClick={() => onPrint(data)}>
           <img src={logo_print} alt="" />
           <span>In phiếu</span>
         </div>

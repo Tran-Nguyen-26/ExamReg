@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { IoMdClose } from 'react-icons/io';
+import { IoIosClose } from "react-icons/io";
 import './Style-EditExamModal.css';
 
 const EditExamModal = ({ exam, onClose, onSubmit }) => {
@@ -88,16 +88,16 @@ const EditExamModal = ({ exam, onClose, onSubmit }) => {
 
   return (
     <div className="edit-exam-modal-overlay" onClick={handleOverlayClick}>
-      <div className="edit-exam-modal">
+      <div className="edit-exam-modal-main" onClick={(e)=> e.stopPropagation()}>
         <div className="edit-exam-modal-header">
           <h2 className="edit-exam-modal-title">Chỉnh sửa kỳ thi</h2>
-          <button className="close-button" onClick={onClose}>
-            <IoMdClose size={24} />
+          <button className="edit-exam-modal-close-button" onClick={onClose}>
+            <IoIosClose className='edit-exam-modal-close-icon' />
           </button>
         </div>
 
         <div className="edit-exam-modal-form">
-          <div className="form-group">
+          <div className="edit-exam-modal-form-group">
             <label htmlFor="name">
               Tên kỳ thi <span className="required">*</span>
             </label>
@@ -107,14 +107,14 @@ const EditExamModal = ({ exam, onClose, onSubmit }) => {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className={errors.name ? 'error' : ''}
+              className={errors.name ? 'edit-exam-modal-error' : ''}
               placeholder="Nhập tên kỳ thi"
             />
-            {errors.name && <span className="error-message">{errors.name}</span>}
+            {errors.name && <span className="edit-exam-modal-error-message">{errors.name}</span>}
           </div>
 
-          <div className="form-row">
-            <div className="form-group">
+          <div className="edit-exam-modal-form-row">
+            <div className="edit-exam-modal-form-group">
               <label htmlFor="startDate">
                 Ngày bắt đầu <span className="required">*</span>
               </label>
@@ -124,12 +124,12 @@ const EditExamModal = ({ exam, onClose, onSubmit }) => {
                 name="startDate"
                 value={formData.startDate}
                 onChange={handleChange}
-                className={errors.startDate ? 'error' : ''}
+                className={errors.startDate ? 'edit-exam-modal-error' : ''}
               />
-              {errors.startDate && <span className="error-message">{errors.startDate}</span>}
+              {errors.startDate && <span className="edit-exam-modal-error-message">{errors.startDate}</span>}
             </div>
 
-            <div className="form-group">
+            <div className="edit-exam-modal-form-group">
               <label htmlFor="endDate">
                 Ngày kết thúc <span className="required">*</span>
               </label>
@@ -139,13 +139,13 @@ const EditExamModal = ({ exam, onClose, onSubmit }) => {
                 name="endDate"
                 value={formData.endDate}
                 onChange={handleChange}
-                className={errors.endDate ? 'error' : ''}
+                className={errors.endDate ? 'edit-exam-modal-error' : ''}
               />
-              {errors.endDate && <span className="error-message">{errors.endDate}</span>}
+              {errors.endDate && <span className="edit-exam-modal-error-message">{errors.endDate}</span>}
             </div>
           </div>
 
-          <div className="form-group">
+          <div className="edit-exam-modal-form-group">
             <label htmlFor="description">Mô tả</label>
             <textarea
               id="description"
@@ -157,11 +157,11 @@ const EditExamModal = ({ exam, onClose, onSubmit }) => {
             />
           </div>
 
-          <div className="modal-actions">
-            <button type="button" className="btn-cancel" onClick={onClose}>
+          <div className="edit-exam-modal-modal-actions">
+            <button type="edit-exam-modal-button" className="edit-exam-modal-btn-cancel" onClick={onClose}>
               Hủy
             </button>
-            <button type="button" className="btn-submit" onClick={handleSubmit}>
+            <button type="edit-exam-modal-button" className="edit-exam-modal-btn-submit" onClick={handleSubmit}>
               Lưu thay đổi
             </button>
           </div>

@@ -12,3 +12,20 @@ export class ExamResponse {
     return new ExamResponse(json)
   }
 }
+
+export class Exam {
+  constructor(data) {
+    this.id = data?.id ?? null;
+    this.examCode = data?.examCode ?? null;
+    this.examName = data?.examName ?? null;
+    this.startDate = data?.startDate ?? null;
+    this.endDate = data?.endDate ?? null;
+    this.examStatus = data?.examStatus ?? null;
+    this.description = data?.description ?? null;
+    this.isOpen = data?.isOpen ?? false;
+  }
+
+  static fromJSON(json) {
+    return new Exam(json)
+  }
+}

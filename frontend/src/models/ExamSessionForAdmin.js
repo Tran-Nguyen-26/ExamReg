@@ -1,7 +1,6 @@
-import { Room } from "./Room";
 import { SubjectStatus } from "./SubjectStatus";
 
-export class ExamSession {
+export class ExamSessionForAdmin {
   constructor(data) {
     this.id = data.id;
     this.examSessionCode = data.examSessionCode;
@@ -9,12 +8,16 @@ export class ExamSession {
     this.capacity = data.capacity;
     this.registeredCount = data.registeredCount;
     this.startTime = data.startTime;
-    this.room = data.room ? Room.fromJSON(data.room) : null;
+    this.roomName = data.roomName;
+    this.subjectName = data.subjectName;
+    this.locationName = data.locationName;
+    this.locationId = data.locationId;
+    this.roomId = data.roomId;
     this.subjectStatus = data.subjectStatus ? SubjectStatus.fromJSON(data.subjectStatus) : null;
     this.status = data.status;
   }
 
   static fromJSON(json) {
-    return new ExamSession(json);
+    return new ExamSessionForAdmin(json);
   }
 }

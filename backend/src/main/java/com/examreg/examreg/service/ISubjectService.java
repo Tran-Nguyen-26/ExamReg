@@ -2,13 +2,22 @@ package com.examreg.examreg.service;
 
 import java.util.List;
 
-import com.examreg.examreg.dto.SubjectDTO;
+import com.examreg.examreg.dto.request.SubjectRequest;
+import com.examreg.examreg.dto.response.SubjectResponse;
+import com.examreg.examreg.models.Subject;
 
 public interface ISubjectService {
-  SubjectDTO createSubject(SubjectDTO subjectDTO);
-  SubjectDTO updateSubject(Long id, SubjectDTO subjectDTO);
-  void deleteSubject(Long id);
-  SubjectDTO getSubjectById(Long id);
-  List<SubjectDTO> getAllSubjects();
-  List<SubjectDTO> getSubjectsByExamId(Long examId);
+
+  public Subject getSubjectById(Long subjectId);
+
+  public Subject getSubjectBySubjectCode(String subjectCode);
+
+  public SubjectResponse createSubject(SubjectRequest subject);
+
+  public SubjectResponse updateSubject(Long id, SubjectRequest request);
+
+  public void deleteSubject(Long id);
+
+  public List<SubjectResponse> getAllSubjects();
+  
 }

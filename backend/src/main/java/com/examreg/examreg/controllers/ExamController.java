@@ -4,15 +4,12 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import com.examreg.examreg.dto.request.ExamRequest;
 import com.examreg.examreg.dto.response.ApiResponse;
 import com.examreg.examreg.dto.response.ExamResponse;
-import com.examreg.examreg.exceptions.ResourceNotFoundException;
-import com.examreg.examreg.models.Exam;
-import com.examreg.examreg.security.user.AppUserDetails;
+import com.examreg.examreg.dto.response.SubjectResponse;
 import com.examreg.examreg.service.IExamService;
 
 import jakarta.validation.Valid;
@@ -86,5 +83,31 @@ public class ExamController {
         return ResponseEntity.ok(
                 ApiResponse.success("Exam opened successfully", response)
         );
+    }
+
+    @GetMapping("/is-open")
+    public ResponseEntity<ApiResponse<ExamResponse>> getExamIsOpen() {
+        ExamResponse response = examService.getExamIsOpen();
+        return ResponseEntity.ok(
+                ApiResponse.success("Get Exam open successfully", response)
+        );
+    }
+
+    @PostMapping("/{examId}/subjects")
+    public ResponseEntity<ApiResponse<?>> addSubjectsToExam(
+        @PathVariable Long examId,
+        @RequestBody List<Long> subjectIds
+    ) {
+        examService.addSubjectsToExam(examId, subjectIds);
+        return ResponseEntity.ok(ApiResponse.success("Add subjects to exam successful"));
+    }
+
+    @GetMapping("/{examId}/subjects")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
+    public ResponseEntity<ApiResponse<List<SubjectResponse>>> getSubjectsOfExam(
+        @PathVariable Long examId
+    ) {
+        List<SubjectResponse> subjects = examService.getSubjectsOfExam(examId);
+        return ResponseEntity.ok(ApiResponse.success("Subjects retrieved successfully", subjects));
     }
 }

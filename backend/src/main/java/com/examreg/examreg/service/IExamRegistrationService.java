@@ -9,11 +9,13 @@ public interface IExamRegistrationService {
 
   public boolean existsByStudentIdAndExamSessionId(Long studentId, Long examSessionId);
 
+  public boolean existsByStudentIdAndExamSession_SubjectId_ExamId(Long studentId, Long subjectId, Long examId);
+
   public int getRegisteredCount(Long examSessionId);
 
-  public List<ExamRegistration> getExamRegistrationsByStudentId(Long studentId);
+  public List<ExamRegistration> getExamRegistrationsByStudentId(Long studentId, Long examId);
 
-  public List<ExamRegistrationResponse> getExamRegistrationResponses(Long studentId);
+  public List<ExamRegistrationResponse> getExamRegistrationResponses(Long studentId, Long examId);
 
   public void deleteExamRegistration(Long examRegistrationId, Long studentId);
 

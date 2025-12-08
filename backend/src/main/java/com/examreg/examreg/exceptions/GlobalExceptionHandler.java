@@ -102,7 +102,7 @@ public class GlobalExceptionHandler {
         .status(HttpStatus.UNAUTHORIZED.value())
         .path(request.getRequestURI())
         .error("Unauthorized")
-        .message("Incorrect email or password")
+        .message("Tài khoản hoặc mật khẩu không đúng")
         .build();
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
   }

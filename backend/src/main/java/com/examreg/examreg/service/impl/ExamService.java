@@ -1,4 +1,5 @@
 package com.examreg.examreg.service.impl;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -6,11 +7,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.examreg.examreg.dto.request.ExamRequest;
 import com.examreg.examreg.dto.response.ExamResponse;
+import com.examreg.examreg.dto.response.SubjectResponse;
+import com.examreg.examreg.exceptions.BadRequestException;
 import com.examreg.examreg.exceptions.ResourceNotFoundException;
 import com.examreg.examreg.models.Exam;
 import com.examreg.examreg.models.Subject;
 import com.examreg.examreg.mapper.ExamMapper;
+import com.examreg.examreg.mapper.SubjectMapper;
 import com.examreg.examreg.repository.ExamRepository;
+import com.examreg.examreg.repository.SubjectRepository;
 import com.examreg.examreg.service.IExamService;
 
 import lombok.RequiredArgsConstructor;
@@ -18,8 +23,11 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ExamService implements IExamService {
+
     private final ExamRepository examRepository;
     private final ExamMapper examMapper;
+    private final SubjectRepository subjectRepository;
+    private final SubjectMapper subjectMapper;
 
     @Override
     @Transactional
@@ -94,5 +102,58 @@ public class ExamService implements IExamService {
         if (request.getStartDate().isAfter(request.getEndDate())) {
             throw new IllegalArgumentException("Ngày bắt đầu phải trước ngày kết thúc!");
         }
+    }
+
+    @Override
+    public Exam getExamById(Long id) {
+        return examRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Exam not found with id: " + id));
+    }
+
+    @Override
+    public Exam getExamByExamCode(String examCode) {
+        return examRepository.findByExamCode(examCode)
+            .orElseThrow(() -> new ResourceNotFoundException("Exam not found"));
+    }
+
+    @Override
+    public ExamResponse getExamIsOpen() {
+        return examMapper.buildExamResponse(examRepository.findByIsOpenTrue());
+    }
+
+    @Override
+    public void addSubjectsToExam(Long examId, List<Long> subjectIds) {
+        Exam exam = getExamById(examId);
+        List<Long> alreadySubjectIds = exam.getSubjects()
+            .stream()
+            .map(Subject::getId)
+            .collect(Collectors.toList());
+        
+        if (exam.getSubjects() == null) {
+            exam.setSubjects(new ArrayList<>());
+        }
+    
+        for (Long subjectId : subjectIds) {
+            if (alreadySubjectIds.contains(subjectId)) {
+                throw new BadRequestException("Đã tồn tại môn học có id " + subjectId + " trong kì thi");
+            }
+            Subject subject = subjectRepository.findById(subjectId)
+                .orElseThrow(() -> new ResourceNotFoundException("Subject not found with id: " + subjectId));  
+            exam.getSubjects().add(subject);
+        }
+        examRepository.save(exam);
+    }
+
+    @Override
+    public List<SubjectResponse> getSubjectsOfExam(Long examId) {
+        Exam exam = getExamById(examId);
+
+        if (exam.getSubjects() == null || exam.getSubjects().isEmpty()) {
+        return new ArrayList<>();
+        }
+
+        return exam.getSubjects().stream()
+            .map(subjectMapper::buildSubjectResponse)
+            .collect(Collectors.toList());
     }
 }

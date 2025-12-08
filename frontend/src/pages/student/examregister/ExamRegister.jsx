@@ -23,13 +23,13 @@ const ExamRegister = () => {
   const [examSessions, setExamSessions] = useState([])
 
   const [step, setStep] = useState(1)
-  const navigate = useNavigate()
   const [showLocationWarning, setShowLocationWarning] = useState(false)
   const [showExamSessionWarning, setShowExamSessionWarning] = useState(false)
   const [showTicket, setShowTicket] = useState(false)
 
 
   const {
+    openExam,
     selectedSubject,
     selectedLocation, 
     setSelectedLocation,
@@ -42,7 +42,7 @@ const ExamRegister = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const examSessionsBySubjectId = await getExamSessionsBySubjectId(subjectId)
+        const examSessionsBySubjectId = await getExamSessionsBySubjectId(subjectId, openExam.id)
         setExamSessions(examSessionsBySubjectId)
       } catch (error) {
         console.error("Failed to load exam sessions", error)
@@ -81,8 +81,6 @@ const ExamRegister = () => {
     return examSessions.filter(es => es.room.location.id === selectedLocation?.id)
   }, [examSessions, selectedLocation])
 
-  console.log(filteredSessionsBySelectedLocation)
-
   const toggleExamSession = (examSession) => {
     if (examSession.status === "AVAILABLE") {
       selectedExamSession?.id == examSession.id ? setSelectedExamSession(null) : setSelectedExamSession(examSession)
@@ -108,17 +106,18 @@ const ExamRegister = () => {
       setShowTicket(true)
     } catch(error) {
       console.error("Failed to register: ", error)
-      window.alert("Đăng kí ca thi thất bại")
+      window.alert(`Đăng kí ca thi thất bại \n ${error.response.data.message}`)
     }
   }
 
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: window.innerWidth }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -50 }}
-      transition={{ duration: 0.4 }}
+      key={step}
+      initial={{ opacity: 0}}
+      animate={{ opacity: 1}}
+      exit={{ opacity: 0}}
+      transition={{ duration: 0.3 }}
     >
       <div className={`exam-register ${showTicket ? 'blurred' : ''}`}>
         <Header/>
@@ -128,9 +127,11 @@ const ExamRegister = () => {
         {
           step === 1 && (
             <motion.div
-              initial={{ opacity: 0, x: window.innerWidth }}
-              animate={{ opacity: 1, x: 0, transition: {duration: 0.4, delay: 0.4} }}
-              exit={{ opacity: 1, x: -window.innerWidth, transition: {duration: 0.4, delay: 0}}}
+              key='step-1'
+              initial= {{ opacity: 0, x: 60 }}
+              animate= {{ opacity: 1, x: 0 }}
+              exit= {{ opacity: 0, x: -40 }}
+              transition= {{ duration: 0.35, ease: "easeOut" }}
             >
               <div className='select-location'>
                 <div className='pos'>
@@ -167,19 +168,13 @@ const ExamRegister = () => {
           step === 2 && (
             <>
               <motion.div
-                initial={{ opacity: 0, y: 1000 }}
-                animate={{ opacity: 1, y: 0 }}
-                // exit={{ opacity: 0, x: -2000 }}
-                transition={{ duration: 0.4, delay: 0.4}}
+                key='step-2'
+                initial= {{ opacity: 0, x: 40 }}
+                animate= {{ opacity: 1, x: 0 }}
+                exit= {{ opacity: 0, x: -20 }}
+                transition= {{ duration: 0.35, ease: "easeOut" }}
               >
                 <SelectedLocation setStep={setStep} location={selectedLocation}/>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: window.innerHeight }}
-                animate={{ opacity: 1, y: 0, transition: {duration: 0.4, delay: 1}}}
-                exit={{ opacity: 0, x: -window.innerWidth, transition: {duration: 0.4}}}
-              >
                 <div className='select-exam-session'>
                   <div className='session'>
                     <img src={logo_exam_session} alt="" />
@@ -214,21 +209,15 @@ const ExamRegister = () => {
         {
           step === 3 && (
             <>
+              <motion.div
+                key='step-3'
+                initial= {{ opacity: 0, x: 40 }}
+                animate= {{ opacity: 1, x: 0 }}
+                exit= {{ opacity: 0, x: -20 }}
+                transition= {{ duration: 0.35, ease: "easeOut", delay: 0.1 }}
+              >
               <SelectedLocation setStep={setStep} location={selectedLocation}/>
-              <motion.div
-                initial={{ opacity: 0, y: window.innerHeight }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, x: -50 }}
-                transition={{ duration: 0.4, delay: 0.6}}
-              >
                 <SelectExamSession setStep={setStep} examSession={selectedExamSession}/>
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, y: window.innerHeight }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, x: -50 }}
-                transition={{ duration: 0.4, delay: 0.8}}
-              >
                 <Reminder/>
                 <button onClick={handleExamSessionRegister}>Xác nhận và đăng kí</button>
               </motion.div>

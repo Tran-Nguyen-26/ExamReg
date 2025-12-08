@@ -6,9 +6,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.examreg.examreg.dto.request.ChangePasswordFirstimeRequest;
+import com.examreg.examreg.dto.request.ResetPasswordRequest;
 import com.examreg.examreg.dto.request.UserLoginRequest;
 import com.examreg.examreg.dto.response.ApiResponse;
 import com.examreg.examreg.dto.response.AuthResponse;
@@ -45,5 +47,18 @@ public class AuthController {
     String token = authHeader.substring(7);
     authService.logout(token);
     return ResponseEntity.ok(ApiResponse.success("Logout successful"));
+  }
+
+  @PostMapping("/forgot-password")
+  public ResponseEntity<ApiResponse<?>> forgotPassword(@RequestParam String email) {
+    authService.sendResetPasswordLink(email);
+    return ResponseEntity.ok(ApiResponse.success("Reset link has been sent!"));
+  }
+
+  //forgot password
+  @PostMapping("/reset-password")
+  public ResponseEntity<ApiResponse<?>> changePassword(@RequestBody ResetPasswordRequest request) {
+    authService.updatePassword(request.getToken(), request.getNewPassword());
+    return ResponseEntity.ok(ApiResponse.success("Password has been updated successfully"));
   }
 }

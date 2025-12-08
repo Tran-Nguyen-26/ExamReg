@@ -8,6 +8,8 @@ export class User {
     this.className = data?.className ?? null;
     this.major = data?.major ?? null;
     this.faculty = data?.faculty ?? null;
+    this.dob = data?.dob ?? null;
+    this.phone = data?.phone ?? null;
     this.role = data?.role ?? null;
     this.firstLogin = data?.firstLogin ?? false;
   }
