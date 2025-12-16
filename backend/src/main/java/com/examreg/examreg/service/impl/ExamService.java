@@ -15,6 +15,7 @@ import com.examreg.examreg.models.Subject;
 import com.examreg.examreg.mapper.ExamMapper;
 import com.examreg.examreg.mapper.SubjectMapper;
 import com.examreg.examreg.repository.ExamRepository;
+import com.examreg.examreg.repository.ExamSessionRepository;
 import com.examreg.examreg.repository.SubjectRepository;
 import com.examreg.examreg.service.IExamService;
 
@@ -28,6 +29,7 @@ public class ExamService implements IExamService {
     private final ExamMapper examMapper;
     private final SubjectRepository subjectRepository;
     private final SubjectMapper subjectMapper;
+    private final ExamSessionRepository examSessionRepository;
 
     @Override
     @Transactional
@@ -73,6 +75,8 @@ public class ExamService implements IExamService {
         Exam exam = examRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Exam not found with id: " + id));
         
+        examSessionRepository.deleteByExamId(id);
+        examRepository.deleteExamSubjects(id);
         examRepository.delete(exam);
     }
 
@@ -82,6 +86,7 @@ public class ExamService implements IExamService {
         Exam exam = examRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Exam not found with id: " + id));
         
+        exam.setOpen(false);
         exam.setExamStatus("closed");
         Exam closedExam = examRepository.save(exam);
         return examMapper.buildExamResponse(closedExam);
@@ -93,6 +98,7 @@ public class ExamService implements IExamService {
         Exam exam = examRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Exam not found with id: " + id));
         
+        exam.setOpen(true);
         exam.setExamStatus("active");
         Exam openedExam = examRepository.save(exam);
         return examMapper.buildExamResponse(openedExam);

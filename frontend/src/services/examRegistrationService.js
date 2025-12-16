@@ -15,5 +15,11 @@ export const examRegistrationService = {
       method: 'DELETE'
     })
     return response.message
+  },
+  getStudentsbyExamSession: async (examSessionId) => {
+    const response = await apiCall(`/exam-registration/exam-session/${examSessionId}/students`, {
+      method: 'GET'
+    })
+    return response.data;
   }
 }

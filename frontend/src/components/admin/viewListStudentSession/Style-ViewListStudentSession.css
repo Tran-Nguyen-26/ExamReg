@@ -103,7 +103,7 @@
   padding: 24px 32px;
 }
 
-.view-list-studentsinfo-bar {
+.view-list-student-info-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -112,7 +112,7 @@
   flex-wrap: wrap;
 }
 
-.view-list-studentscount-badge {
+.view-list-student-count-badge {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -122,23 +122,23 @@
   color: white;
 }
 
-.view-list-studentscount-label {
+.view-list-student-count-label {
   font-size: 14px;
   font-weight: 500;
 }
 
-.view-list-studentscount-number {
+.view-list-student-count-number {
   font-size: 18px;
   font-weight: 700;
 }
 
-.view-list-studentssearch-box {
+.view-list-student-search-box {
   flex: 1;
   max-width: 400px;
   position: relative;
 }
 
-.view-list-studentssearch-icon {
+.view-list-student-search-icon {
   position: absolute;
   left: 14px;
   top: 50%;
@@ -147,7 +147,7 @@
   font-size: 16px;
 }
 
-.view-list-studentssearch-input {
+.view-list-student-search-input {
   width: 100%;
   padding: 10px 14px 10px 40px;
   border: 2px solid #e5e7eb;
@@ -156,13 +156,13 @@
   transition: all 0.2s;
 }
 
-.view-list-studentssearch-input:focus {
+.view-list-student-search-input:focus {
   outline: none;
   border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-.view-list-studentsloading {
+.view-list-student-loading {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -171,7 +171,7 @@
   color: #6b7280;
 }
 
-.view-list-studentsloading-spinner {
+.view-list-student-loading-spinner {
   width: 48px;
   height: 48px;
   border: 4px solid #e5e7eb;
@@ -187,7 +187,7 @@
   }
 }
 
-.view-list-studentsempty {
+.view-list-student-empty {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -196,34 +196,34 @@
   color: #9ca3af;
 }
 
-.view-list-studentsempty-icon {
+.view-list-student-empty-icon {
   font-size: 64px;
   margin-bottom: 16px;
   opacity: 0.5;
 }
 
-.view-list-studentsempty-text {
+.view-list-student-empty-text {
   font-size: 16px;
   margin: 0;
 }
 
-.view-list-studentstable-wrapper {
+.view-list-student-table-wrapper {
   overflow-x: auto;
   border-radius: 8px;
   border: 1px solid #e5e7eb;
 }
 
-.view-list-studentstable {
+.view-list-student-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 14px;
 }
 
-.view-list-studentstable thead {
+.view-list-student-table thead {
   background: #f9fafb;
 }
 
-.view-list-studentstable th {
+.view-list-student-table th {
   padding: 14px 16px;
   text-align: left;
   font-weight: 600;
@@ -232,46 +232,41 @@
   white-space: nowrap;
 }
 
-.view-list-studentstable tbody tr {
+.view-list-student-table tbody tr {
   border-bottom: 1px solid #e5e7eb;
   transition: background-color 0.2s;
 }
 
-.view-list-studentstable tbody tr:hover {
+.view-list-student-table tbody tr:hover {
   background-color: #f9fafb;
 }
 
-.view-list-studentstable tbody tr:last-child {
+.view-list-student-table tbody tr:last-child {
   border-bottom: none;
 }
 
-.view-list-studentstable td {
+.view-list-student-table td {
   padding: 14px 16px;
   color: #4b5563;
 }
 
-.view-list-studentstable-id {
+.view-list-student-table-id {
   font-weight: 600;
   color: #3b82f6;
 }
 
-.view-list-studentstable-name {
+.view-list-student-table-name {
   font-weight: 500;
   color: #1f2937;
 }
 
-.view-list-studentstable-contact {
+.view-list-student-table-contact {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.view-list-studentscontact-icon {
-  color: #9ca3af;
-  font-size: 14px;
-}
-
-.view-list-studentstable-time {
+.view-list-student-table-time {
   color: #6b7280;
   font-size: 13px;
 }
@@ -284,8 +279,8 @@
   border-top: 1px solid #e5e7eb;
 }
 
-.view-list-studentsbtn-secondary,
-.view-list-studentsbtn-primary {
+.view-list-student-btn-secondary,
+.view-list-student-btn-primary {
   padding: 10px 24px;
   border-radius: 8px;
   font-size: 14px;
@@ -295,23 +290,37 @@
   border: none;
 }
 
-.view-list-studentsbtn-secondary {
+.view-list-student-btn-secondary {
   background: #f3f4f6;
   color: #4b5563;
 }
 
-.view-list-studentsbtn-secondary:hover {
+.view-list-student-btn-secondary:hover {
   background: #e5e7eb;
 }
 
-.view-list-studentsbtn-primary {
+.view-list-student-btn-primary {
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: white;
 }
 
-.view-list-studentsbtn-primary:hover {
+.view-list-student-btn-primary:hover:not(:disabled) {
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.view-list-student-btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.view-list-student-btn-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
 }
 
 /* Responsive */
@@ -328,25 +337,25 @@
     padding: 16px 20px;
   }
 
-  .view-list-studentsinfo-bar {
+  .view-list-student-info-bar {
     flex-direction: column;
     align-items: stretch;
   }
 
-  .view-list-studentssearch-box {
+  .view-list-student-search-box {
     max-width: 100%;
   }
 
-  .view-list-studentstable-wrapper {
+  .view-list-student-table-wrapper {
     overflow-x: auto;
   }
 
-  .view-list-studentstable {
+  .view-list-student-table {
     font-size: 12px;
   }
 
-  .view-list-studentstable th,
-  .view-list-studentstable td {
+  .view-list-student-table th,
+  .view-list-student-table td {
     padding: 10px 12px;
   }
 }

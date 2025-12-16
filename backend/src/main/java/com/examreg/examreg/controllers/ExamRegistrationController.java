@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.examreg.examreg.dto.response.ApiResponse;
 import com.examreg.examreg.dto.response.ExamRegistrationResponse;
+import com.examreg.examreg.dto.response.StudentRegistrationResponse;
 import com.examreg.examreg.security.user.AppUserDetails;
 import com.examreg.examreg.service.IExamRegistrationService;
 
@@ -43,5 +44,13 @@ public class ExamRegistrationController {
   ) {
     examRegistrationService.deleteExamRegistration(examRegistrationId, studentDetails.getId());
     return ResponseEntity.ok(ApiResponse.success("Exam registration cancelled successfully"));
+  }
+
+  @GetMapping("/exam-session/{examSessionId}/students")
+  public ResponseEntity<ApiResponse<List<StudentRegistrationResponse>>> getStudentsByExamSession(
+    @PathVariable Long examSessionId
+  ) {
+    List<StudentRegistrationResponse> students = examRegistrationService.getStudentsByExamSession(examSessionId);
+    return ResponseEntity.ok(ApiResponse.success("Get students by exam session successfully", students));
   }
 }

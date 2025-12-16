@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { IoClose } from "react-icons/io5";
 import { FaUserGraduate, FaSearch } from "react-icons/fa";
-import { MdEmail, MdPhone } from "react-icons/md";
+import { examRegistrationService } from "../../../services/examRegistrationService";
 import "./Style-ViewListStudentSession.css";
 
 const ViewListStudentSession = ({ session, onClose }) => {
@@ -10,71 +10,28 @@ const ViewListStudentSession = ({ session, onClose }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    // Giả lập dữ liệu sinh viên - thay bằng API call thực tế
     const fetchStudents = async () => {
       setLoading(true);
       try {
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 500));
-        
-        // Mock data - thay bằng API call thực tế
-        const mockStudents = [
-          {
-            id: 1,
-            studentId: "2021600001",
-            fullName: "Nguyễn Văn An",
-            email: "an.nv@student.edu.vn",
-            phone: "0901234567",
-            registeredAt: "2024-01-15 10:30"
-          },
-          {
-            id: 2,
-            studentId: "2021600002",
-            fullName: "Trần Thị Bình",
-            email: "binh.tt@student.edu.vn",
-            phone: "0902345678",
-            registeredAt: "2024-01-15 11:20"
-          },
-          {
-            id: 3,
-            studentId: "2021600003",
-            fullName: "Lê Hoàng Cường",
-            email: "cuong.lh@student.edu.vn",
-            phone: "0903456789",
-            registeredAt: "2024-01-15 14:45"
-          },
-          {
-            id: 4,
-            studentId: "2021600004",
-            fullName: "Phạm Minh Đức",
-            email: "duc.pm@student.edu.vn",
-            phone: "0904567890",
-            registeredAt: "2024-01-16 09:15"
-          },
-          {
-            id: 5,
-            studentId: "2021600005",
-            fullName: "Hoàng Thu Hà",
-            email: "ha.ht@student.edu.vn",
-            phone: "0905678901",
-            registeredAt: "2024-01-16 10:30"
-          }
-        ];
-        
-        setStudents(mockStudents);
+        const response = await examRegistrationService.getStudentsbyExamSession(session.id);
+        setStudents(response);
       } catch (error) {
         console.error("Error fetching students:", error);
+        alert("Không thể tải danh sách sinh viên. Vui lòng thử lại!");
+        setStudents([]);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchStudents();
-  }, [session]);
+    if (session && session.id) {
+      fetchStudents();
+    }
+  }, [session])
 
   const filteredStudents = students.filter(student =>
     student.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    student.studentId.includes(searchTerm) ||
+    student.studentCode.includes(searchTerm) ||
     student.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -97,39 +54,39 @@ const ViewListStudentSession = ({ session, onClose }) => {
         </div>
 
         <div className="view-list-student-session-body">
-          <div className="view-list-studentsinfo-bar">
-            <div className="view-list-studentscount-badge">
-              <span className="view-list-studentscount-label">Đã đăng ký:</span>
-              <span className="view-list-studentscount-number">{students.length}/{session.capacity}</span>
+          <div className="view-list-student-info-bar">
+            <div className="view-list-student-count-badge">
+              <span className="view-list-student-count-label">Đã đăng ký:</span>
+              <span className="view-list-student-count-number">{students.length}/{session.capacity}</span>
             </div>
             
-            <div className="view-list-studentssearch-box">
-              <FaSearch className="view-list-studentssearch-icon" />
+            <div className="view-list-student-search-box">
+              <FaSearch className="view-list-student-search-icon" />
               <input
                 type="text"
                 placeholder="Tìm kiếm theo tên, MSSV, email..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="view-list-studentssearch-input"
+                className="view-list-student-search-input"
               />
             </div>
           </div>
 
           {loading ? (
-            <div className="view-list-studentsloading">
-              <div className="view-list-studentsloading-spinner"></div>
+            <div className="view-list-student-loading">
+              <div className="view-list-student-loading-spinner"></div>
               <p>Đang tải danh sách sinh viên...</p>
             </div>
           ) : filteredStudents.length === 0 ? (
-            <div className="view-list-studentsempty">
-              <FaUserGraduate className="view-list-studentsempty-icon" />
-              <p className="view-list-studentsempty-text">
+            <div className="view-list-student-empty">
+              <FaUserGraduate className="view-list-student-empty-icon" />
+              <p className="view-list-student-empty-text">
                 {searchTerm ? "Không tìm thấy sinh viên phù hợp" : "Chưa có sinh viên đăng ký"}
               </p>
             </div>
           ) : (
-            <div className="view-list-studentstable-wrapper">
-              <table className="view-list-studentstable">
+            <div className="view-list-student-table-wrapper">
+              <table className="view-list-student-table">
                 <thead>
                   <tr>
                     <th>STT</th>
@@ -144,21 +101,19 @@ const ViewListStudentSession = ({ session, onClose }) => {
                   {filteredStudents.map((student, index) => (
                     <tr key={student.id}>
                       <td>{index + 1}</td>
-                      <td className="view-list-studentstable-id">{student.studentId}</td>
-                      <td className="view-list-studentstable-name">{student.fullName}</td>
+                      <td className="view-list-student-table-id">{student.studentCode}</td>
+                      <td className="view-list-student-table-name">{student.fullName}</td>
                       <td>
-                        <div className="view-list-studentstable-contact">
-                          <MdEmail className="view-list-studentscontact-icon" />
+                        <div className="view-list-student-table-contact">
                           {student.email}
                         </div>
                       </td>
                       <td>
-                        <div className="view-list-studentstable-contact">
-                          <MdPhone className="view-list-studentscontact-icon" />
+                        <div className="view-list-student-table-contact">
                           {student.phone}
                         </div>
                       </td>
-                      <td className="view-list-studentstable-time">{student.registeredAt}</td>
+                      <td className="view-list-student-table-time">{student.registeredAt.replace("T", " ")}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -168,10 +123,10 @@ const ViewListStudentSession = ({ session, onClose }) => {
         </div>
 
         <div className="view-list-student-session-footer">
-          <button className="view-list-studentsbtn-secondary" onClick={onClose}>
+          <button className="view-list-student-btn-secondary" onClick={onClose}>
             Đóng
           </button>
-          <button className="view-list-studentsbtn-primary">
+          <button className="view-list-student-btn-primary">
             Xuất danh sách
           </button>
         </div>
