@@ -17,7 +17,7 @@
   margin-top: 5rem; 
   margin-left: 18rem;
 }
-.sessions-header {
+.subject-sessions-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -25,23 +25,23 @@
   flex-wrap: nowrap;
   gap: 2rem;
 }
-.subject-title {
+.subject-sessions-subject-title {
     margin: 0;
     font-size: 1.7rem;
     font-weight: 650;
     color: #111827;
 }
-.sessions-header-left {
+.subject-sessions-header-left {
     display:flex;
     align-items: center;
     gap: 0.75rem; 
 }
-.sessions-header-left svg {
+.subject-sessions-header-left svg {
   font-size: 1.7rem; /* chỉnh kích thước icon */
   cursor: pointer;   /* thêm con trỏ khi hover */
   color:#111827
 }
-.btn-add-session {
+.subject-sessions-btn-add-session {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -55,6 +55,25 @@
   background-color: #2563eb;
 }
 
-.btn-add-session:hover {
+.subject-sessions-btn-add-session:hover {
   background-color: #1d4ed8;
+}
+.subject-sessions-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: #9ca3af;
+}
+
+.subject-sessions-icon {
+  font-size: 80px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.subject-sessions-text {
+  font-size: 20px;
+  margin: 0;
 }

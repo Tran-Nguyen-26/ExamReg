@@ -5,6 +5,7 @@ import { FiArrowLeft } from "react-icons/fi";
 import { IoMdAdd } from "react-icons/io";
 import SessionTable from "../../../components/admin/sessionTable/SessionTable";
 import { useState, useEffect } from "react";
+import { FaClipboardList } from "react-icons/fa6";
 import { IoIosSearch } from "react-icons/io";
 import AddExamSessionModal from "../../../components/admin/addExamSessionModal/AddExamSessionModal";
 import { examSessionService } from "../../../services/examSessionService";
@@ -15,9 +16,9 @@ const SubjectSessions = () => {
     const navigate = useNavigate();
     const [isAddExamSessionModal, setIsAddExamSessionModal] = useState(false);
     const { examId, subjectId } = useParams();
-
     const [sessions, setSessions] = useState([]);
     const [subjectInfo, setSubjectInfo] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         loadSubjectInfo();
@@ -25,6 +26,7 @@ const SubjectSessions = () => {
     }, [examId, subjectId]);
 
     const loadSubjectInfo = async () => {
+        setLoading(true);
         try {
             const subject = await courseService.getSubjectById(subjectId);
             setSubjectInfo({
@@ -35,10 +37,13 @@ const SubjectSessions = () => {
             });
         } catch (err) {
             console.error('Error loading subject info:', err);
+        } finally {
+            setLoading(false);
         }
     };
 
     const loadExamSessions = async (sessionData) => {
+        setLoading(true);
         try {
             const examSessions = await examSessionService.getExamSessionsBySubjectId(subjectId, examId);
             
@@ -61,6 +66,8 @@ const SubjectSessions = () => {
             console.log("raw response item:", (await examSessionService.getExamSessionsBySubjectId(subjectId, examId))[0]);
         } catch (err) {
             console.error('Error loading exam sessions:', err);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -87,22 +94,34 @@ const SubjectSessions = () => {
         <div className="main">
             <Sidebar/>
             <div className="content">
-                <div className="sessions-header">
-                    <div className="sessions-header-left">
+                <div className="subject-sessions-header">
+                    <div className="subject-sessions-header-left">
                         <div onClick={() => navigate(`/admin/exam-management/exam-info/${examId}`)}>
                             <FiArrowLeft/>
                         </div>
-                        <h1 className="subject-title">{subjectInfo?.subjectCode} - {subjectInfo?.subjectName}</h1>
+                        <h1 className="subject-sessions-subject-title">{subjectInfo?.subjectCode} - {subjectInfo?.subjectName}</h1>
                     </div>
-                    <button className="btn-add-session" onClick={() => setIsAddExamSessionModal(true)}>
+                    <button className="subject-sessions-btn-add-session" onClick={() => setIsAddExamSessionModal(true)}>
                         <IoMdAdd className="icon-add-session"/>
                         <span>Tạo ca thi mới</span>
                     </button>
                 </div>
-                <SessionTable
-                sessions={sessions}
-                onSave={handleSaveSession}
-                />
+                {loading ? (
+                        <div className="subject-session-loading">
+                        </div>
+                ): sessions.length === 0 ? (
+                    <div className="subject-sessions-empty">
+                        <FaClipboardList className="subject-sessions-icon"/>
+                        <p className="subject-sessions-text">
+                            Chưa có ca thi nào
+                        </p>
+                    </div>
+                ) : (
+                    <SessionTable
+                    sessions={sessions}
+                    onSave={handleSaveSession}
+                    />
+                )}
             </div>
             {isAddExamSessionModal && (
                 <AddExamSessionModal
