@@ -3,6 +3,7 @@ package com.examreg.examreg.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -29,4 +30,30 @@ public interface ExamRegistrationRepository extends JpaRepository<ExamRegistrati
         "WHERE er.examSession.id = :examSessionId " +
         "ORDER BY er.registeredAt ASC")
   List<ExamRegistration> findByExamSessionIdWithStudent(@Param("examSessionId") Long examSessionId);
+
+  @Query("SELECT er FROM ExamRegistration er " +
+         "JOIN FETCH er.examSession es " +
+         "JOIN FETCH es.subject s " +
+         "WHERE er.student.id = :studentId " +
+         "ORDER BY es.date ASC, es.startTime ASC")
+  List<ExamRegistration> findAllByStudentIdWithDetails(@Param("studentId") Long studentId);
+  
+  @Modifying
+  @Query(value = """
+      DELETE er FROM exam_registration er
+      JOIN exam_session es ON er.exam_session_id = es.id
+      WHERE es.exam_id = :examId
+  """, nativeQuery = true)
+  void deleteByExamId(@Param("examId") Long examId);
+
+  @Modifying
+  @Query(value = """
+      DELETE er
+      FROM exam_registration er
+      JOIN exam_session es ON er.exam_session_id = es.id
+      WHERE es.exam_id = :examId
+        AND es.subject_id = :subjectId
+  """, nativeQuery = true)
+  void deleteByExamIdAndSubjectId(@Param("examId") Long examId,
+                                @Param("subjectId") Long subjectId);
 }

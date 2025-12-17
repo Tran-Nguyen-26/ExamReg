@@ -3,6 +3,7 @@ package com.examreg.examreg.service;
 import java.util.List;
 
 import com.examreg.examreg.dto.response.ExamRegistrationResponse;
+import com.examreg.examreg.dto.response.StudentRegistrationDetailResponse;
 import com.examreg.examreg.dto.response.StudentRegistrationResponse;
 import com.examreg.examreg.models.ExamRegistration;
 
@@ -23,4 +24,6 @@ public interface IExamRegistrationService {
   public void saveExamRegistration(ExamRegistration examRegistration);
 
   List<StudentRegistrationResponse> getStudentsByExamSession(Long examSessionId);
+
+  List<StudentRegistrationDetailResponse> getStudentRegistrationDetails(Long studentId);
 }

@@ -64,7 +64,9 @@ const SubjectTableExam = ({subjects, onDelete}) => {
                                     <td className='subject-table-cell'>
                                         {subject.duration}
                                     </td>
-                                    <td className='subject-table-cell subject-action'>
+                                    <td className='subject-table-cell subject-action'
+                                        onClick={() => onDelete(subject)}
+                                    >
                                         Xóa
                                     </td>
                                 </tr>

@@ -1,69 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { IoIosClose } from "react-icons/io";
 import { FaCalendarAlt } from "react-icons/fa";
 import { FaRegClock } from "react-icons/fa";
 import { HiMiniComputerDesktop } from "react-icons/hi2";
 import  './Style-StudentDetailModal.css';
+import { examRegistrationService } from '../../../services/examRegistrationService';
 
 const StudentDetailModal = ({ student, onClose }) => {
   // Dữ liệu mẫu lịch thi đã đăng ký
-  const registeredExams = [
-    {
-      id: 1,
-      name: 'Cơ sở dữ liệu',
-      code: 'IT4001',
-      date: '15/11/2025',
-      time: '08:00-09:30',
-      room: 'P101-GĐ1',
-      status: 'registered'
-    },
-    {
-      id: 2,
-      name: 'Cơ sở dữ liệu',
-      code: 'IT4001',
-      date: '15/11/2025',
-      time: '08:00-09:30',
-      room: 'P101-GĐ1',
-      status: 'registered'
-    },
-    {
-      id: 3,
-      name: 'Cơ sở dữ liệu',
-      code: 'IT4001',
-      date: '15/11/2025',
-      time: '08:00-09:30',
-      room: 'P101-GĐ1',
-      status: 'registered'
-    },
-    // {
-    //   id: 4,
-    //   name: 'Cơ sở dữ liệu',
-    //   code: 'IT4001',
-    //   date: '15/11/2025',
-    //   time: '08:00-09:30',
-    //   room: 'P101-GĐ1',
-    //   status: 'registered'
-    // },
-    // {
-    //   id: 5,
-    //   name: 'Cơ sở dữ liệu',
-    //   code: 'IT4001',
-    //   date: '15/11/2025',
-    //   time: '08:00-09:30',
-    //   room: 'P101-GĐ1',
-    //   status: 'registered'
-    // },
-    // {
-    //   id: 6,
-    //   name: 'Lập trình hướng đối tượng',
-    //   code: 'IT4002',
-    //   date: '17/11/2025',
-    //   time: '08:00-09:30',
-    //   room: 'P201-GĐ2',
-    //   status: 'registered'
-    // }
-    
-  ];
+  const [registeredExams, setRegisteredExams] = useState([]);
+  const fetchRegistration = async () => {
+    try {
+      const response = await examRegistrationService.getRregistratitonDetailsStudent(student.id);
+      setRegisteredExams(response);
+    } catch (error) {
+      alert("Không thể tải danh sách đăng ký thi.")
+      setRegisteredExams([]);
+    }
+  }
+
+  useEffect (() => {
+    fetchRegistration();
+  }, [student])
 
   return (
     <div className="detail-modal-overlay" onClick={onClose}>
@@ -89,11 +47,11 @@ const StudentDetailModal = ({ student, onClose }) => {
           ) : (
             <div className="exam-list">
               {registeredExams.map((exam) => (
-                <div key={exam.id} className="exam-card">
+                <div key={exam.registrationId} className="exam-card">
                   <div className="exam-header">
                     <div>
-                      <h3 className="exam-name">{exam.name}</h3>
-                      <p className="exam-code">Mã môn: {exam.code}</p>
+                      <h3 className="exam-name">{exam.subjectName}</h3>
+                      <p className="exam-code">Mã môn: {exam.subjectCode}</p>
                     </div>
                     <span className="exam-status">Đã đăng ký</span>
                   </div>
@@ -103,7 +61,7 @@ const StudentDetailModal = ({ student, onClose }) => {
                       <FaCalendarAlt className="detail-icon" />
                       <div className="detail-content">
                         <span className="detail-label">Ngày thi</span>
-                        <span className="detail-value">{exam.date}</span>
+                        <span className="detail-value">{exam.examSessionDate}</span>
                       </div>
                     </div>
                     
@@ -111,7 +69,7 @@ const StudentDetailModal = ({ student, onClose }) => {
                       <FaRegClock className="detail-icon" />
                       <div className="detail-content">
                         <span className="detail-label">Giờ thi</span>
-                        <span className="detail-value">{exam.time}</span>
+                        <span className="detail-value">{exam.examSessionTime}</span>
                       </div>
                     </div>
                     
@@ -119,7 +77,7 @@ const StudentDetailModal = ({ student, onClose }) => {
                       <HiMiniComputerDesktop className="detail-icon" />
                       <div className="detail-content">
                         <span className="detail-label">Phòng thi</span>
-                        <span className="detail-value">{exam.room}</span>
+                        <span className="detail-value">{exam.room} - {exam.location}</span>
                       </div>
                     </div>
                   </div>

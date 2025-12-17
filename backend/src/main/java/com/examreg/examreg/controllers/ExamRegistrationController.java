@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.examreg.examreg.dto.response.ApiResponse;
 import com.examreg.examreg.dto.response.ExamRegistrationResponse;
+import com.examreg.examreg.dto.response.StudentRegistrationDetailResponse;
 import com.examreg.examreg.dto.response.StudentRegistrationResponse;
 import com.examreg.examreg.security.user.AppUserDetails;
 import com.examreg.examreg.service.IExamRegistrationService;
@@ -52,5 +53,13 @@ public class ExamRegistrationController {
   ) {
     List<StudentRegistrationResponse> students = examRegistrationService.getStudentsByExamSession(examSessionId);
     return ResponseEntity.ok(ApiResponse.success("Get students by exam session successfully", students));
+  }
+
+  @GetMapping("/student/{studentId}")
+  public ResponseEntity<ApiResponse<List<StudentRegistrationDetailResponse>>> getRegistrationsByStudentId(
+    @PathVariable Long studentId
+  ) {
+    List<StudentRegistrationDetailResponse> registrations = examRegistrationService.getStudentRegistrationDetails(studentId);
+    return ResponseEntity.ok(ApiResponse.success("Get student registrations successfully", registrations));
   }
 }

@@ -78,6 +78,17 @@ const ExamInformation = () => {
         setFilteredSubjects(filtered);
     };
 
+    const handleDeleteSubject = async (subject) => {
+        if (confirm(`Bạn có chắc muốn xóa môn thi này ? "${subject.name}"? Hành động này không thể hoàn tác!`)) {
+            try {
+                await examService.deleteSubject(examId, subject.id);
+                await loadSubjects();
+            } catch (error) {
+                console.error('Error deleting subject:', error);
+                alert('Lỗi khi xóa môn thi!');
+            }
+        }
+    }
 
     return (
         <div className="page">
@@ -109,7 +120,8 @@ const ExamInformation = () => {
                         </button> 
                     </div> 
                     <SubjectTableExam
-                    subjects={filteredSubjects}/>
+                    subjects={filteredSubjects}
+                    onDelete={handleDeleteSubject}/>
                 </div>
             </div>
         </div>

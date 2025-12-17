@@ -71,5 +71,12 @@ export const examService = {
             medthod: 'GET',
         })
         return response.data;
+    },
+
+    deleteSubject: async (examId, subjectId) => {
+        const response = await apiCall(`/exams/${examId}/subjects/${subjectId}`, {
+            method: 'DELETE'
+        })
+        return response.data;
     }
 }

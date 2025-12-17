@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import com.examreg.examreg.dto.response.ExamRegistrationResponse;
 import com.examreg.examreg.dto.response.ExamSessionResponseForStudent;
+import com.examreg.examreg.dto.response.StudentRegistrationDetailResponse;
 import com.examreg.examreg.dto.response.StudentRegistrationResponse;
 import com.examreg.examreg.models.ExamRegistration;
 
@@ -40,6 +41,23 @@ public class ExamRegistrationMapper {
       .email(examRegistration.getStudent().getEmail())
       .phone(examRegistration.getStudent().getPhone())
       .registeredAt(examRegistration.getRegisteredAt())
+      .build();
+  }
+
+  public StudentRegistrationDetailResponse toStudentRegistrationDetailResponse(ExamRegistration examRegistration) {
+    if (examRegistration == null) {
+      return null;
+    }
+    return StudentRegistrationDetailResponse.builder()
+      .registrationId(examRegistration.getId())
+      .subjectId(examRegistration.getExamSession().getSubject().getId())
+      .subjectName(examRegistration.getExamSession().getSubject().getName())
+      .subjectCode(examRegistration.getExamSession().getSubject().getSubjectCode())
+      .examSessionId(examRegistration.getExamSession().getId())
+      .examSessionDate(examRegistration.getExamSession().getDate())
+      .examSessionTime(examRegistration.getExamSession().getStartTime())
+      .room(examRegistration.getExamSession().getRoom().getName())
+      .location(examRegistration.getExamSession().getRoom().getLocation().getName())
       .build();
   }
 }

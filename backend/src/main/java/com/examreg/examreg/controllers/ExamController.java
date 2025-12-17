@@ -110,4 +110,13 @@ public class ExamController {
         List<SubjectResponse> subjects = examService.getSubjectsOfExam(examId);
         return ResponseEntity.ok(ApiResponse.success("Subjects retrieved successfully", subjects));
     }
+
+    @DeleteMapping("/{examId}/subjects/{subjectId}")
+    public ResponseEntity<ApiResponse<Void>> deleteSubject(
+        @PathVariable Long examId,
+        @PathVariable Long subjectId
+    ) {
+        examService.deleteSubject(examId, subjectId);
+        return ResponseEntity.ok(ApiResponse.success("Delete subject successfully", null));
+    }
 }

@@ -21,5 +21,12 @@ export const examRegistrationService = {
       method: 'GET'
     })
     return response.data;
+  },
+  
+  getRregistratitonDetailsStudent: async (studentId) => {
+    const response = await apiCall(`/exam-registration/student/${studentId}`, {
+      method: 'GET'
+    })
+    return response.data
   }
 }
