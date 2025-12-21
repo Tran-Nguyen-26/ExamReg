@@ -17,7 +17,7 @@ const ExamManagement = () => {
     const [isAddExamSubjectsModal, setIsAddExamSubjectsModal] = useState(false);
     const [selectedExam, setSelectedExam] = useState(null);
     const [exams, setExams] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const loadExams = async () => {
         try {
             setLoading(true);
@@ -75,12 +75,15 @@ const ExamManagement = () => {
         setSelectedExam(null);
     };
     
-    const handleAddSubject = () => {
+    const handleAddSubject = async (exam) => {
         setIsAddExamSubjectsModal(true)
+        setSelectedExam(exam);
+        await loadSubjectsOfExam(exam.id);
     }
 
     const closeAddSubject = () => {
         setIsAddExamSubjectsModal(false);
+        setSelectedExam(null);
     }
     // Handler để lưu thay đổi
     const handleUpdateExam = async (updatedExam) => {
@@ -175,6 +178,24 @@ const ExamManagement = () => {
             setLoading(false);
         }
     };
+
+    const [addedSubjects, setAddedSubjects] = useState([]);
+
+    const loadSubjectsOfExam = async (examId) => {
+        try {
+            const response = await examService.getSubjectsOfExam(examId);
+            setAddedSubjects(response)
+        } catch (error) {
+            console.error("Error loading subjects of exam",error);
+            alert("Lỗi khi tải danh sách môn thi đã được thêm")
+        }
+    }
+
+    const refreshAddedSubjects = async () => {
+    if (!selectedExam?.id) return;
+    await loadSubjectsOfExam(selectedExam.id);
+    };
+
     return (
         <div className="page">
             <Header/>
@@ -226,6 +247,9 @@ const ExamManagement = () => {
             {isAddExamSubjectsModal && (<AddExamSubjectsModal
             onClose={closeAddSubject}
             availableSubjects={availableSubjects}
+            examId={selectedExam.id}
+            addedSubjects={addedSubjects}
+            onAdded={refreshAddedSubjects}
             />)}
         </div>
     )

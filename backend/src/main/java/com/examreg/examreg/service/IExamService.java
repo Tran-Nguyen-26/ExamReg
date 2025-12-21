@@ -28,4 +28,6 @@ public interface IExamService {
     void addSubjectsToExam(Long examId, List<Long> subjectIds);
 
     List<SubjectResponse> getSubjectsOfExam(Long examId);
+
+    void deleteSubject(Long examId, Long subjectId);
 }

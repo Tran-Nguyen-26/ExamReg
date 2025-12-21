@@ -6,7 +6,7 @@ import { IoAddOutline } from "react-icons/io5";
 import { TiTickOutline } from "react-icons/ti";
 import { useExam } from '../../../hooks/useExam';
 
-const AddExamSubjectsModal = ({onClose, availableSubjects, exam}) => {
+const AddExamSubjectsModal = ({onClose, availableSubjects, examId, addedSubjects, onAdded}) => {
 
     const { addSubjectsToExam } = useExam()
 
@@ -18,7 +18,17 @@ const AddExamSubjectsModal = ({onClose, availableSubjects, exam}) => {
         subject.name.toLowerCase().includes(searchQuery.toLowerCase())
     )
 
+    const isSubjectAdded = (subjectId) => {
+    return addedSubjects.some(addedSubject => addedSubject.id === subjectId);
+    };
+
+    const selectableSubjects = filteredSubjects.filter(subject => !isSubjectAdded(subject.id));
+
+
+
     const handleCheckboxChange = (subjectId) => {
+        if (isSubjectAdded(subjectId)) return;
+
         setSelectedSubjects(prev => {
         if (prev.includes(subjectId)) {
             return prev.filter(id => id !== subjectId);
@@ -30,17 +40,19 @@ const AddExamSubjectsModal = ({onClose, availableSubjects, exam}) => {
 
     // Handle select all
     const handleSelectAll = () => {
-        if (selectedSubjects.length === filteredSubjects.length) {
+        if (selectedSubjects.length === selectableSubjects.length) {
             setSelectedSubjects([]);
         } else {
-            setSelectedSubjects(filteredSubjects.map(s => s.id));
+            setSelectedSubjects(selectableSubjects.map(s => s.id));
         }
     };
 
     // Handle add single subject
-    const handleAddSingle = (subjectId) => {
+    const handleAddSingle = async (subjectId) => {
         try {
-            addSubjectsToExam(exam.id, [subjectId])
+            await addSubjectsToExam(examId, [subjectId])
+            await onAdded?.(); 
+            setSelectedSubjects(prev => prev.filter(id => id !== subjectId));
         } catch (error) {
             console.log("Add subject failed ", error)
             throw error
@@ -62,13 +74,15 @@ const AddExamSubjectsModal = ({onClose, availableSubjects, exam}) => {
         
         setTimeout(() => {
             setLoading(false);
-            addSubjectsToExam(exam.id, subjectIdsToAdd);
+            addSubjectsToExam(examId, subjectIdsToAdd);
+            onAdded?.(); 
             onClose();
+            alert('Thêm môn thi vào kì thi thành công!')
         }, 500);
     };
 
-    const isAllSelected = filteredSubjects.length > 0 && 
-                    selectedSubjects.length === filteredSubjects.length;
+    const isAllSelected = selectableSubjects.length > 0 && 
+                    selectedSubjects.length === selectableSubjects.length;
 
     return (
         <div className='add-subject-modal-overlay' onClick={onClose}>
@@ -122,7 +136,10 @@ const AddExamSubjectsModal = ({onClose, availableSubjects, exam}) => {
                                     </td>
                                 </tr>
                                 ) : (
-                                filteredSubjects.map((subject, index) => (
+                                filteredSubjects.map((subject, index) => {
+                                    const isAdded = isSubjectAdded(subject.id);
+
+                                    return (
                                     <tr key={subject.id} className={selectedSubjects.includes(subject.id) ? 'selected-row' : ''}>
                                     <td className="add-subject-checkbox-col">
                                         <input
@@ -130,6 +147,7 @@ const AddExamSubjectsModal = ({onClose, availableSubjects, exam}) => {
                                         className="add-subject-checkbox-input"
                                         checked={selectedSubjects.includes(subject.id)}
                                         onChange={() => handleCheckboxChange(subject.id)}
+                                        disabled={isAdded}
                                         />
                                     </td>
                                     <td>{index + 1}</td>
@@ -138,17 +156,23 @@ const AddExamSubjectsModal = ({onClose, availableSubjects, exam}) => {
                                     <td>{subject.creditHour}</td>
                                     <td>{subject.duration} phút</td>
                                     <td>
-                                        <button
-                                        className="add-subject-btn-add-single"
-                                        onClick={() => handleAddSingle(subject.id)}
-                                        title="Thêm môn này"
-                                        >
-                                        <IoAddOutline className='add-subject-icon-add-single'/>
-                                        Thêm
-                                        </button>
+                                        {isAdded ? (
+                                            <div className='add-subject-badge-added'>
+                                                Đã thêm
+                                            </div>
+                                        ) : (
+                                            <button
+                                                className="add-subject-btn-add-single"
+                                                onClick={() => handleAddSingle(subject.id)}
+                                                title="Thêm môn này"
+                                                >
+                                                <IoAddOutline className='add-subject-icon-add-single'/>
+                                                Thêm
+                                            </button>
+                                        )}
                                     </td>
                                     </tr>
-                                ))
+                                )})
                                 )}
                             </tbody>
                         </table>

@@ -5,12 +5,15 @@ import { MdOutlinePeopleAlt } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import { FaTrashCan } from "react-icons/fa6";
 import EditExamSessionModal from "../editExamSessionModal/EditExamSessionModal";
+import ViewListStudentSession from "../viewListStudentSession/ViewListStudentSession";
 import { examSessionService } from "../../../services/examSessionService";
+
 
 const SessionTable = ({sessions, onSave}) => {
     const [openDropdown, setOpenDropdown] = useState(null);
     const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
     const [isEditExamSessionModal, setIsEditExamSessionModal] = useState(false);
+    const [isViewListStudentSession, setIsViewListStudentSession] = useState(false);
     const [selectedSession, setSelectedSession] = useState(null);
     const dropdownRef = useRef(null);
 
@@ -18,6 +21,11 @@ const SessionTable = ({sessions, onSave}) => {
         console.log("selectedSession =", session);
         setSelectedSession(session);
         setIsEditExamSessionModal(true)
+    }
+
+    const handleViewListStudent = (session) => {
+        setSelectedSession(session);
+        setIsViewListStudentSession(true);
     }
 
     const toggleDropdown = (sessionId, event) => {
@@ -164,7 +172,8 @@ const SessionTable = ({sessions, onSave}) => {
                     <button 
                         className="session-dropdown-item"
                         onClick={() => {
-                            console.log('Xem chi tiết:', openDropdown);
+                            const session = sessions.find((s) => s.id === openDropdown);
+                            if (session) handleViewListStudent(session);
                             setOpenDropdown(null);
                         }}
                     >
@@ -200,6 +209,10 @@ const SessionTable = ({sessions, onSave}) => {
             session={selectedSession}
             onSave={onSave}/>)
             }
+            {isViewListStudentSession && (<ViewListStudentSession
+            onClose={() => {setIsViewListStudentSession(false)}}
+            session={selectedSession}
+            />)}
         </div>
         </>
     )

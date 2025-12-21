@@ -14,7 +14,9 @@ import com.examreg.examreg.models.Exam;
 import com.examreg.examreg.models.Subject;
 import com.examreg.examreg.mapper.ExamMapper;
 import com.examreg.examreg.mapper.SubjectMapper;
+import com.examreg.examreg.repository.ExamRegistrationRepository;
 import com.examreg.examreg.repository.ExamRepository;
+import com.examreg.examreg.repository.ExamSessionRepository;
 import com.examreg.examreg.repository.SubjectRepository;
 import com.examreg.examreg.service.IExamService;
 
@@ -28,6 +30,8 @@ public class ExamService implements IExamService {
     private final ExamMapper examMapper;
     private final SubjectRepository subjectRepository;
     private final SubjectMapper subjectMapper;
+    private final ExamSessionRepository examSessionRepository;
+    private final ExamRegistrationRepository examRegistrationRepository;
 
     @Override
     @Transactional
@@ -73,6 +77,9 @@ public class ExamService implements IExamService {
         Exam exam = examRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Exam not found with id: " + id));
         
+        examRegistrationRepository.deleteByExamId(id);
+        examSessionRepository.deleteByExamId(id);
+        examRepository.deleteExamSubjects(id);
         examRepository.delete(exam);
     }
 
@@ -82,6 +89,7 @@ public class ExamService implements IExamService {
         Exam exam = examRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Exam not found with id: " + id));
         
+        exam.setOpen(false);
         exam.setExamStatus("closed");
         Exam closedExam = examRepository.save(exam);
         return examMapper.buildExamResponse(closedExam);
@@ -93,6 +101,7 @@ public class ExamService implements IExamService {
         Exam exam = examRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Exam not found with id: " + id));
         
+        exam.setOpen(true);
         exam.setExamStatus("active");
         Exam openedExam = examRepository.save(exam);
         return examMapper.buildExamResponse(openedExam);
@@ -155,5 +164,18 @@ public class ExamService implements IExamService {
         return exam.getSubjects().stream()
             .map(subjectMapper::buildSubjectResponse)
             .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public void deleteSubject(Long examId, Long subjectId) {
+        Exam exam = getExamById(examId);
+
+        if (exam.getSubjects() == null || exam.getSubjects().isEmpty()) {
+        return;
+        }
+        examRegistrationRepository.deleteByExamIdAndSubjectId(examId, subjectId);
+        examSessionRepository.deleteByExamIdAndSubjectId(examId, subjectId);
+        examRepository.deleteExamSubject(examId, subjectId);
     }
 }

@@ -102,3 +102,23 @@
 .search-subject-btn:hover {
   background-color: #EEECEC; /* xám nhạt khi hover */
 }
+
+.exam-information-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: #9ca3af;
+}
+
+.exam-information-empty-text {
+  font-size: 20px;
+  margin: 0;
+}
+
+.exam-information-empty-icon {
+  font-size: 80px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}

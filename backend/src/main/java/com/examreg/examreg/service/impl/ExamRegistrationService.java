@@ -3,11 +3,14 @@ package com.examreg.examreg.service.impl;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import com.examreg.examreg.dto.response.ExamRegistrationResponse;
+import com.examreg.examreg.dto.response.StudentRegistrationDetailResponse;
+import com.examreg.examreg.dto.response.StudentRegistrationResponse;
 import com.examreg.examreg.dto.response.SubjectStatusResponse;
 import com.examreg.examreg.enums.ExamSessionStatus;
 import com.examreg.examreg.exceptions.ResourceNotFoundException;
@@ -80,5 +83,20 @@ public class ExamRegistrationService implements IExamRegistrationService {
   @Override
   public void saveExamRegistration(ExamRegistration examRegistration) {
     examRegistrationRepository.save(examRegistration);
+  }
+
+  @Override
+  public List<StudentRegistrationResponse> getStudentsByExamSession(Long examSessionId) {
+    List<ExamRegistration> registrations = examRegistrationRepository.findByExamSessionIdWithStudent(examSessionId);
+
+    return registrations.stream().map(examRegistrationMapper::toStudentRegistrationResponse)
+    .toList();
+  }
+
+  @Override
+  public List<StudentRegistrationDetailResponse> getStudentRegistrationDetails(Long studentId) {
+    List<ExamRegistration> registrations = examRegistrationRepository.findAllByStudentIdWithDetails(studentId);
+
+    return registrations.stream().map(examRegistrationMapper::toStudentRegistrationDetailResponse).toList();
   }
 }
