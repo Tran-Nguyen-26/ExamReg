@@ -10,11 +10,8 @@ import EditCourseModal from "../../../components/admin/editCourseModal/EditCours
 import apiCall from "../../../utils/api";
 
 const CourseManagement = () => {
-    const handleSearch = (query) => {
-        console.log('Searching:', query);
-    };
-
     const [subjectsState, setSubjectsState] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
     const [isCreateCourseModal, setIsCreateCourseModal] = useState(false);
     const [isEditCourseModal, setIsEditCourseModal] = useState(false);
     const [selectedCourse, setSelectedCourse] = useState(null);
@@ -44,6 +41,22 @@ const CourseManagement = () => {
             setLoading(false);
         }
     };
+
+    const handleSearch = (query) => {
+        setSearchQuery(query.trim().toLowerCase());
+    };
+
+    const filteredSubjects = subjectsState.filter((s) => {
+        const code = (s.subjectCode || s.code || '').toLowerCase();
+        const name = (s.name || '').toLowerCase();
+        const credits = String(s.creditHour || s.credits || '').toLowerCase();
+        if (!searchQuery) return true;
+        return (
+            code.includes(searchQuery) ||
+            name.includes(searchQuery) ||
+            credits.includes(searchQuery)
+        );
+    });
 
     const handleAdd = () => {
         setIsCreateCourseModal(true);
@@ -176,7 +189,7 @@ const CourseManagement = () => {
                         <CourseSearchbar onSearch={handleSearch} onAdd={handleAdd} />
                     </div>
                     <SubjectTable
-                        subjects={subjectsState}
+                        subjects={filteredSubjects}
                         onView={handleView}
                         onEdit={handleEdit}
                         onDelete={handleDelete}

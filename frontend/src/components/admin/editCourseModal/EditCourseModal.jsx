@@ -7,7 +7,6 @@ const EditCourseModal = ({ course, onClose, onSubmit }) => {
     code: '',
     name: '',
     credits: '',
-    semester: '',
     duration: '',
     status: 'Active'
   });
@@ -18,7 +17,6 @@ const EditCourseModal = ({ course, onClose, onSubmit }) => {
         code: course.subjectCode || course.code || '',
         name: course.name || '',
         credits: course.creditHour || course.credits || '',
-        semester: course.semester || '',
         duration: course.duration || '',
         status: course.status || 'Active'
       });
@@ -39,7 +37,6 @@ const EditCourseModal = ({ course, onClose, onSubmit }) => {
     const updatedCourse = {
       ...formData,
       credits: formData.credits ? Number(formData.credits) : 0,
-      semester: formData.semester ? Number(formData.semester) : 0,
       duration: formData.duration ? Number(formData.duration) : 0
     };
     onSubmit(updatedCourse);
@@ -75,10 +72,6 @@ const EditCourseModal = ({ course, onClose, onSubmit }) => {
             <div className='create-exam-form-group'>
               <label className='create-exam-form-label'>Số tín chỉ</label>
               <input type='number' name='credits' value={formData.credits} onChange={handleInputChange} className='create-exam-form-input' />
-            </div>
-            <div className='create-exam-form-group'>
-              <label className='create-exam-form-label'>Học kỳ</label>
-              <input type='number' name='semester' value={formData.semester} onChange={handleInputChange} className='create-exam-form-input' />
             </div>
           </div>
 

@@ -27,7 +27,8 @@ export const importLogService = {
       body: formData
     })
     if (!response.ok) {
-      throw new Error("Import failed")
+      const errorData = await response.json().catch(() => ({ message: response.statusText }))
+      throw new Error(errorData.message || `Import failed with status ${response.status}`)
     }
     return await response.json()
   }

@@ -7,6 +7,7 @@ import { ExamResponse } from "../../../models/Exam";
 import { Subject } from "../../../models/Subject";
 import { useSubjectStatus } from "../../../hooks/useSubjectStatus";
 import { importLogService } from "../../../services/importLogService";
+import { IoMdCloudUpload, IoMdCheckmarkCircle } from "react-icons/io";
 
 
 const ExamEligibility = () => {
@@ -15,10 +16,13 @@ const ExamEligibility = () => {
 
   const [exam, setExam] = useState(null);
   const [exams, setExams] = useState([])
+  const [selectedExamId, setSelectedExamId] = useState('');
   const [subject, setSubject] = useState(null);
   const [subjects, setSubjects] = useState([])
+  const [selectedSubjectId, setSelectedSubjectId] = useState('');
   const [students, setStudents] = useState([])
   const [file, setFile] = useState(null)
+  const [isDragOver, setIsDragOver] = useState(false)
 
 
   useEffect(() => {
@@ -29,6 +33,7 @@ const ExamEligibility = () => {
         setExams(examResponses)
         if (examResponses.length > 0) {
           setExam(examResponses[0])
+          setSelectedExamId(String(examResponses[0].id))
         }
       } catch (error) {
         console.error("Load exam faild: ", error)
@@ -48,8 +53,10 @@ const ExamEligibility = () => {
 
         if (subjectResponses.length > 0) {
           setSubject(subjectResponses[0])
+          setSelectedSubjectId(String(subjectResponses[0].id))
         } else {
-          setSubject("")
+          setSubject(null)
+          setSelectedSubjectId('')
         }
       } catch (error) {
         console.error("Load subjects failed: ", error);
@@ -76,16 +83,50 @@ const ExamEligibility = () => {
 
   const handleImportCondition = async () => {
     if (!file) {
-      alert("Vui lòng chọn file trước")
+      alert("Vui lòng kéo thả file Excel trước")
       return 
+    }
+    if (!exam || !subject) {
+      alert('Vui lòng chọn kỳ thi và môn học trước khi import')
+      return;
     }
     try {
       await importLogService.importStudentsCondition(exam.id, subject.subjectCode, file)
       alert('Import thành công')
+      setFile(null)
       fetchStudents()
     } catch (error) {
       console.error('Import failed: ', error);
+      alert(`Import thất bại: ${error.message}`)
     }
+  }
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragOver(true);
+  }
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    setIsDragOver(false);
+  }
+
+  const handleDrop = async (e) => {
+    e.preventDefault();
+    setIsDragOver(false);
+    const droppedFile = e.dataTransfer?.files?.[0];
+    if (!droppedFile) return;
+    const allowedTypes = [
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'application/vnd.ms-excel'
+    ];
+    const isAllowed = allowedTypes.includes(droppedFile.type) || /\.(xlsx|xls)$/i.test(droppedFile.name);
+    if (!isAllowed) {
+      alert('Chỉ hỗ trợ file Excel (.xlsx, .xls)');
+      return;
+    }
+    // Only set the file on drop; import will be triggered by the button
+    setFile(droppedFile);
   }
 
   return (
@@ -99,33 +140,69 @@ const ExamEligibility = () => {
           <div className="card">
             <div className="form-row">
               <label className="label">Chọn kỳ thi</label>
-              <select className="subject-select" value={exam?.id || ''} onChange={e => setExam(exams.find(ex => ex.id === Number(e.target.value)))}>
+              <select
+                className="subject-select"
+                value={selectedExamId}
+                onChange={e => {
+                  const val = e.target.value;
+                  setSelectedExamId(val);
+                  const found = exams.find(ex => String(ex.id) === String(val));
+                  setExam(found || null);
+                }}
+              >
                 {exams.map(e => (
-                  <option key={e.id} value={e.id}>{e.examName}</option>
+                  <option key={e.id} value={String(e.id)}>{e.examName}</option>
                 ))}
               </select>
             </div>
 
             <div className="form-row">
               <label className="label">Chọn môn học</label>
-              <select className="subject-select" value={subject?.id || ''} onChange={e => setSubject(subjects.find(s => s.id === Number(e.target.value)))}>
+              <select
+                className="subject-select"
+                value={selectedSubjectId}
+                onChange={e => {
+                  const val = e.target.value;
+                  setSelectedSubjectId(val);
+                  const found = subjects.find(s => String(s.id) === String(val));
+                  setSubject(found || null);
+                }}
+              >
                 {subjects.map(s => (
-                  <option key={s.id} value={s.id}>{s.name}</option>
+                  <option key={s.id} value={String(s.id)}>{s.name}</option>
                 ))}
               </select>
             </div>
 
-            <div className="form-row">
-              <label className="label">Chọn file Excel</label>
-                <input 
-                  type="file" 
-                  accept=".xlsx,.xls" 
-                  onChange={e => setFile(e.target.files[0])}
-                />
+            {/* Removed manual file chooser; using drag-and-drop below */}
+
+            <div
+              className={`dropzone ${isDragOver ? 'drag-over' : ''}`}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+            >
+              <IoMdCloudUpload className="dropzone-icon" />
+              <div className="dropzone-text">
+                <strong>Kéo thả file Excel vào đây</strong>
+                <span>Hỗ trợ .xlsx, .xls</span>
+              </div>
             </div>
 
-            <div className="actions-row" onClick={handleImportCondition}>
-              <button className="btn btn-primary btn-lg d-flex align-items-center gap-2 custom-action">
+            {file && (
+              <div className="selected-file">
+                <IoMdCheckmarkCircle className="selected-file-icon" />
+                <strong>{file.name}</strong>
+              </div>
+            )}
+
+            <div className="actions-row">
+              <button
+                className="btn btn-primary btn-lg d-flex align-items-center gap-2 custom-action"
+                onClick={handleImportCondition}
+                disabled={!file}
+                title={!file ? 'Vui lòng kéo thả file Excel vào vùng bên dưới' : 'Nhấn để import'}
+              >
                 <i className="fas fa-download"></i>
                 <span>Import Excel</span>
               </button>
