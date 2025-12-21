@@ -238,7 +238,7 @@ const ImportStudentModal = ({ onClose, onImport }) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {preview.slice(0, 5).map((student, index) => (
+                    {preview.map((student, index) => (
                       <tr key={index}>
                         <td>{index + 1}</td>
                         <td><strong>{student.studentCode}</strong></td>

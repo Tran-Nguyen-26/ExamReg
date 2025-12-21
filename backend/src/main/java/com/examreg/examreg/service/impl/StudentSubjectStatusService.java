@@ -51,17 +51,18 @@ public class StudentSubjectStatusService implements IStudentSubjectStatusService
     Student student = studentService.getStudentByStudentCode(request.getStudentCode());
     Subject subject = subjectService.getSubjectBySubjectCode(request.getSubjectCode());
     Exam exam = examService.getExamById(request.getExamId());
-    boolean existsSSS = statusRepository.existsByStudentAndSubjectAndExam(student, subject, exam);
-    if (existsSSS) {
-      throw new BadRequestException("Đã tồn tại bản ghi");
-    }
-    StudentSubjectStatus ssStatus = StudentSubjectStatus.builder()
-      .status(request.getStatus())
-      .student(student)
-      .subject(subject)
-      .exam(exam)
-      .reason(request.getReason())
-      .build();
+    
+    // Check if record exists, update it instead of throwing error
+    StudentSubjectStatus ssStatus = statusRepository.findByStudentAndSubjectAndExam(student, subject, exam)
+      .orElse(StudentSubjectStatus.builder()
+        .student(student)
+        .subject(subject)
+        .exam(exam)
+        .build());
+    
+    // Update status and reason
+    ssStatus.setStatus(request.getStatus());
+    ssStatus.setReason(request.getReason());
     
     statusRepository.save(ssStatus);
   }

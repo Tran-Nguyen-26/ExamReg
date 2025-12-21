@@ -76,6 +76,7 @@ const ExamManagement = () => {
     };
     
     const handleAddSubject = async (exam) => {
+        setSelectedExam(exam);
         setIsAddExamSubjectsModal(true)
         setSelectedExam(exam);
         await loadSubjectsOfExam(exam.id);
