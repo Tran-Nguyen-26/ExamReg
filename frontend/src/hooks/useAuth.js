@@ -64,7 +64,8 @@ export const useAuth = () => {
     try {
       await authService.forgotPassword(email)
     } catch (error) {
-      throw error
+      const message = error.message || "Gửi email thất bại"
+      throw new Error(message)
     }
   }
 

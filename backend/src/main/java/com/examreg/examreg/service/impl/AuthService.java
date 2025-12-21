@@ -143,7 +143,7 @@ public class AuthService implements IAuthService {
     Admin admin = adminRepositoty.findByEmail(email)
       .orElse(null);
     if (student == null && admin == null) {
-      throw new BadRequestException("Không tồn tài email");
+      throw new BadRequestException("Email không tồn tại");
     }
     String token = UUID.randomUUID().toString();
     String hashedToken = passwordEncoder.encode(token);

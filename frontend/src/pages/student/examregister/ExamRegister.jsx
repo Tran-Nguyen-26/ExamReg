@@ -14,6 +14,7 @@ import MyContext from '../../../context/MyContext';
 import { motion, AnimatePresence } from 'framer-motion'
 import Ticket from '../../../components/student/ticket/Ticket';
 import { useExamSession } from '../../../hooks/useExamSession';
+import Spinner from '../../../components/student/spinner/Spinner';
 
 
 const ExamRegister = () => {
@@ -26,6 +27,7 @@ const ExamRegister = () => {
   const [showLocationWarning, setShowLocationWarning] = useState(false)
   const [showExamSessionWarning, setShowExamSessionWarning] = useState(false)
   const [showTicket, setShowTicket] = useState(false)
+  const [loading, setLoading] = useState(false)
 
 
   const {
@@ -101,7 +103,9 @@ const ExamRegister = () => {
 
   const handleExamSessionRegister = async () => {
     try {
+      setLoading(true)
       await registerExamSession(selectedExamSession.id)
+      setLoading(false)
       window.alert("Đăng kí ca thi thành công")
       setShowTicket(true)
     } catch(error) {
@@ -119,7 +123,7 @@ const ExamRegister = () => {
       exit={{ opacity: 0}}
       transition={{ duration: 0.3 }}
     >
-      <div className={`exam-register ${showTicket ? 'blurred' : ''}`}>
+      <div className={`exam-register ${(showTicket || loading) ? 'blurred' : ''}`}>
         <Header/>
         <SelectedSubject subject={selectedSubject}/>
 
@@ -229,6 +233,13 @@ const ExamRegister = () => {
       {
         showTicket &&
         <Ticket/>
+      }
+      {
+        loading && (
+          <div className='register-spinner'>
+            <Spinner/>
+          </div>
+        )
       }
     </motion.div>
   )

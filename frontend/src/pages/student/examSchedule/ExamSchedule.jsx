@@ -7,11 +7,13 @@ import { useContext, useEffect, useRef, useState } from "react"
 import { useExamRegistration } from "../../../hooks/useExamRegistration"
 import MyContext from "../../../context/MyContext"
 import Ticket from "../../../components/student/ticket/Ticket"
+import Spinner from "../../../components/student/spinner/Spinner"
 
 const ExamSchedule = () => {
 
   const ticketRef = useRef()
 
+  const [loading, setLoading] = useState(false)
   const { getExamRegistrations, cancelExamRegistration } = useExamRegistration()
   const {
     openExam,
@@ -60,7 +62,9 @@ const ExamSchedule = () => {
 
   const handleCancel = async (examRegistrationId) => {
     try {
+      setLoading(true)
       await cancelExamRegistration(examRegistrationId)
+      setLoading(false)
       setTimeout(() => {
         alert('Huỷ đăng kí thành công')
       }, 500)
@@ -78,7 +82,7 @@ const ExamSchedule = () => {
       exit={{ opacity: 0, x: -50 }}
       transition={{ duration: 0.4 }}
     >
-    <div className="exam-schedule">
+    <div className={`exam-schedule ${loading ? 'blur' : ''}`}>
       <Header/>
       <div className="schedule-header">
         <div className="part1">
@@ -108,6 +112,13 @@ const ExamSchedule = () => {
       selectedExamSession && (
         <div style={{visibility:'hidden', position:'absolute', left:'-9999px'}}>
           <Ticket ref={ticketRef}/>
+        </div>
+      )
+    }
+    {
+      loading && (
+        <div className="cancel-examsession-spinner">
+          <Spinner/>
         </div>
       )
     }
