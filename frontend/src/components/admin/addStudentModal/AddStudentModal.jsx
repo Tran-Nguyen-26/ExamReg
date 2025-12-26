@@ -15,9 +15,6 @@ const AddStudentModal = ({ onClose, onSubmit}) => {
     dob: ''
   });
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
         setFormData(prev => ({

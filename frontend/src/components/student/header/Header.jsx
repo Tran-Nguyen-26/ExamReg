@@ -1,11 +1,13 @@
 import './Style-Header.css'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { MdAccountCircle } from "react-icons/md"
-import { HiHome } from "react-icons/hi2"
+import { MdAppRegistration } from "react-icons/md";
 import { useContext } from 'react'
 import MyContext from '../../../context/MyContext'
 import logo_university from '../../../assets/logo_university.png'
-import logo_schedule from '../../../assets/logo_schedule.png'
+import logo_schedule from '../../../assets/calendar.png'
+import logo_registration from "../../../assets/registration.png"
+import logo_account from "../../../assets/account.png"
 
 const Header = () => {
 
@@ -17,32 +19,32 @@ const Header = () => {
   const showExamSchedule = location.pathname === '/student/exam-schedule'
 
   return (
-    <div className='screen d-flex justify-content-between align-items-center'>
-      <div className='header-left d-flex flex-row'>
+    <div className='header-student-screen'>
+      <div className='header-student-screen-left'>
         <div className='hl1'>
           <img src={logo_university} alt="" className='logo_uni'/>
         </div>
         <div className='hl2'>
-          <p className='exam-name'>UET Exam</p>
-          <span className='student'>{`${user.fullname} - ${user.studentCode}`}</span>
+          <p className='logo-text-name'>UET Exam</p>
+          <span className='student-name-and-code'>{`${user.fullname} - ${user.studentCode}`}</span>
         </div>
       </div>
 
-      <div className='header-right d-flex'>
+      <div className='header-student-screen-right'>
         {
           showExamSchedule ? (
-            <div className='home' onClick={() => navigate('/student/home')}>
-              <HiHome/>
-              <span>Trang chủ</span>
-            </div>
+            <button className='header-button registration-button' onClick={() => navigate('/student/home')}>
+              <img src={logo_registration} className='button-icon-registration'/>
+              <span>Đăng ký thi</span>
+            </button>
           ) : (
-            <div className='schedule' onClick={() => navigate('/student/exam-schedule')}>
-              <img src={logo_schedule} alt="" className='logo_sche'/>
-              <span>Lịch thi của tôi</span>
-            </div>
+            <button className='header-button schedule-button' onClick={() => navigate('/student/exam-schedule')}>
+              <img src={logo_schedule} alt="" className='button-icon-schedule'/>
+              <span>Xem lịch thi</span>
+            </button>
           )
         }
-        <MdAccountCircle onClick={() => navigate('/student/student-account')}/>
+        <img src={logo_account} className='account-icon' onClick={() => navigate('/student/student-account')}/>
       </div>
     </div>
   )

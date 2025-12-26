@@ -48,15 +48,24 @@ public class ExamService implements IExamService {
 
         return examMapper.buildExamResponse(savedExam);
     }
-
     @Override
     public List<ExamResponse> getAllExams() {
         List<Exam> exams = examRepository.findAll();
-        return exams.stream()
-                .map(examMapper::buildExamResponse)
-                .collect(Collectors.toList());
-    }
 
+        return exams.stream().map(exam -> {
+            ExamResponse res = examMapper.buildExamResponse(exam);
+
+            int totalSubjects = (exam.getSubjects() == null) ? 0 : exam.getSubjects().size();
+            int totalSessions = (int) examSessionRepository.countByExamId(exam.getId());
+            int totalRegistrations = (int) examRegistrationRepository.countByExamSession_ExamId(exam.getId());
+
+            res.setTotalSubjects(totalSubjects);
+            res.setTotalSessions(totalSessions);
+            res.setTotalRegistrations(totalRegistrations);
+
+            return res;
+        }).collect(Collectors.toList());
+    }
     @Override
     @Transactional
     public ExamResponse updateExam(Long id, ExamRequest request) {

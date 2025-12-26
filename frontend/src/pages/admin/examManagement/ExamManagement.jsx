@@ -195,6 +195,7 @@ const ExamManagement = () => {
     const refreshAddedSubjects = async () => {
     if (!selectedExam?.id) return;
     await loadSubjectsOfExam(selectedExam.id);
+    await loadExams();
     };
 
     return (

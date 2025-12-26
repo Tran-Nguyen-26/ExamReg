@@ -16,6 +16,9 @@ public class ExamMapper {
             .examSatus(exam.getExamStatus())
             .description(exam.getDescription())
             .isOpen(exam.isOpen())
+            .totalSubjects(0)
+            .totalSessions(0)
+            .totalRegistrations(0)
             .build();
     }
 }

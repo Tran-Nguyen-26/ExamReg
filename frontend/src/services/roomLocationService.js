@@ -15,5 +15,12 @@ export const roomLocationService = {
             method: 'GET',
         })
         return respone.data;
+    },
+    
+    getTotalCapacityByLocationAndSubject: async (locationId, subjectId) => {
+        const respone = await apiCall(`/locations/${locationId}/subject/${subjectId}/capacity`, {
+            method: 'GET',
+        })
+        return respone.data;
     }
 }

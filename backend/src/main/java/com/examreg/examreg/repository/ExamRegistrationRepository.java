@@ -25,6 +25,8 @@ public interface ExamRegistrationRepository extends JpaRepository<ExamRegistrati
 
   List<ExamRegistration> findByExamSessionId(Long examSessionId);
 
+  long countByExamSession_ExamId(Long examId);
+
   @Query("SELECT er FROM ExamRegistration er " +
         "JOIN FETCH er.student s " +
         "WHERE er.examSession.id = :examSessionId " +
@@ -56,4 +58,5 @@ public interface ExamRegistrationRepository extends JpaRepository<ExamRegistrati
   """, nativeQuery = true)
   void deleteByExamIdAndSubjectId(@Param("examId") Long examId,
                                 @Param("subjectId") Long subjectId);
+                                
 }

@@ -43,6 +43,14 @@ const StudentManagement = () => {
     };
 
     const handleAddStudent = async (formData) => {
+        const isDuplicate = students.some(
+            student => student.code.trim().toLowerCase() === formData.code.trim().toLowerCase()
+        );
+
+        if (isDuplicate) {
+            alert(`Mã sinh viên "${formData.code}" đã tồn tại!`);
+            return;
+        }
         try {
             await studentService.addStudent({
                 code: formData.code,
@@ -58,8 +66,14 @@ const StudentManagement = () => {
             alert("Thêm học sinh thành công!");
             await loadStudents();
         } catch (error) {
-            console.error(error)
-            alert("Lỗi khi thêm học sinh")
+            console.error(error);
+
+            const message =
+                error?.response?.data?.message ||
+                error?.message ||
+                "Lỗi khi thêm học sinh";
+
+            alert(message);
         }
     };
 

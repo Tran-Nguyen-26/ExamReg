@@ -9,11 +9,11 @@ const SelectedSubject = ({subject}) => {
   
   return (
     <div className='selected-exam'>
-      <div>
+      <div className='selected-exam-title'>
         <img src={logo_subject} alt="" />
         <span>Môn thi</span>
       </div>
-      <h4>{subject.name}</h4>
+      <p className='selected-exam-subject-name'>{subject.name}</p>
       <p>Kiểm tra cuối kì học kì I năm học 2025-2026</p>
       <p>{`Thời lượng bài thi: ${subject.duration} phút`}</p>
       <div className='change-subject' onClick={() => navigate('/student/home')}>

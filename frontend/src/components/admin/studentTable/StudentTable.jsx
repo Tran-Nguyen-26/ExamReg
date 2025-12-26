@@ -63,7 +63,7 @@ const StudentTable = ({ students, onEdit, onDelete }) =>{
     <>
     <div className="student-table-container">
       <div className="student-table-wrapper">
-        <table className="student-table">
+        <table className="student-table-management">
           <thead>
             <tr className="student-table-header-row">
               <th className="student-table-header">STT</th>

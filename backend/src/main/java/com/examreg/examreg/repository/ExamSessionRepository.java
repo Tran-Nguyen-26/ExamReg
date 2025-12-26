@@ -15,7 +15,7 @@ import org.springframework.data.repository.query.Param;
 public interface ExamSessionRepository extends JpaRepository<ExamSession, Long> {
 
   List<ExamSession> findAllBySubjectIdIn(List<Long> subjectIds);
-
+  int countByExamId(Long examId);
 
   @Lock(LockModeType.PESSIMISTIC_WRITE)
   @Query("SELECT e FROM ExamSession e WHERE e.id = :id")
@@ -35,4 +35,5 @@ public interface ExamSessionRepository extends JpaRepository<ExamSession, Long> 
   """, nativeQuery = true)
   void deleteByExamIdAndSubjectId(@Param("examId") Long examId,
                                  @Param("subjectId") Long subjectId);
+                                 
 }

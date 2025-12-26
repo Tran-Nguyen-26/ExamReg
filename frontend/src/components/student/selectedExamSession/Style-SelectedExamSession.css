@@ -8,9 +8,17 @@
   position: relative;
 }
 
+.selected-exam-session-title {
+  margin-bottom: 3px;
+}
+
 .selected-exam-session div {
   display: flex;
   align-items: center;
+}
+
+.selected-exam-session-name {
+  font-weight: 600;
 }
 
 .selected-exam-session img {
@@ -23,21 +31,17 @@
   margin-left: 10px;
 }
 
-.selected-exam-session h4 {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
 .selected-exam-session p {
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 0px;
+  margin-bottom: 3px;
 }
 
 .selected-exam-session .change-session {
   position: absolute;
-  top: 20px;
-  left: 85%;
+  top: 0.5rem;
+  right: 1rem;
   cursor: pointer;
+  color:#323234
 }
 
 .change-session svg {

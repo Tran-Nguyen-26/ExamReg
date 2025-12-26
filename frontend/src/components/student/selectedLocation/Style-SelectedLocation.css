@@ -8,6 +8,14 @@
   position: relative;
 }
 
+.selected-location-title {
+  margin-bottom: 3px;
+}
+
+.selected-location-name {
+  font-weight: 600;
+}
+
 .selected-location div {
   display: flex;
   align-items: center;
@@ -23,21 +31,17 @@
   margin-left: 10px;
 }
 
-.selected-location h4 {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
 .selected-location p {
   margin-top: 0px;
-  margin-bottom: 5px;
+  margin-bottom: 3px;
 }
 
 .selected-location .change-location {
   position: absolute;
-  top: 20px;
-  left: 85%;
+  top: 0.5rem;
+  right: 1rem;
   cursor: pointer;
+  color:#323234
 }
 
 .change-location svg {

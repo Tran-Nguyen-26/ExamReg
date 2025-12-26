@@ -1,16 +1,14 @@
 import './Style-Subject.css'
 import logo_subject from '../../../assets/logo_subject.png'
-import regis_btn from '../../../assets/register-btn.png'
+import logo_register from '../../../assets/logo_register.png'
 import { useNavigate } from 'react-router-dom'
 import { useContext } from 'react'
 import MyContext from '../../../context/MyContext'
-import { IoMdCheckboxOutline } from "react-icons/io"
-
+// Import thêm icon CloseCircle
+import { IoMdCheckboxOutline, IoMdAddCircleOutline, IoMdCloseCircle } from "react-icons/io"
 
 const Subject = ({data}) => {
-
   const navigate = useNavigate()
-
   const {setSelectedSubject} = useContext(MyContext)
 
   const handleSelectSubject = () => {
@@ -19,46 +17,57 @@ const Subject = ({data}) => {
     navigate(`/student/register/${data.subject.id}`)
   }
 
+  const isEligible = data.status === 'ELIGIBLE';
+
   return (
-    <div className={`subject ${data.status === 'INELIGIBLE' ? 'subject-ineligible' : ''}`}>
-      <div className='title'>
-        <div>
-          <img src={logo_subject} alt="" />
-          <span className='subject-name'>{data.subject.name}</span>
-        </div>
-        {
-          data.registered ? (
-            <div className='registered'>
-              <span>Đã đăng kí</span>
-              <IoMdCheckboxOutline/>
-            </div>
-          ) : data.status === 'INELIGIBLE' ? (
-            <div></div>
-          ) : (
-            <div className='register' onClick={handleSelectSubject}>
-              <span>Đăng ký</span>
-              <img src={regis_btn} alt="" />
-            </div>
-          )
-        }
+    <div className={`subject-card-student  ${!isEligible ? 'subject-ineligible' : ''}`}>
+      
+      {/* HEADER */}
+      <div className='subject-card-student-title'>
+        <img src={logo_subject} alt="logo" />
+        <span className='subject-card-student-name'>{data.subject.name}</span>
       </div>
-      <div className='subject-info'>
-        <div className='sub-info'>
+
+      {/* BODY */}
+      <div className='subject-card-student-info'>
+        <div className='subject-card-student-sub-info'>
           <span>Số tín chỉ:</span>
           <span>{data.subject.creditHour}</span>
         </div>
-        <div className='sub-info'>
+        <div className='subject-card-student-sub-info'>
           <span>Mã HP:</span>
           <span>{data.subject.subjectCode}</span>
         </div>
-        <div className='sub-info'>
+        <div className='subject-card-student-sub-info'>
           <span>Thời lượng thi:</span>
           <span>{`${data.subject.duration} phút`}</span>
         </div>
-        <div className='sub-info'>
-          <span>Điều kiện thi:</span>
-          <span>{data.status === 'ELIGIBLE' ? 'Đủ điều kiện' : 'Không đủ điều kiện'}</span>
+        <div className='subject-card-student-sub-info'>
+          <span>Trạng thái:</span>
+          <span className={`subject-card-student-status-badge ${isEligible ? 'status-eligible' : 'status-ineligible'}`}>
+            {isEligible ? 'Đủ điều kiện' : 'Không đủ điều kiện'}
+          </span>
         </div>
+      </div>
+
+      <div className='subject-card-student-action-area'>
+        {
+          data.registered ? (
+            <div className='subject-card-student-btn-registered'>
+              <IoMdCheckboxOutline size={22}/>
+              <span>Đã đăng ký</span>
+            </div>
+          ) : !isEligible ? (
+             <button className='subject-card-student-btn-disabled' disabled>
+                <span>Không thể đăng ký</span>
+             </button>
+          ) : (
+            <button className='subject-card-student-btn-register' onClick={handleSelectSubject}>
+              <img src={logo_register}/>
+              <span>Đăng ký thi</span>
+            </button>
+          )
+        }
       </div>
     </div>
   )

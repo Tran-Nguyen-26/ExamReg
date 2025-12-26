@@ -114,17 +114,103 @@ const ExamRegister = () => {
     }
   }
 
+  // Animation variants cho các bước
+  const stepVariants = {
+    initial: { 
+      opacity: 0, 
+      x: 100,
+      scale: 0.95
+    },
+    animate: { 
+      opacity: 1, 
+      x: 0,
+      scale: 1,
+      transition: {
+        duration: 0.5,
+        ease: [0.25, 0.46, 0.45, 0.94], // easeOutQuad
+        staggerChildren: 0.1
+      }
+    },
+    exit: { 
+      opacity: 0, 
+      x: -100,
+      scale: 0.95,
+      transition: {
+        duration: 0.3,
+        ease: [0.55, 0.085, 0.68, 0.53] // easeInQuad
+      }
+    }
+  }
+
+  // Animation cho warning messages
+  const warningVariants = {
+    initial: { 
+      opacity: 0, 
+      y: -20,
+      scale: 0.8
+    },
+    animate: { 
+      opacity: 1, 
+      y: 0,
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 500,
+        damping: 25
+      }
+    },
+    exit: { 
+      opacity: 0, 
+      scale: 0.8,
+      transition: {
+        duration: 0.2
+      }
+    }
+  }
+
+  // Animation cho ticket và loading
+  const overlayVariants = {
+    initial: { opacity: 0 },
+    animate: { 
+      opacity: 1,
+      transition: { duration: 0.3 }
+    },
+    exit: { 
+      opacity: 0,
+      transition: { duration: 0.2 }
+    }
+  }
+
+  const ticketVariants = {
+    initial: { 
+      opacity: 0, 
+      scale: 0.8,
+      y: 50
+    },
+    animate: { 
+      opacity: 1, 
+      scale: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 25,
+        delay: 0.1
+      }
+    },
+    exit: { 
+      opacity: 0, 
+      scale: 0.8,
+      y: 50,
+      transition: { duration: 0.2 }
+    }
+  }
+
 
   return (
-    <motion.div
-      key={step}
-      initial={{ opacity: 0}}
-      animate={{ opacity: 1}}
-      exit={{ opacity: 0}}
-      transition={{ duration: 0.3 }}
-    >
+    <>
+      <Header/>
       <div className={`exam-register ${(showTicket || loading) ? 'blurred' : ''}`}>
-        <Header/>
         <SelectedSubject subject={selectedSubject}/>
 
         <AnimatePresence mode='wait'>
@@ -132,10 +218,10 @@ const ExamRegister = () => {
           step === 1 && (
             <motion.div
               key='step-1'
-              initial= {{ opacity: 0, x: 60 }}
-              animate= {{ opacity: 1, x: 0 }}
-              exit= {{ opacity: 0, x: -40 }}
-              transition= {{ duration: 0.35, ease: "easeOut" }}
+              variants={stepVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
             >
               <div className='select-location'>
                 <div className='pos'>
@@ -145,23 +231,50 @@ const ExamRegister = () => {
 
                 <div className='locations'>
                   {
-                    locs.map((loc) => (
-                      <Location
-                        key={loc.id} 
-                        data={loc}
-                        isSelected={selectedLocation?.id === loc.id}
-                        onSelect={() => toggleLocation(loc)}
-                      />
+                    locs.map((loc, index) => (
+                      <motion.div
+                        key={loc.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ 
+                          delay: index * 0.08,
+                          duration: 0.4,
+                          ease: "easeOut"
+                        }}
+                      >
+                        <Location
+                          data={loc}
+                          subjectId = {subjectId}
+                          isSelected={selectedLocation?.id === loc.id}
+                          onSelect={() => toggleLocation(loc)}
+                        />
+                      </motion.div>
                     ))
                   }
                 </div>
               </div>
-              <button onClick={() => handleSelectLocationButton()}>Tiếp theo</button>
-              {
-                showLocationWarning && (
-                  <div className='location-warning'>Vui lòng chọn địa điểm thi</div>
-                )
-              }
+              <motion.button 
+                onClick={() => handleSelectLocationButton()}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                Tiếp theo
+              </motion.button>
+              <AnimatePresence>
+                {
+                  showLocationWarning && (
+                    <motion.div 
+                      className='location-warning'
+                      variants={warningVariants}
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                    >
+                      Vui lòng chọn địa điểm thi
+                    </motion.div>
+                  )
+                }
+              </AnimatePresence>
             </motion.div>      
           )
         }
@@ -170,41 +283,65 @@ const ExamRegister = () => {
         <AnimatePresence mode='wait'>
         {
           step === 2 && (
-            <>
-              <motion.div
-                key='step-2'
-                initial= {{ opacity: 0, x: 40 }}
-                animate= {{ opacity: 1, x: 0 }}
-                exit= {{ opacity: 0, x: -20 }}
-                transition= {{ duration: 0.35, ease: "easeOut" }}
-              >
-                <SelectedLocation setStep={setStep} location={selectedLocation}/>
-                <div className='select-exam-session'>
-                  <div className='session'>
-                    <img src={logo_exam_session} alt="" />
-                    <span>Lựa chọn ca thi</span>
-                  </div>
-                  <div className='exam-sessions'>
-                    {
-                      filteredSessionsBySelectedLocation.map((e) => (
+            <motion.div
+              key='step-2'
+              variants={stepVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <SelectedLocation setStep={setStep} location={selectedLocation}/>
+              <div className='select-exam-session'>
+                <div className='session'>
+                  <img src={logo_exam_session} alt="" className='select-exam-session-icon'/>
+                  <span>Lựa chọn ca thi</span>
+                </div>
+                <div className='exam-sessions'>
+                  {
+                    filteredSessionsBySelectedLocation.map((e, index) => (
+                      <motion.div
+                        key={e.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ 
+                          delay: index * 0.08,
+                          duration: 0.4,
+                          ease: "easeOut"
+                        }}
+                      >
                         <ExamSession
-                          key={e.id}
                           data={e}
                           isSelected={selectedExamSession?.id === e.id}
                           onSelect={() => toggleExamSession(e)}
                         />
-                      ))
-                    }
-                  </div>
+                      </motion.div>
+                    ))
+                  }
                 </div>
-                <button onClick={() => handleSelectExamSessionButton()}>Tiếp theo</button>
+              </div>
+              <motion.button 
+                onClick={() => handleSelectExamSessionButton()}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                Tiếp theo
+              </motion.button>
+              <AnimatePresence>
                 {
                   showExamSessionWarning && (
-                    <div className='exam-session-warning'>Vui lòng chọn ca thi</div>
+                    <motion.div 
+                      className='exam-session-warning'
+                      variants={warningVariants}
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                    >
+                      Vui lòng chọn ca thi
+                    </motion.div>
                   )
                 }
-              </motion.div>
-            </>
+              </AnimatePresence>
+            </motion.div>
           )
         }
         </AnimatePresence>
@@ -212,36 +349,67 @@ const ExamRegister = () => {
         <AnimatePresence mode='wait'>
         {
           step === 3 && (
-            <>
-              <motion.div
-                key='step-3'
-                initial= {{ opacity: 0, x: 40 }}
-                animate= {{ opacity: 1, x: 0 }}
-                exit= {{ opacity: 0, x: -20 }}
-                transition= {{ duration: 0.35, ease: "easeOut", delay: 0.1 }}
-              >
+            <motion.div
+              key='step-3'
+              variants={stepVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
               <SelectedLocation setStep={setStep} location={selectedLocation}/>
-                <SelectExamSession setStep={setStep} examSession={selectedExamSession}/>
-                <Reminder/>
-                <button onClick={handleExamSessionRegister}>Xác nhận và đăng kí</button>
-              </motion.div>
-            </>
+              <SelectExamSession setStep={setStep} examSession={selectedExamSession}/>
+              <Reminder/>
+              <motion.button 
+                onClick={handleExamSessionRegister}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                Xác nhận và đăng kí
+              </motion.button>
+            </motion.div>
           )
         }
         </AnimatePresence>
       </div>
-      {
-        showTicket &&
-        <Ticket/>
-      }
-      {
-        loading && (
-          <div className='register-spinner'>
-            <Spinner/>
-          </div>
-        )
-      }
-    </motion.div>
+      
+      <AnimatePresence>
+        {
+          showTicket && (
+            <motion.div
+              variants={overlayVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <motion.div
+                variants={ticketVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+              >
+                <Ticket/>
+              </motion.div>
+            </motion.div>
+          )
+        }
+      </AnimatePresence>
+      
+      <AnimatePresence>
+        {
+          loading && (
+            <motion.div 
+              className='register-spinner'
+              variants={overlayVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <Spinner/>
+            </motion.div>
+          )
+        }
+      </AnimatePresence>
+    </>
   )
 }
 

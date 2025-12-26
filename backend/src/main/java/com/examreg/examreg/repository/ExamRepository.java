@@ -23,4 +23,5 @@ public interface ExamRepository extends JpaRepository<Exam, Long> {
   @Query(value = "DELETE FROM exam_subject WHERE exam_id = :examId AND subject_id = :subjectId", nativeQuery = true)
   void deleteExamSubject(@Param("examId") Long examId, @Param("subjectId") Long subjectId);
 
+  
 }

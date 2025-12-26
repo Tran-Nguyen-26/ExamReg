@@ -2,6 +2,7 @@ package com.examreg.examreg.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import com.examreg.examreg.dto.response.LocationResponse;
@@ -23,4 +24,9 @@ public class LocationService implements ILocationService {
         .map(locationMapper::buildLocationResponse)
         .collect(Collectors.toList());
     }
+
+    @Override
+    public Integer getTotalCapacityByLocationAndSubject(Long locationId, Long subjectId) {
+    return locationRepository.getTotalCapacityByLocationAndSubject(locationId, subjectId);
+  }
 }

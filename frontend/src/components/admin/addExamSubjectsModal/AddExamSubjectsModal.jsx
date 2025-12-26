@@ -1,4 +1,4 @@
-import './Style_AddExamSubjects.css';
+import './Style-AddExamSubjects.css';
 import {useState} from 'react';
 import { IoIosClose } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";

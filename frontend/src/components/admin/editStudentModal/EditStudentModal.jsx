@@ -14,7 +14,15 @@ const EditStudentModal = ({ student, onClose, onSubmit }) => {
     dob: '',
   });
 
-  const [errors, setErrors] = useState({});
+  const normalizeDob = (dob) => {
+    const m = dob.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+    if (m) {
+      const dd = String(m[1]).padStart(2, '0');
+      const mm = String(m[2]).padStart(2, '0');
+      const yyyy = m[3];
+      return `${yyyy}-${mm}-${dd}`;
+    }
+  }
 
   useEffect(() => {
       if (student) {
@@ -34,7 +42,7 @@ const EditStudentModal = ({ student, onClose, onSubmit }) => {
           faculty: student.faculty || '',
           phone: student.phone,
           email: student.email,
-          dob: student.dob
+          dob: normalizeDob(student.dob),
         });
       }
     }, [student]);
@@ -45,27 +53,19 @@ const EditStudentModal = ({ student, onClose, onSubmit }) => {
       ...prev,
       [name]: value
     }));
-    
-    // Clear error when user starts typing
-    if (errors[name]) {
-      setErrors(prev => ({
-        ...prev,
-        [name]: ''
-      }));
-    }
   };
 
   const validateForm = () => {
     if (!formData.code || !formData.name || !formData.gender || 
         !formData.className || !formData.major || !formData.faculty || 
         !formData.phone || !formData.email || !formData.dob) {
-      setError('Vui lòng điền đầy đủ thông tin!');
+      alert('Vui lòng điền đầy đủ thông tin!');
       return false;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
-      setError('Email không hợp lệ!');
+      alert('Email không hợp lệ!');
       return false;
     }
 

@@ -35,4 +35,15 @@ public class RoomLocationController {
             ApiResponse.success("successfully", rooms)
         );
     }
+
+    @GetMapping("/{locationId}/subject/{subjectId}/capacity")
+    public ResponseEntity<ApiResponse<Integer>> getTotalCapacity(
+        @PathVariable Long locationId,
+        @PathVariable Long subjectId
+    ) {
+        Integer totalCapacity = locationService.getTotalCapacityByLocationAndSubject(locationId, subjectId);
+        return ResponseEntity.ok(
+            ApiResponse.success("Get total capacity successfully", totalCapacity)
+        );
+    }
 }
