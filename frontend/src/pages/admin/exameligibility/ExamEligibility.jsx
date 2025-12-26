@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Header from "../../../components/admin/header/Header";
 import Sidebar from "../../../components/admin/sidebar/Sidebar";
 import './Style-ExamEligibility.css'
@@ -23,6 +23,7 @@ const ExamEligibility = () => {
   const [students, setStudents] = useState([])
   const [file, setFile] = useState(null)
   const [isDragOver, setIsDragOver] = useState(false)
+  const fileInputRef = useRef(null)
 
 
   useEffect(() => {
@@ -101,6 +102,20 @@ const ExamEligibility = () => {
     }
   }
 
+  const validateAndSetFile = (incomingFile) => {
+    if (!incomingFile) return;
+    const allowedTypes = [
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'application/vnd.ms-excel'
+    ];
+    const isAllowed = allowedTypes.includes(incomingFile.type) || /\.(xlsx|xls)$/i.test(incomingFile.name);
+    if (!isAllowed) {
+      alert('Chỉ hỗ trợ file Excel (.xlsx, .xls)');
+      return;
+    }
+    setFile(incomingFile);
+  }
+
   const handleDragOver = (e) => {
     e.preventDefault();
     setIsDragOver(true);
@@ -115,18 +130,14 @@ const ExamEligibility = () => {
     e.preventDefault();
     setIsDragOver(false);
     const droppedFile = e.dataTransfer?.files?.[0];
-    if (!droppedFile) return;
-    const allowedTypes = [
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      'application/vnd.ms-excel'
-    ];
-    const isAllowed = allowedTypes.includes(droppedFile.type) || /\.(xlsx|xls)$/i.test(droppedFile.name);
-    if (!isAllowed) {
-      alert('Chỉ hỗ trợ file Excel (.xlsx, .xls)');
-      return;
-    }
-    // Only set the file on drop; import will be triggered by the button
-    setFile(droppedFile);
+    validateAndSetFile(droppedFile);
+  }
+
+  const handleFileInputChange = (e) => {
+    const picked = e.target.files?.[0];
+    validateAndSetFile(picked);
+    // reset input value so the same file can be picked again if needed
+    e.target.value = '';
   }
 
   return (
@@ -197,6 +208,21 @@ const ExamEligibility = () => {
             )}
 
             <div className="actions-row">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".xlsx,.xls,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                style={{ display: 'none' }}
+                onChange={handleFileInputChange}
+              />
+              <button
+                className="btn btn-outline-secondary btn-lg d-flex align-items-center gap-2 custom-action"
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+              >
+                <i className="fas fa-file-upload"></i>
+                <span>Chọn file</span>
+              </button>
               <button
                 className="btn btn-primary btn-lg d-flex align-items-center gap-2 custom-action"
                 onClick={handleImportCondition}

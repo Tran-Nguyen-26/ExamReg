@@ -12,4 +12,6 @@ public interface ExamRepository extends JpaRepository<Exam, Long> {
 
   Exam findByIsOpenTrue();
 
+  java.util.List<Exam> findAllByIsOpenTrue();
+
 }
