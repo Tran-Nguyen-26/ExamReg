@@ -1,78 +1,121 @@
-.screen {
-  width: 100%;
-  height: fit-content;
-  padding: 0px 10px;
+.header-student-screen {
   background-color: white;
-  border-bottom: 1px solid rgb(229, 226, 226);
-  /* box-shadow: 2px 2px 8px rgba(0,0,0,0.1); */
+  border-bottom: 1px solid #e5e7eb;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 6rem;
   position: fixed;
   top: 0;
-  left: 0;
-  z-index: 100;
+  z-index: 10;
+  flex-shrink: 0;
+  width: 100%;
 }
 
-.header-left {
-  margin-left: 20px;
+.header-student-screen-left {
+  position: absolute;
+  left: 0;
+  width: 26rem;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  cursor: pointer;
 }
 
 .logo_uni {
-  width: 100px;
-  padding: 10px;
+  width: 4rem;
+  height: 4rem;
+  object-fit: contain;
+  border-radius: 0.5rem;
 }
 
 .hl2 {
   padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px; 
 }
 
-.hl2 .exam-name {
-  font-size: 30px;
-  font-weight: bold;
-  margin-bottom: 0px;
+.hl2 .logo-text-name {
+  margin: 0;    
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e3a8a;
+  letter-spacing: 0.5px;
 }
 
-.hl2 .student {
-  font-size: 20px;
+.hl2 .student-name-and-code {
+  font-size: 1.2rem;
 }
 
-.header-right {
-  margin-right: 20px;
+.header-student-screen-right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
 }
 
-.schedule, .home {
-  width: auto;
+/* Button styles */
+.header-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.625rem;
+  border: none;
+  font-size: 1.125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.header-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header-button:active {
+  transform: scale(0.98);
+}
+
+.registration-button {
   background-color: #CAE3FF;
   color: #1D6DBD;
-  padding: 0px 10px;
-  border-radius: 10px;
-  margin-right: 20px;
+}
+
+.registration-button:hover {
+  background-color: #B5D7FF;
+}
+
+.schedule-button {
+  background-color: #CAE3FF;
+  color: #1D6DBD;
+}
+
+.schedule-button:hover {
+  background-color: #B5D7FF;
+}
+
+.button-icon-registration {
+  width: 1.5rem;
+  height: 1.5rem;
+  object-fit: contain;
+}
+
+.button-icon-schedule {
+  width: 1.5rem;
+  height: 1.5rem;
+  object-fit: contain;
+}
+
+.account-icon {
+  width: 3rem;
+  height: 3rem;
+  object-fit: contain;
   cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.schedule:hover, .home:hover {
-  scale: 1.05;
-}
-
-.schedule img {
-  padding: 5px;
-  height: 60%;
-}
-
-.schedule span, .home span {
-  padding-left: 10px;
-  font-size: 20px;
-  margin-right: 10px;
-}
-
-.header-right svg {
-  font-size: 70px;
-  color: gray;
-  cursor: pointer;
-}
-
-.home svg {
-  font-size: 30px;
-  color: #1D6DBD;;
 }

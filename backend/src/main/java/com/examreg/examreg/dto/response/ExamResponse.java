@@ -18,4 +18,7 @@ public class ExamResponse {
     private String description;
     private String examSatus;
     private boolean isOpen;
+    private int totalSubjects;
+    private int totalSessions;
+    private int totalRegistrations;
 }

@@ -21,13 +21,15 @@
 .add-subject-modal-main {
   background-color: white;
   border-radius: 1rem;
-  max-width: 1200px;
-  width: 100%;
+  width: min(1200px, 100%); 
+  height: 90vh;
+  max-height: 90vh;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
   animation: slideUp 0.3s ease-out;
   display: flex;
   flex-direction: column;
   max-height: 90vh;
+  overflow: hidden;
 }
 
 @keyframes slideUp {
@@ -131,9 +133,10 @@
 }
 
 .add-subject-table-container {
+  flex: 1;
   overflow-x: auto;
   overflow-y: auto;
-  max-height: 500px;
+  max-height: none;
 }
 
 .add-subject-table {
@@ -214,7 +217,7 @@
 
 .add-subject-table-empty-state {
   text-align: center;
-  padding: 3rem 1rem !important;
+  padding: 3.38rem 1rem !important;
 }
 
 .add-subject-table-empty-icon {

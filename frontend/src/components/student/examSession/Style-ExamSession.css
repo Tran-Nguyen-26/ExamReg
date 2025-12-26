@@ -1,19 +1,23 @@
 .exam-session {
   position: relative;
-  padding: 20px 30px;
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  /* box-shadow: 2px 2px 8px rgba(0,0,0,0.3); */
+  padding: 1.2rem 1.3rem;
+  border: 2px solid rgba(0, 0, 0, 0.1);
   border-radius: 20px;
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  background: #ffffff;
 }
 
 .exam-session:hover {
-  transform: scale(1.05);
+  transform: translateY(-2px);
+  border-color: rgba(42, 141, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(42, 141, 255, 0.15);
 }
 
 .exam-session .session-info {
   display: flex;
   justify-content: space-between;
+  padding-bottom: 0.5rem;
 }
 
 .exam-session .status {
@@ -21,6 +25,8 @@
   padding: 2px 10px;
   color: #1D6DBD;
   font-weight: bold;
+  border-radius: 8px;
+  transition: all 0.3s ease;
 }
 
 .exam-session .status.full {
@@ -29,17 +35,41 @@
 }
 
 .exam-session.selected {
-  border: 1px solid #2A8DFF;
-  box-shadow: 2px 2px 8px #5ea0eb;
+  border: 2px solid #2A8DFF;
+  box-shadow: 0 6px 20px rgba(42, 141, 255, 0.25);
+  transform: translateY(-4px);
+}
+
+.location.selected:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(42, 141, 255, 0.3);
 }
 
 .exam-session img {
   position: absolute;
-  top: 20px;
-  right: 30px;
-  display: none;
+  top: 0.7rem;
+  right: 0.7rem;
+  width: 24px;
+  height: 24px;
+  opacity: 0;
+  transform: scale(0);
 }
 
 .exam-session img.ticked {
-  display: block;
+  opacity: 1;
+  transform: scale(1);
+}
+
+.exam-session-date {
+  margin-top: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.exam-session.selected .exam-session-date {
+  color: #2A8DFF;
+  font-weight: 600;
+}
+
+.exam-session.selected .status {
+  box-shadow: 0 2px 8px rgba(42, 141, 255, 0.2);
 }

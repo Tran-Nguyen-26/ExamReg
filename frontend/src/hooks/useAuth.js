@@ -16,7 +16,7 @@ export const useAuth = () => {
       const u = authResponse.user
       if (u.role === 'STUDENT') {
         if (u.firstLogin) navigate('/student/student-account')
-        else navigate('/student/exam-schedule')
+        else navigate('/student/home')
         // const decoded = jwtDecode(authResponse.token)
         // const expMs = decoded.exp * 1000
         // localStorage.setItem("token_exp", expMs)

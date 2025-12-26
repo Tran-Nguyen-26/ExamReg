@@ -5,11 +5,11 @@ import logo_location from '../../../assets/logo_location.png'
 const SelectedLocation = ({setStep, location}) => {
   return (
     <div className='selected-location'>
-      <div>
+      <div className='selected-location-title'>
         <img src={logo_location} alt="" />
         <span>Địa điểm thi</span>
       </div>
-      <h4>{location.name}</h4>
+      <p className='selected-location-name'>{location.name}</p>
       <p>{`Địa chỉ: ${location.address}`}</p>
       <div className='change-location' onClick={() => setStep(1)}>
         <MdOutlineChangeCircle/>

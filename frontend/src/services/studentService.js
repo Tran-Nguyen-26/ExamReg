@@ -12,12 +12,15 @@ export const studentService = {
   },
 
   addStudent: async (studentData) => {
-    const response = await apiCall('/student/add', {
-      method: 'POST',
-      body: JSON.stringify(studentData)
-    })
-
-    return StudentResponse.fromJSON(response.data)
+    try {
+      const response = await apiCall('/student/add', {
+        method: 'POST',
+        body: JSON.stringify(studentData)
+      });
+      return response;
+    } catch (error) {
+      throw error;
+    }
   },
 
   getAll: async () => {

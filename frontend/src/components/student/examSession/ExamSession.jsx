@@ -7,7 +7,7 @@ const ExamSession = ({data, isSelected, onSelect}) => {
       className={`exam-session ${isSelected ? 'selected' : ''}`}
       onClick={onSelect}
     >
-      <h4>{`Ngày thi ${data.date}`}</h4>
+      <h5 className='exam-session-date'>{`Ngày thi ${data.date}`}</h5>
       <div className='session-info'>
         <span>Giờ thi:</span>
         <span>{data.startTime}</span>
