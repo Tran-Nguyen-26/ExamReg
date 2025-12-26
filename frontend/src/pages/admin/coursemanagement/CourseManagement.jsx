@@ -67,6 +67,15 @@ const CourseManagement = () => {
     };
 
     const handleSubmitCourse = async (course) => {
+        const isDuplicate = subjectsState.some((s) => {
+            const codeMatch = (s.subjectCode || s.code || '').trim().toLowerCase() === course.code.trim().toLowerCase();
+            const nameMatch = (s.name || '').trim().toLowerCase() === course.name.trim().toLowerCase();
+            return codeMatch || nameMatch;
+        });
+        if (isDuplicate) {
+            alert('Môn học đã tồn tại (trùng mã hoặc tên).');
+            return;
+        }
         try {
             const subjectData = {
                 subjectCode: course.code,
@@ -107,6 +116,17 @@ const CourseManagement = () => {
     };
 
     const handleUpdateCourse = async (updatedCourse) => {
+        const isDuplicate = subjectsState.some((s) => {
+            const sameId = s.id === selectedCourse?.id;
+            if (sameId) return false;
+            const codeMatch = (s.subjectCode || s.code || '').trim().toLowerCase() === updatedCourse.code.trim().toLowerCase();
+            const nameMatch = (s.name || '').trim().toLowerCase() === updatedCourse.name.trim().toLowerCase();
+            return codeMatch || nameMatch;
+        });
+        if (isDuplicate) {
+            alert('Môn học đã tồn tại (trùng mã hoặc tên).');
+            return;
+        }
         try {
             const subjectData = {
                 subjectCode: updatedCourse.code,
@@ -141,6 +161,9 @@ const CourseManagement = () => {
 
                 if (response.data) {
                     alert('Xóa môn học thành công!');
+                    // Optimistically update the table
+                    setSubjectsState((prev) => prev.filter((s) => s.id !== subject.id));
+                    // Optionally re-fetch to stay in sync
                     fetchSubjects();
                 }
             } catch (err) {

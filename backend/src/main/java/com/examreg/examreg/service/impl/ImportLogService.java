@@ -110,7 +110,7 @@ public class ImportLogService implements IImportLogService {
   @Override
   public void importEligibleStudentsForSubject(MultipartFile file, String subjectCode, Long examId) {
     try {
-      List<AddStudentSubjectStatusRequest> statusRequests = excelToSssRequest(file.getInputStream(), subjectCode, examId);
+      List<AddStudentSubjectStatusRequest> statusRequests = excelToSssRequest(file.getInputStream(), examId);
       for (AddStudentSubjectStatusRequest sssRequest : statusRequests) {
         statusService.addStudentSubjectStatus(sssRequest);
       }
@@ -119,49 +119,51 @@ public class ImportLogService implements IImportLogService {
     }
   }
   
-  private List<AddStudentSubjectStatusRequest> excelToSssRequest(InputStream is, String subjectCode, Long examId) {
+  private List<AddStudentSubjectStatusRequest> excelToSssRequest(InputStream is, Long examId) {
     try (Workbook workbook = new XSSFWorkbook(is)) {
-      Sheet sheet = null;
-      for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
-        String sheetName = workbook.getSheetName(i);
-        if (sheetName.contains(subjectCode)) {
-          sheet = workbook.getSheetAt(i);
-          break;
-        }
+      if (workbook.getNumberOfSheets() == 0) {
+        throw new RuntimeException("File Excel không có sheet nào");
       }
-      if (sheet == null) {
-        throw new RuntimeException(String.format("Sheet %s không tồn tại", subjectCode));
-      }
-      List<AddStudentSubjectStatusRequest> sssRequests = new ArrayList<>();
-      for (Row row : sheet) {
-        if (row.getRowNum() == 0 || row == null || row.getCell(0) == null)
-          continue;
-        if ("STT".equalsIgnoreCase(row.getCell(0).toString().trim()) || row.getRowNum() < 4)
-          continue;
-        
-        try {
-          EligibilityStatus status = row
-            .getCell(3)
-            .getStringCellValue()
-            .equalsIgnoreCase("Đủ điều kiện") ? EligibilityStatus.ELIGIBLE : EligibilityStatus.INELIGIBLE;
-          
-          Cell cell = row.getCell(4);
-          String reason = null;
-          if (cell != null && cell.getCellType() != CellType.BLANK) {
-            reason = cell.toString().trim();
-          }
 
-          AddStudentSubjectStatusRequest ssStatus = AddStudentSubjectStatusRequest.builder()
-            .studentCode(String.valueOf((long)row.getCell(1).getNumericCellValue()))
-            .subjectCode(subjectCode)
-            .status(status)
-            .examId(examId)
-            .reason(reason)
-            .build();
+      List<AddStudentSubjectStatusRequest> sssRequests = new ArrayList<>();
+
+      for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
+        Sheet sheet = workbook.getSheetAt(i);
+        String sheetName = workbook.getSheetName(i);
+        if (sheet == null || sheetName == null || sheetName.isBlank()) {
+          continue;
+        }
+
+        for (Row row : sheet) {
+          if (row.getRowNum() == 0 || row == null || row.getCell(0) == null)
+            continue;
+          if ("STT".equalsIgnoreCase(row.getCell(0).toString().trim()) || row.getRowNum() < 4)
+            continue;
           
+          try {
+            EligibilityStatus status = row
+              .getCell(3)
+              .getStringCellValue()
+              .equalsIgnoreCase("Đủ điều kiện") ? EligibilityStatus.ELIGIBLE : EligibilityStatus.INELIGIBLE;
+            
+            Cell cell = row.getCell(4);
+            String reason = null;
+            if (cell != null && cell.getCellType() != CellType.BLANK) {
+              reason = cell.toString().trim();
+            }
+
+            AddStudentSubjectStatusRequest ssStatus = AddStudentSubjectStatusRequest.builder()
+              .studentCode(String.valueOf((long)row.getCell(1).getNumericCellValue()))
+              .subjectCode(sheetName)
+              .status(status)
+              .examId(examId)
+              .reason(reason)
+              .build();
+            
             sssRequests.add(ssStatus);
-        } catch (Exception e) {
-          throw new RuntimeException("Lỗi đọc dữ liệu tại dòng " + row.getRowNum() + " " + e.getMessage());
+          } catch (Exception e) {
+            throw new RuntimeException("Lỗi đọc dữ liệu tại sheet " + sheetName + " dòng " + row.getRowNum() + " " + e.getMessage());
+          }
         }
       }
       return sssRequests;

@@ -30,14 +30,14 @@ const EditCourseModal = ({ course, onClose, onSubmit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!formData.code || !formData.name) {
-      alert('Mã môn và Tên môn là bắt buộc');
+    if (!formData.code || !formData.name || !formData.credits || !formData.duration) {
+      alert('Tất cả các trường đều bắt buộc');
       return;
     }
     const updatedCourse = {
       ...formData,
-      credits: formData.credits ? Number(formData.credits) : 0,
-      duration: formData.duration ? Number(formData.duration) : 0
+      credits: Number(formData.credits),
+      duration: Number(formData.duration)
     };
     onSubmit(updatedCourse);
     handleCloseModal();
@@ -71,13 +71,13 @@ const EditCourseModal = ({ course, onClose, onSubmit }) => {
           <div className='create-exam-form-row'>
             <div className='create-exam-form-group'>
               <label className='create-exam-form-label'>Số tín chỉ</label>
-              <input type='number' name='credits' value={formData.credits} onChange={handleInputChange} className='create-exam-form-input' />
+              <input type='number' name='credits' value={formData.credits} onChange={handleInputChange} className='create-exam-form-input' required min='0' />
             </div>
           </div>
 
           <div className='create-exam-form-group'>
             <label className='create-exam-form-label'>Thời lượng thi (phút)</label>
-            <input type='number' name='duration' value={formData.duration} onChange={handleInputChange} className='create-exam-form-input' placeholder='e.g. 90' />
+            <input type='number' name='duration' value={formData.duration} onChange={handleInputChange} className='create-exam-form-input' placeholder='e.g. 90' required min='1' />
           </div>
 
           <div className='create-exam-modal-footer'>

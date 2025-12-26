@@ -1,5 +1,6 @@
 package com.examreg.examreg.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,4 +25,6 @@ public interface ExamRepository extends JpaRepository<Exam, Long> {
   void deleteExamSubject(@Param("examId") Long examId, @Param("subjectId") Long subjectId);
 
   
+  List<Exam> findAllByIsOpenTrue();
+
 }

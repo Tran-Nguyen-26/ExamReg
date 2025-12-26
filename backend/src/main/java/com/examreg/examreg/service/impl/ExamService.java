@@ -100,6 +100,7 @@ public class ExamService implements IExamService {
         
         exam.setOpen(false);
         exam.setExamStatus("closed");
+        exam.setOpen(false);
         Exam closedExam = examRepository.save(exam);
         return examMapper.buildExamResponse(closedExam);
     }
@@ -109,10 +110,23 @@ public class ExamService implements IExamService {
     public ExamResponse openExam(Long id) {
         Exam exam = examRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Exam not found with id: " + id));
-        
-        exam.setOpen(true);
-        exam.setExamStatus("active");
-        Exam openedExam = examRepository.save(exam);
+
+        // Ensure only one exam is open: close all others, keep their prior status unless they were open
+        List<Exam> allExams = examRepository.findAll();
+        for (Exam ex : allExams) {
+            boolean wasOpen = ex.isOpen();
+            boolean isTarget = ex.getId().equals(id);
+            ex.setOpen(isTarget);
+            if (isTarget) {
+                ex.setExamStatus("active");
+            } else if (wasOpen) { // only mark closed if it was open before
+                ex.setExamStatus("closed");
+            }
+        }
+        examRepository.saveAll(allExams);
+
+        Exam openedExam = examRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Exam not found with id: " + id));
         return examMapper.buildExamResponse(openedExam);
     }
 

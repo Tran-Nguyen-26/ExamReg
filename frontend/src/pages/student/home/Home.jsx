@@ -35,7 +35,9 @@ const Home = () => {
     <div className="home-container">
       <Header/>
       <div className="notification-wrapper">
-        <Notification/>
+        <Notification
+          exam={openExam}
+        />
       </div>
       <div className="subjects">
         {
