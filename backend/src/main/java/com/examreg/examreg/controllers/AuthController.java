@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.examreg.examreg.dto.request.ChangePasswordFirstimeRequest;
+import com.examreg.examreg.dto.request.RefreshTokenRequest;
 import com.examreg.examreg.dto.request.ResetPasswordRequest;
 import com.examreg.examreg.dto.request.UserLoginRequest;
+import com.examreg.examreg.dto.response.AdminReponse;
 import com.examreg.examreg.dto.response.ApiResponse;
 import com.examreg.examreg.dto.response.AuthResponse;
 import com.examreg.examreg.security.user.AppUserDetails;
@@ -26,11 +28,18 @@ import lombok.RequiredArgsConstructor;
 public class AuthController {
 
   private final IAuthService authService;
+
   
   @PostMapping("/login")
   public ResponseEntity<ApiResponse<AuthResponse<?>>> login(@RequestBody @Valid UserLoginRequest request) {
     AuthResponse<?> authResponse = authService.login(request);
     return ResponseEntity.ok(ApiResponse.success("Login successful", authResponse));
+  }
+
+  @PostMapping("/refresh")
+  public ResponseEntity<ApiResponse<AuthResponse<AdminReponse>>> refreshToken(@RequestBody RefreshTokenRequest request) {
+    AuthResponse<AdminReponse> authResponse = authService.refreshAccessToken(request.getRefreshToken());
+    return ResponseEntity.ok(ApiResponse.success("Refresh token successful", authResponse));
   }
 
   @PostMapping("/change-password-first-time")

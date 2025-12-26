@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.examreg.examreg.models.Admin;
 import com.examreg.examreg.models.Student;
-import com.examreg.examreg.repository.AdminRepositoty;
+import com.examreg.examreg.repository.AdminRepository;
 import com.examreg.examreg.repository.StudentRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 public class AppUserDetailsService implements UserDetailsService {
 
   private final StudentRepository studentRepository;
-  private final AdminRepositoty adminRepositoty;
+  private final AdminRepository adminRepository;
 
   @Override
   public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -28,7 +28,7 @@ public class AppUserDetailsService implements UserDetailsService {
       return AppUserDetails.buildUserDetails(student.get());
     }
 
-    Optional<Admin> admin = adminRepositoty.findByEmail(email);
+    Optional<Admin> admin = adminRepository.findByEmail(email);
     if (admin.isPresent()) {
       return AppUserDetails.buildUserDetails(admin.get());
     }

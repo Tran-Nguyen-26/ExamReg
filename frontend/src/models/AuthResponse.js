@@ -4,6 +4,7 @@ export class AuthResponse {
   constructor(data) {
     this.message = data.message;
     this.token = data.data.token;
+    this.refreshToken = data?.data?.refreshToken ?? null;
     this.user = new User(data.data.user)
   }
 

@@ -178,25 +178,25 @@ const AddExamSubjectsModal = ({onClose, availableSubjects, examId, addedSubjects
                         </table>
                     </div>
                     <div className="add-subject-modal-footer">
-                    <button onClick={onClose} className="btn-cancel" disabled={loading}>
-                        Hủy
-                    </button>
-                    <button 
-                        onClick={handleAddSelected} 
-                        className="btn-add-subject-selected" 
-                        disabled={loading || selectedSubjects.length === 0}
-                    >
-                        {loading ? (
-                        <>
-                            <span className="spinner"></span>
-                            Đang thêm...
-                        </>
-                        ) : (
-                        <>
-                            Thêm đã chọn ({selectedSubjects.length})
-                        </>
-                        )}
-                    </button>
+                        <button onClick={onClose} className="btn-cancel" disabled={loading}>
+                            Hủy
+                        </button>
+                        <button 
+                            onClick={handleAddSelected} 
+                            className="btn-add-subject-selected" 
+                            disabled={loading || selectedSubjects.length === 0}
+                        >
+                            {loading ? (
+                            <>
+                                <span className="spinner"></span>
+                                Đang thêm...
+                            </>
+                            ) : (
+                            <>
+                                Thêm đã chọn ({selectedSubjects.length})
+                            </>
+                            )}
+                        </button>
                     </div>
                 </div>
             </div>

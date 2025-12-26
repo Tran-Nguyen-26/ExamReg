@@ -113,7 +113,7 @@ const ViewListStudentSession = ({ session, onClose }) => {
                           {student.phone}
                         </div>
                       </td>
-                      <td className="view-list-student-table-time">{student.registeredAt.replace("T", " ")}</td>
+                      <td className="view-list-student-table-time">{student.registeredAt}</td>
                     </tr>
                   ))}
                 </tbody>

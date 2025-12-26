@@ -9,6 +9,7 @@ export const authService = {
     }, false)
     const authResponse = AuthResponse.fromJSON(response)
     localStorage.setItem('token', authResponse.token)
+    localStorage.setItem('refreshToken', authResponse.refreshToken)
     localStorage.setItem('user', JSON.stringify(authResponse.user))
     return authResponse
   },
@@ -27,6 +28,7 @@ export const authService = {
     })
     localStorage.removeItem('token')
     localStorage.removeItem('user')
+    localStorage.removeItem('refreshToken')
     window.location.href = '/login'
   },
 

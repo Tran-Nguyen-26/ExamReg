@@ -40,6 +40,18 @@ public class JwtUtils {
       .compact();
   }
 
+  public String generateTokenFromUserDetails(AppUserDetails userDetails) {
+    return Jwts.builder()
+      .subject(userDetails.getEmail())
+      .claim("id", userDetails.getId())
+      .claim("role", userDetails.getAuthority().getAuthority())
+      .id(UUID.randomUUID().toString())
+      .issuedAt(new Date())
+      .expiration(new Date(System.currentTimeMillis() + expirationTime))
+      .signWith(key(), Jwts.SIG.HS256)
+      .compact();
+  }
+
   private SecretKey key() {
     return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
   }

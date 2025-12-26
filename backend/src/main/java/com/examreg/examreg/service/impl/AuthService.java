@@ -23,8 +23,9 @@ import com.examreg.examreg.mapper.AdminMapper;
 import com.examreg.examreg.mapper.StudentMapper;
 import com.examreg.examreg.models.Admin;
 import com.examreg.examreg.models.PasswordResetToken;
+import com.examreg.examreg.models.RefreshToken;
 import com.examreg.examreg.models.Student;
-import com.examreg.examreg.repository.AdminRepositoty;
+import com.examreg.examreg.repository.AdminRepository;
 import com.examreg.examreg.repository.ResetTokenRepository;
 import com.examreg.examreg.repository.StudentRepository;
 import com.examreg.examreg.security.jwt.JwtUtils;
@@ -32,6 +33,7 @@ import com.examreg.examreg.security.user.AppUserDetails;
 import com.examreg.examreg.service.IAuthService;
 import com.examreg.examreg.service.IBlacklistService;
 import com.examreg.examreg.service.IEmailService;
+import com.examreg.examreg.service.IRefreshTokenService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -42,13 +44,14 @@ public class AuthService implements IAuthService {
   private final AuthenticationManager authenticationManager;
   private final JwtUtils jwtUtils;
   private final StudentRepository studentRepository;
-  private final AdminRepositoty adminRepositoty;
+  private final AdminRepository adminRepositoty;
   private final StudentMapper studentMapper;
   private final AdminMapper adminMapper;
   private final PasswordEncoder passwordEncoder;
   private final IBlacklistService blacklistService;
   private final ResetTokenRepository resetTokenRepository;
   private final IEmailService emailService;
+  private final IRefreshTokenService refreshTokenService;
   
   @Override
   public AuthResponse<?> login(UserLoginRequest request) {
@@ -85,14 +88,30 @@ public class AuthService implements IAuthService {
     } else if ("ROLE_ADMIN".equals(role)) {
       Admin admin = adminRepositoty.findById(userDetails.getId())
         .orElseThrow(() -> new ResourceNotFoundException("Admin not found: " + userDetails.getId()));
+      String refreshToken = refreshTokenService.createRefreshToken(admin.getId()).getToken();
       AdminReponse adminReponse = adminMapper.buildAdminReponse(admin);
       return AuthResponse.<AdminReponse>builder()
         .token(token)
+        .refreshToken(refreshToken)
         .user(adminReponse)
         .build();
     } else {
       throw new IllegalStateException("Unknown role: " + role);
     }
+  }
+
+  @Override
+  public AuthResponse<AdminReponse> refreshAccessToken(String refreshTokenValue) {
+    RefreshToken rt = refreshTokenService.verifyRefreshToken(refreshTokenValue);
+    Admin admin = rt.getAdmin();
+    AppUserDetails userDetails = AppUserDetails.buildUserDetails(admin);
+    String newAccessToken = jwtUtils.generateTokenFromUserDetails(userDetails);
+    AdminReponse adminReponse = adminMapper.buildAdminReponse(admin);
+    return AuthResponse.<AdminReponse>builder()
+      .token(newAccessToken)
+      .refreshToken(refreshTokenValue)
+      .user(adminReponse)
+      .build();
   }
 
   @Override
@@ -122,13 +141,17 @@ public class AuthService implements IAuthService {
       blacklistService.addToBlacklist(jti, remainingMs);
     }
 
-    AppUserDetails studentDetails = (AppUserDetails)SecurityContextHolder
+    AppUserDetails userDetails = (AppUserDetails)SecurityContextHolder
       .getContext()
       .getAuthentication()
       .getPrincipal();
+
+    if ("ROLE_ADMIN".equals(userDetails.getAuthority().getAuthority())) {
+      refreshTokenService.deleteByAdminId(userDetails.getId());
+    }
     
-    if ("ROLE_STUDENT".equals(studentDetails.getAuthority().getAuthority())) {
-      Student student= studentRepository.findById(studentDetails.getId())
+    if ("ROLE_STUDENT".equals(userDetails.getAuthority().getAuthority())) {
+      Student student= studentRepository.findById(userDetails.getId())
         .orElseThrow(() -> new ResourceNotFoundException("Student not found"));
       
       student.setLoginLockedUntil(LocalDateTime.now().plusMinutes(20));
