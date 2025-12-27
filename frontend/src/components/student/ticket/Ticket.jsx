@@ -7,8 +7,8 @@ import logo_schedule from '../../../assets/logo_schedule.png'
 import logo_download from '../../../assets/logo_download.png'
 import logo_print from '../../../assets/logo_print.png'
 import { useNavigate } from 'react-router-dom'
-import html2pdf from 'html2pdf.js'
-import printJS from 'print-js'
+import pdfMake from "pdfmake/build/pdfmake"
+import "pdfmake/build/vfs_fonts"
 
 const Ticket = forwardRef((props, ref) => {
 
@@ -23,25 +23,102 @@ const Ticket = forwardRef((props, ref) => {
     setSelectedExamSession
   } = useContext(MyContext)
 
-  const handleDownload = () => {
-    const element = document.getElementById('ticket')
-    const subject_name = selectedSubject.name.split(" ").join("-")
-    const file_name = `phiếu-dự-thi-môn-${subject_name}.pdf`
-    html2pdf().from(element).save(file_name)
-  }
+  const toBase64 = async (url) => {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.readAsDataURL(blob);
+    });
+  };
 
-  const handlePrint = () => {
-    printJS({
-      printable: 'ticket',
-      type: 'html',
-      scanStyles: true,
-      style: '',
-    })
-  }
+
+  const handleExportPDF = async (mode) => {
+    const logoBase64 = await toBase64(logo_university);
+
+    const docDefinition = {
+      pageSize: "A5",
+      pageMargins: [30, 30, 30, 30],
+      content: [
+        {
+          image: logoBase64,
+          width: 60,
+          alignment: "center",
+          margin: [0, 0, 0, 10]
+        },
+        {
+          text: "Trường Đại học Công Nghệ",
+          style: "header"
+        },
+        {
+          text: "PHIẾU BÁO DỰ THI",
+          style: "title",
+          margin: [0, 4, 0, 20]
+        },
+        {
+          table: {
+            widths: [120, "*"],
+            body: [
+              ["Họ và tên:", { text: user.fullname, alignment: "right" }],
+              ["Mã sinh viên:", { text: user.studentCode, alignment: "right" }],
+              ["Học phần:", { text: selectedSubject.name, alignment: "right" }],
+              ["Mã học phần:", { text: selectedSubject.subjectCode, alignment: "right" }],
+              ["Ngày thi:", { text: selectedExamSession.date, alignment: "right" }],
+              ["Giờ thi:", { text: selectedExamSession.startTime, alignment: "right" }],
+              ["Phòng thi:", { text: selectedExamSession.room.name, alignment: "right" }],
+              ["Địa điểm thi:", { text: selectedLocation.name, alignment: "right" }],
+              ["Thời lượng bài thi:", { text: `${selectedSubject.duration} phút`, alignment: "right" }]
+            ]
+          },
+          layout: {
+            hLineWidth: () => 0.5,
+            vLineWidth: () => 0,
+            hLineColor: () => "#ccc",
+            paddingLeft: () => 4,
+            paddingRight: () => 4,
+            paddingTop: () => 6,
+            paddingBottom: () => 6
+          },
+          margin: [0, 0, 0, 20]
+        },
+        {
+          text: "Lưu ý: Sinh viên mang theo phiếu này và thẻ sinh viên khi đi thi",
+          style: "note"
+        }
+      ],
+      styles: {
+        header: {
+          fontSize: 14,
+          bold: true,
+          alignment: "center",
+          color: "#1f2937"
+        },
+        title: {
+          fontSize: 16,
+          bold: true,
+          alignment: "center",
+          decoration: "underline",
+          color: "#2563eb"
+        },
+        note: {
+          fontSize: 10,
+          italics: true,
+          alignment: "center",
+          color: "#6b7280"
+        }
+      }
+    };
+
+    if (mode === "download") {
+      pdfMake.createPdf(docDefinition).download(`Phiếu-dự-thi-${selectedSubject.name}-${selectedSubject.subjectCode}.pdf`);
+    } else {
+      pdfMake.createPdf(docDefinition).print();
+    }S
+  };
 
   useImperativeHandle(ref, () => ({
-    download: handleDownload,
-    print: handlePrint
+    exportPdf: handleExportPDF
   }))
 
   return (
@@ -98,11 +175,11 @@ const Ticket = forwardRef((props, ref) => {
           <img src={logo_schedule} alt="" />
           <span>Lịch thi của tôi</span>
         </div>
-        <div className='option option-download' onClick={handleDownload}>
+        <div className='option option-download' onClick={() => handleExportPDF("download")}>
           <img src={logo_download} alt="" />
           <span>Tải xuống</span>
         </div>
-        <div className='option option-print' onClick={handlePrint}>
+        <div className='option option-print' onClick={() => handleExportPDF("print")}>
           <img src={logo_print} alt="" />
           <span>In phiếu</span>
         </div>

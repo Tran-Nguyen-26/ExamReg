@@ -246,8 +246,13 @@
 }
 
 .view-list-student-table td {
-  padding: 14px 16px;
+  padding: 14px 5px;
   color: #4b5563;
+  text-align: left;
+}
+
+.view-list-student-table td.STT {
+  padding-left: 20px;
 }
 
 .view-list-student-table-id {

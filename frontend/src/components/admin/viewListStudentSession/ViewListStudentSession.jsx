@@ -3,6 +3,8 @@ import { IoClose } from "react-icons/io5";
 import { FaUserGraduate, FaSearch } from "react-icons/fa";
 import { examRegistrationService } from "../../../services/examRegistrationService";
 import "./Style-ViewListStudentSession.css";
+import pdfMake from "pdfmake/build/pdfmake"
+import "pdfmake/build/vfs_fonts"
 
 const ViewListStudentSession = ({ session, onClose }) => {
   const [students, setStudents] = useState([]);
@@ -35,6 +37,60 @@ const ViewListStudentSession = ({ session, onClose }) => {
     student.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  //xuat danh sach ra pdf
+  const handleExportCustomPDF = () => {
+    const tableBody = [
+      ["STT", "MSSV", "Họ và tên", "Email", "SĐT", "Thời gian đăng ký"],
+      ...students.map((s, i) => [ 
+        i + 1,
+        s.studentCode, 
+        s.fullName, 
+        s.email, 
+        s.phone, 
+        s.registeredAt 
+      ])
+    ]
+  
+    const docDefinition = {
+      pageSize: "A4",
+      pageOrientation: "landscape",
+      pageMargins: [30, 40, 30, 40],
+      header: {
+        text: "Trường đại học công nghệ",
+        alignment: "center",
+        fontSize: 12,
+        bold: true,
+        margin: [0, 10]
+      },
+      footer: function(currentPage, pageCount) {
+        return {
+          columns: [
+            { text: `Ngày xuất: ${new Date().toLocaleDateString()}`, alignment: "left", margin: [30, 0] },
+            { text: `Trang ${currentPage} / ${pageCount}`, alignment: "right", margin: [0, 0, 30, 0] }
+          ],
+          fontSize: 9
+        }
+      },
+      content: [
+        { text: "Danh sách sinh viên đã đăng ký", style: "title", margin: [0, 0, 0, 8] },
+        { text: `${session.subject} - ${session.time} - ${session.date} - ${session.room} - ${session.location}`, style: "sub", margin: [0, 0, 0, 12] },
+        {
+          table: {
+            headerRows: 1,
+            widths: ["auto", "auto", "*", "*", "auto", "auto"],
+            body: tableBody
+          },
+          layout: 'lightHorizontalLines'
+        }
+      ],
+      styles: {
+        title: {fontSize: 14, bold: true},
+        sub: { fontSize: 10, italics: true}
+      }
+    }
+
+    pdfMake.createPdf(docDefinition).download("danh-sach-dang-ky.pdf")
+  }
   return (
     <div className="view-list-student-session-overlay" onClick={onClose}>
       <div className="view-list-student-session-container" onClick={(e) => e.stopPropagation()}>
@@ -100,7 +156,7 @@ const ViewListStudentSession = ({ session, onClose }) => {
                 <tbody>
                   {filteredStudents.map((student, index) => (
                     <tr key={student.id}>
-                      <td>{index + 1}</td>
+                      <td className="STT">{index + 1}</td>
                       <td className="view-list-student-table-id">{student.studentCode}</td>
                       <td className="view-list-student-table-name">{student.fullName}</td>
                       <td>
@@ -126,7 +182,7 @@ const ViewListStudentSession = ({ session, onClose }) => {
           <button className="view-list-student-btn-secondary" onClick={onClose}>
             Đóng
           </button>
-          <button className="view-list-student-btn-primary">
+          <button className="view-list-student-btn-primary" onClick={handleExportCustomPDF}>
             Xuất danh sách
           </button>
         </div>

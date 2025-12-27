@@ -25,24 +25,13 @@ const ExamSchedule = () => {
     setSelectedExamSession
   } = useContext(MyContext)
 
-  const handleDownloadFromSchedule = (examRegistration) => {
+  const handleExportPdfSchedule = (examRegistration, mode) => {
     setSelectedExamSession(examRegistration.examSession)
     setSelectedLocation(examRegistration.examSession.room.location)
     setSelectedSubject(examRegistration.examSession.subjectStatus.subject)
     setTimeout(() => {
       if (ticketRef.current) {
-        ticketRef.current.download()
-      }
-    }, 300)
-  }
-
-  const handlePrintFromSchedule = (examRegistration) => {
-    setSelectedExamSession(examRegistration.examSession)
-    setSelectedLocation(examRegistration.examSession.room.location)
-    setSelectedSubject(examRegistration.examSession.subjectStatus.subject)
-    setTimeout(() => {
-      if (ticketRef.current) {
-        ticketRef.current.print()
+        ticketRef.current.exportPdf(mode)
       }
     }, 300)
   }
@@ -101,8 +90,8 @@ const ExamSchedule = () => {
               key={examRegistration.id}
               data={examRegistration}
               onCancel={handleCancel}
-              onDownload={() => handleDownloadFromSchedule(examRegistration)}
-              onPrint={() => handlePrintFromSchedule(examRegistration)}
+              onDownload={() => handleExportPdfSchedule(examRegistration, "download")}
+              onPrint={() => handleExportPdfSchedule(examRegistration, "print")}
             />
           ))
         }
