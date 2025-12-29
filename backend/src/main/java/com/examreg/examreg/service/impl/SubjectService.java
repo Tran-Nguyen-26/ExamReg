@@ -26,13 +26,13 @@ public class SubjectService implements ISubjectService {
   @Override
   public Subject getSubjectById(Long subjectId) {
     return subjectRepository.findById(subjectId)
-      .orElseThrow(() -> new ResourceNotFoundException("Subject not found"));
+      .orElseThrow(() -> new ResourceNotFoundException("Subject not found with id: " + subjectId));
   }
 
   @Override
   public Subject getSubjectBySubjectCode(String subjectCode) {
     return subjectRepository.findBySubjectCode(subjectCode)
-      .orElseThrow(() -> new ResourceNotFoundException("Subject not found"));
+      .orElseThrow(() -> new ResourceNotFoundException("Subject not found: " + subjectCode));
   }
 
   @Override

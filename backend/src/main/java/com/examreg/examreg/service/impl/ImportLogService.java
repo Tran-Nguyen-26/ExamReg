@@ -108,7 +108,7 @@ public class ImportLogService implements IImportLogService {
   }
 
   @Override
-  public void importEligibleStudentsForSubject(MultipartFile file, String subjectCode, Long examId) {
+  public void importEligibleStudentsForSubject(MultipartFile file, Long examId) {
     try {
       List<AddStudentSubjectStatusRequest> statusRequests = excelToSssRequest(file.getInputStream(), examId);
       for (AddStudentSubjectStatusRequest sssRequest : statusRequests) {

@@ -92,7 +92,7 @@ const ExamEligibility = () => {
       return;
     }
     try {
-      await importLogService.importStudentsCondition(exam.id, subject.subjectCode, file)
+      await importLogService.importStudentsCondition(exam.id, file)
       alert('Import thành công')
       setFile(null)
       fetchStudents()

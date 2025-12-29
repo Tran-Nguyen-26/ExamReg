@@ -16,10 +16,10 @@ export const importLogService = {
     return await response.json()
   },
 
-  importStudentsCondition: async (examId, subjectCode, file) => {
+  importStudentsCondition: async (examId, file) => {
     const formData = new FormData()
     formData.append('file', file)
-    const response = await fetch(`http://localhost:8080/api/v1/import/exam/${examId}/subjects/${subjectCode}`, {
+    const response = await fetch(`http://localhost:8080/api/v1/import/exam/${examId}`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`
