@@ -56,11 +56,9 @@ const CreateCourseModal = ({ onClose, onSubmit }) => {
             </div>
           </div>
 
-          <div className='create-exam-form-row'>
-            <div className='create-exam-form-group'>
-              <label className='create-exam-form-label'>Số tín chỉ</label>
-              <input type='number' name='credits' value={formData.credits} onChange={handleInputChange} className='create-exam-form-input' required min='0' />
-            </div>
+          <div className='create-exam-form-group'>
+            <label className='create-exam-form-label'>Số tín chỉ</label>
+            <input type='number' name='credits' value={formData.credits} onChange={handleInputChange} className='create-exam-form-input create-exam-form-input-fullwidth' required min='0' />
           </div>
 
           <div className='create-exam-form-group'>
