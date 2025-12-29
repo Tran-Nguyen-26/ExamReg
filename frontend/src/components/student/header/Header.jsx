@@ -22,10 +22,10 @@ const Header = () => {
     <div className='header-student-screen'>
       <div className='header-student-screen-left'>
         <div className='hl1'>
-          <img src={logo_university} alt="" className='logo_uni'/>
+          <img src={logo_university} alt="" className='logo_uni' onClick={() => navigate('/student/home')}/>
         </div>
         <div className='hl2'>
-          <p className='logo-text-name'>UET Exam</p>
+          <p className='logo-text-name' onClick={() => navigate('/student/home')}>UET Exam</p>
           <span className='student-name-and-code'>{`${user.fullname} - ${user.studentCode}`}</span>
         </div>
       </div>

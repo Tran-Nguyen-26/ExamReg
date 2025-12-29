@@ -33,7 +33,7 @@ const StudentSearchBar = ({ onSearch, onImport, onAdd }) => {
           </button>
         </div>
 
-        <div className="buttons">
+        <div className="search-bar-student-buttons">
           <button onClick={handleImportClick} className="btn-import">
             <TfiImport className="btn-icon-student" />
             <span>Import Excel</span>

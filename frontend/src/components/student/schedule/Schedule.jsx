@@ -1,63 +1,63 @@
 import './Style-Schedule.css'
-import icon_book from '../../../assets/icon_book.png'
-import icon_schedule from '../../../assets/icon_schedule.png'
-import icon_clock from '../../../assets/icon_clock.png'
-import icon_location from '../../../assets/icon_location.png'
-import logo_download from '../../../assets/logo_download.png'
-import logo_print from '../../../assets/logo_print.png'
-import logo_remove from '../../../assets/logo_remove.png'
+import icon_book from '../../../assets/laptop.png'
+import { LuCalendar } from "react-icons/lu";
+import { FaRegClock } from "react-icons/fa";
+import { GrLocation } from "react-icons/gr";
+import { GoDownload } from "react-icons/go";
+import { FiPrinter } from "react-icons/fi";
+import { IoMdCloseCircleOutline } from "react-icons/io";
 
 const Schedule = ({ data, onCancel, onDownload, onPrint }) => {
   return (
-    <div className='exam-session-schedule'>
-      <div className='subject-header'>
+    <div className='exam-session-schedule-card'>
+      <div className='exam-session-schedule-card-header'>
         <img src={icon_book} alt="" />
-        <div>
-          <label>{data.examSession.subjectStatus.subject.name}</label>
-          <span>{`Mã HP: ${data.examSession.subjectStatus.subject.subjectCode}`}</span>
+        <div className='exam-session-schedule-card-header-title'>
+          <span className='exam-session-schedule-card-header-subject-name'>{data.examSession.subjectStatus.subject.name}</span>
+          <span className='exam-session-schedule-card-header-subject-code'>{`${data.examSession.subjectStatus.subject.subjectCode}`}</span>
         </div>
       </div>
-      <div className='subject-body'>
-        <div className='info date'>
-          <img src={icon_schedule} alt="" />
-          <div>
-            <label>Ngày thi</label>
-            <span>{data.examSession.date}</span>
+      <div className='exam-session-schedule-info'>
+        <div className='exam-session-schedule-info-item'>
+          <LuCalendar className='exam-session-schedule-icon'/>
+          <div className='exam-session-schedule-text'>
+            <label className='exam-session-schedule-label'>Ngày thi</label>
+            <span className='exam-session-schedule-value'>{data.examSession.date}</span>
           </div>
         </div>
-        <div className='info time'>
-          <img src={icon_clock} alt="" />
-          <div>
-            <label>Giờ thi</label>
-            <span>{data.examSession.startTime}</span>
+        <div className='exam-session-schedule-info-item'>
+          <FaRegClock className='exam-session-schedule-icon'/>
+          <div className='exam-session-schedule-text'>
+            <label className='exam-session-schedule-label'>Giờ thi</label>
+            <span className='exam-session-schedule-value'>{data.examSession.startTime}</span>
           </div>
         </div>
-        <div className='info loc'>
-          <img src={icon_location} alt="" />
-          <div>
-            <label>Đia điểm thi</label>
-            <span>{`${data.examSession.room.name} - ${data.examSession.room.location.name}`}</span>
+        <div className='exam-session-schedule-info-item'>
+          <GrLocation className='exam-session-schedule-icon-location'/>
+          <div className='exam-session-schedule-text'>
+            <label className='exam-session-schedule-label'>Địa điểm thi</label>
+            <span className='exam-session-schedule-value'>{`${data.examSession.room.name} - ${data.examSession.room.location.name}`}</span>
           </div>
         </div>
       </div>
-      <div className='action-buttons'>
-        <div className='action-button button-download' onClick={() => onDownload(data)}>
-          <img src={logo_download} alt="" />
-          <span>Tải phiếu</span>
-        </div>
-        <div className='action-button button-print' onClick={() => onPrint(data)}>
-          <img src={logo_print} alt="" />
-          <span>In phiếu</span>
-        </div>
-        <div className='action-button button-remove' onClick={() => {
+      <div className='exam-session-schedule-action-buttons'>
+        <button className='exam-session-schedule-button exam-session-schedule-download' onClick={() => onDownload(data)}>
+          <GoDownload size={21}/>
+          Tải phiếu
+        </button>
+        <button className='exam-session-schedule-button exam-session-schedule-print' onClick={() => onPrint(data)}>
+          <FiPrinter size={21}/>
+          In phiếu
+        </button>
+        <button className='exam-session-schedule-button exam-session-schedule-remove' onClick={() => {
           const confirmCancel = window.confirm("Xác nhận hủy đăng kí ca thi này")
           if (confirmCancel) {
             onCancel(data.id)
           }
         }}>
-          <img src={logo_remove} alt="" />
-          <span>Hủy đăng ký</span>
-        </div>
+          <IoMdCloseCircleOutline size={21}/>
+          Hủy đăng ký
+        </button>
       </div>
     </div>
   )

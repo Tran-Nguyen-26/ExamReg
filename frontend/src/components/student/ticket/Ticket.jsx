@@ -3,9 +3,10 @@ import './Style-Ticket.css'
 import MyContext from '../../../context/MyContext'
 import logo_university from '../../../assets/logo_university_no_bg.png'
 import logo_reminder_ticket from '../../../assets/logo_reminder_ticket.png'
-import logo_schedule from '../../../assets/logo_schedule.png'
+import logo_schedule from '../../../assets/calendar.png'
 import logo_download from '../../../assets/logo_download.png'
 import logo_print from '../../../assets/logo_print.png'
+import logo_register from '../../../assets/logo_register.png'
 import { useNavigate } from 'react-router-dom'
 import html2pdf from 'html2pdf.js'
 import printJS from 'print-js'
@@ -46,65 +47,76 @@ const Ticket = forwardRef((props, ref) => {
 
   return (
     <div className='dialog-ticket'>
-      <div id='ticket' className='ticket'>
-        <img src={logo_university} alt="" />
-        <p className='p3'>Trường đại học Công Nghệ</p>
-        <p className='p4'>Phiếu báo dự thi</p>
-        <div className='ticket-info'>
-          <div className='ticket-sub-info'>
-            <label>Họ và tên:</label>
-            <span>{user.fullname}</span>
+      <div className='dialog-ticket-content' onClick={(e) => e.stopPropagation()}>
+        <div id='ticket' className='ticket'>
+          <div className='ticket-header'>
+            <img src={logo_university} alt="" className='ticket-logo'/>
+            <h1 className='ticket-university'>Trường Đại học Công Nghệ</h1>
+            <h2 className='ticket-title'>PHIẾU BÁO DỰ THI</h2>
           </div>
-          <div className='ticket-sub-info'>
-            <label>Mã sinh viên:</label>
-            <span>{user.studentCode}</span>
+          <div className='ticket-info'>
+            <div className='ticket-sub-info'>
+              <label>Họ và tên:</label>
+              <span>{user.fullname}</span>
+            </div>
+            <div className='ticket-sub-info'>
+              <label>Mã sinh viên:</label>
+              <span>{user.studentCode}</span>
+            </div>
+            <div className='ticket-sub-info'>
+              <label>Môn thi:</label>
+              <span>{selectedSubject.name}</span>
+            </div>
+            <div className='ticket-sub-info'>
+              <label>Mã môn thi:</label>
+              <span>{selectedSubject.subjectCode}</span>
+            </div>
+            <div className='ticket-sub-info'>
+              <label>Ngày thi:</label>
+              <span>{selectedExamSession.date}</span>
+            </div>
+            <div className='ticket-sub-info'>
+              <label>Giờ thi:</label>
+              <span>{selectedExamSession.startTime}</span>
+            </div>
+            <div className='ticket-sub-info'>
+              <label>Phòng thi:</label>
+              <span>{selectedExamSession.room.name}</span>
+            </div>
+            <div className='ticket-sub-info'>
+              <label>Địa điểm thi:</label>
+              <span>{selectedLocation.name}</span>
+            </div>
+            <div className='ticket-sub-info'>
+              <label>Thời lượng bài thi:</label>
+              <span>{`${selectedSubject.duration} phút`}</span>
+            </div>
           </div>
-          <div className='ticket-sub-info'>
-            <label>Học phần</label>
-            <span>{selectedSubject.name}</span>
-          </div>
-          <div className='ticket-sub-info'>
-            <label>Mã học phần:</label>
-            <span>{selectedSubject.subjectCode}</span>
-          </div>
-          <div className='ticket-sub-info'>
-            <label>Ngày thi:</label>
-            <span>{selectedExamSession.date}</span>
-          </div>
-          <div className='ticket-sub-info'>
-            <label>Giờ thi:</label>
-            <span>{selectedExamSession.startTime}</span>
-          </div>
-          <div className='ticket-sub-info'>
-            <label>Phòng thi:</label>
-            <span>{selectedExamSession.room.name}</span>
-          </div>
-          <div className='ticket-sub-info'>
-            <label>Địa điểm thi:</label>
-            <span>{selectedLocation.name}</span>
-          </div>
-          <div className='ticket-sub-info'>
-            <label>Thời lượng bài thi:</label>
-            <span>{`${selectedSubject.duration} phút`}</span>
+          <div className='reminder-ticket'>
+            <img src={logo_reminder_ticket} alt="" className='reminder-icon'/>
+            <span>
+              <strong>Lưu ý:</strong> Sinh viên mang theo phiếu này và thẻ sinh viên khi đi thi. 
+              Vui lòng có mặt trước giờ thi 15 phút để làm thủ tục dự thi.
+            </span>
           </div>
         </div>
-        <div className='reminder-ticket'>
-          <img src={logo_reminder_ticket} alt="" />
-          <span>Lưu ý: Sinh viên mang theo phiếu này và thẻ sinh viên khi đi thi</span>
-        </div>
-      </div>
-      <div className='options'>
-        <div className='option option-schedule' onClick={() => navigate('/student/exam-schedule')}>
-          <img src={logo_schedule} alt="" />
-          <span>Lịch thi của tôi</span>
-        </div>
-        <div className='option option-download' onClick={handleDownload}>
-          <img src={logo_download} alt="" />
-          <span>Tải xuống</span>
-        </div>
-        <div className='option option-print' onClick={handlePrint}>
-          <img src={logo_print} alt="" />
-          <span>In phiếu</span>
+        <div className='options'>
+          <div className='option option-schedule' onClick={() => navigate('/student/exam-schedule')}>
+            <img src={logo_schedule} alt="" />
+            <span>Xem lịch thi</span>
+          </div>
+          <div className='option option-download' onClick={handleDownload}>
+            <img src={logo_download} alt="" />
+            <span>Tải xuống</span>
+          </div>
+          <div className='option option-print' onClick={handlePrint}>
+            <img src={logo_print} alt="" />
+            <span>In phiếu</span>
+          </div>
+          <div className='option option-register-subject' onClick={() => navigate('/student/home')}>
+            <img src={logo_register} alt="" />
+            <span>Đăng ký môn thi khác</span>
+          </div>
         </div>
       </div>
     </div>

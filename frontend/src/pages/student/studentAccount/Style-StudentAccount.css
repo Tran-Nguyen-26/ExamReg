@@ -1,5 +1,5 @@
 .page-account {
-  padding-top: 120px;
+  padding-top: 6rem;
   position: relative;
 }
 
@@ -10,8 +10,8 @@
 
 .student-account {
   width: 95%;
-  height: 700px;
-  margin: 20px auto 20px;
+  height: calc(100vh - 10rem);
+  margin: 2rem auto;
   display: flex;
   border: 1px solid rgb(229, 226, 226);
   box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
@@ -63,7 +63,6 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  row-gap: 40px;
   padding-top: 30px;
   padding-bottom: 30px;
   margin-left: 60px;
@@ -81,14 +80,16 @@
 
 .tab-change-password-content {
   width: 50%;
+  height: 100%;
+  display: flex;
 }
 
 .change-password-form {
   display: flex;
   flex-direction: column;
-  row-gap: 40px;
+  justify-content: space-between;
+  gap: 20px;
   padding-top: 30px;
-  padding-bottom: 30px;
   margin-left: 60px;
   font-size: 16px;
 }
@@ -156,7 +157,6 @@
 }
 
 .tab-change-password-content ul {
-  margin-top: 50px;
   padding: 20px;
   width: 70%;
   background-color: #f8f9fa;
