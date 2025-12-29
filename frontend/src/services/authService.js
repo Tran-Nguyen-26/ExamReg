@@ -7,6 +7,11 @@ export const authService = {
       method: 'POST',
       body: JSON.stringify({ email, password })
     }, false)
+
+    if (!response?.data?.token) {
+      throw new Error(response?.message || "Login failed"); 
+    }
+    
     const authResponse = AuthResponse.fromJSON(response)
     localStorage.setItem('token', authResponse.token)
     localStorage.setItem('refreshToken', authResponse.refreshToken)

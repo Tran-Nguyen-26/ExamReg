@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  backend:
+    image: exam-app
+    container_name: exam-app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://172.20.10.2:3306/exam_reg_db 
+      SPRING_DATASOURCE_USERNAME: aqn 
+      SPRING_DATASOURCE_PASSWORD: 11111111 
+      SPRING_REDIS_HOST: 172.20.10.2 
+      SPRING_REDIS_PORT: 6379
