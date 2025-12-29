@@ -1,12 +1,15 @@
 import './Style-Login.css'
 import logo_university from '../../assets/logo_uet.webp'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import { useAuth } from '../../hooks/useAuth'
 import { useExam } from '../../hooks/useExam'
 import ForgotPassword from '../../components/login/forgotpassword/ForgotPassword'
 import { useSearchParams } from 'react-router-dom'
 import ResetPassword from '../../components/login/resetpassword/ResetPassword'
 import Spinner from '../../components/student/spinner/Spinner'
+import ChangePasswordFirstTime from '../../components/login/changepasswordfirsttime/ChangePasswordFirstTime'
+import MyContext from '../../context/MyContext'
+import { useNavigate} from 'react-router-dom';
 
 
 const Login = () => {
@@ -19,9 +22,13 @@ const Login = () => {
   const [loading, setLoading] = useState(false)
   const { login } = useAuth() 
   const { getExamIsOpen } = useExam()
+  const navigate = useNavigate();
 
   const [searchParams] = useSearchParams()
   const token = searchParams.get('token')
+
+  const [showChangePasswordFirstTime, setShowChangePasswordFirstTime] = useState(false)
+  const { user } = useContext(MyContext)
 
   useEffect(() => {
     if (token) {
@@ -41,12 +48,27 @@ const Login = () => {
     e.preventDefault()
     try {
       setLoading(true)
-      await login(email, password)
-      await getExamIsOpen()
+
+      const loginUser = await login(email, password)
+
       setLoading(false)
+
+      if (loginUser.role === "STUDENT") {
+        if (loginUser.firstLogin) {
+          setShowChangePasswordFirstTime(true)  
+          return
+        }
+        await getExamIsOpen()
+        navigate("/student/home")
+      }
+
+      if (loginUser.role === "ADMIN") {
+        navigate("/admin/student-management")
+      }
+
     } catch (err) {
       setLoading(false)
-      console.error('Login failed', err)
+      console.error("Login failed", err)
       setShowError(err.message)
     }
   }
@@ -98,7 +120,7 @@ const Login = () => {
         forgotPassword && (
           <ForgotPassword 
             isForgotPassword={forgotPassword}
-            onCloseForgotPassword={setForgotPassword}
+            onCloseForgotPassword={() => setForgotPassword(false)}
           />
         )
       }
@@ -116,6 +138,11 @@ const Login = () => {
           <div className='login-page-spinner'>
             <Spinner/>
           </div>
+        )
+      }
+      {
+        showChangePasswordFirstTime && (
+          <ChangePasswordFirstTime onClose={() => setShowChangePasswordFirstTime(false)} />
         )
       }
     </div>

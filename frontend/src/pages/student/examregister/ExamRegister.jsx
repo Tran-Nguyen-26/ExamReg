@@ -372,27 +372,8 @@ const ExamRegister = () => {
         </AnimatePresence>
       </div>
       
-      <AnimatePresence>
-        {
-          showTicket && (
-            <motion.div
-              variants={overlayVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <motion.div
-                variants={ticketVariants}
-                initial="initial"
-                animate="animate"
-                exit="exit"
-              >
-                <Ticket/>
-              </motion.div>
-            </motion.div>
-          )
-        }
-      </AnimatePresence>
+      {showTicket && 
+      (<Ticket/>)}
       
       <AnimatePresence>
         {

@@ -106,10 +106,10 @@ public class ExamSessionService implements IExamSessionService {
 
   @Override
   @Transactional
-  @Caching(evict = {
-    @CacheEvict(value = "examRegistrationResponses", allEntries = true),
-    @CacheEvict(value = "statusRegisterResponses", allEntries = true)
-  })
+  // @Caching(evict = {
+  //   @CacheEvict(value = "examRegistrationResponses", allEntries = true),
+  //   @CacheEvict(value = "statusRegisterResponses", allEntries = true)
+  // })
   public void registerExamSession(Long examSessionId, Long studentId) {
     //Lock
     ExamSession examSession = examSessionRepository.findByIdForUpdate(examSessionId);
@@ -159,7 +159,8 @@ public class ExamSessionService implements IExamSessionService {
     examRegistrationService.saveExamRegistration(examRegistration);
   }
 
-  @Cacheable(value = "statusRegisterResponses", key = "#studentId + '_' + #examId")
+  @Override
+  // @Cacheable(value = "statusRegisterResponses", key = "#studentId + '_' + #examId")
   public List<SubjectStatusResponse> getStatusRegisterResponses(Long studentId, Long examId) {
     List<ExamRegistration> examRegistrations = examRegistrationService.getExamRegistrationsByStudentId(studentId, examId);
     Set<Long> registeredSubjectIds = examRegistrations.stream()
