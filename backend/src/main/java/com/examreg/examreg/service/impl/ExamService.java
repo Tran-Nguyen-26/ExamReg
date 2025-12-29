@@ -17,6 +17,7 @@ import com.examreg.examreg.mapper.SubjectMapper;
 import com.examreg.examreg.repository.ExamRegistrationRepository;
 import com.examreg.examreg.repository.ExamRepository;
 import com.examreg.examreg.repository.ExamSessionRepository;
+import com.examreg.examreg.repository.StudentSubjectStatusRepository;
 import com.examreg.examreg.repository.SubjectRepository;
 import com.examreg.examreg.service.IExamService;
 
@@ -32,6 +33,7 @@ public class ExamService implements IExamService {
     private final SubjectMapper subjectMapper;
     private final ExamSessionRepository examSessionRepository;
     private final ExamRegistrationRepository examRegistrationRepository;
+    private final StudentSubjectStatusRepository studentSubjectStatusRepository;
 
     @Override
     @Transactional
@@ -85,7 +87,7 @@ public class ExamService implements IExamService {
     public void deleteExam(Long id) {
         Exam exam = examRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Exam not found with id: " + id));
-        
+        studentSubjectStatusRepository.deleteByExamId(id);;
         examRegistrationRepository.deleteByExamId(id);
         examSessionRepository.deleteByExamId(id);
         examRepository.deleteExamSubjects(id);

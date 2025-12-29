@@ -4,7 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.repository.query.Param;
 
 import com.examreg.examreg.models.Exam;
 import com.examreg.examreg.models.Student;
@@ -28,5 +31,10 @@ public interface StudentSubjectStatusRepository extends JpaRepository<StudentSub
   
   @Query("SELECT COUNT(s) FROM Subject s JOIN s.exams e where e.id = :examId")
   Long countBySubject_ExamIdAndStatus(Long examId, EligibilityStatus status);
+
+  @Modifying
+  @Transactional
+  @Query("DELETE FROM StudentSubjectStatus s WHERE s.exam.id = :examId")
+  void deleteByExamId(@Param("examId") Long examId);
 
 }
