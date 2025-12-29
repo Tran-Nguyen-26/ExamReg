@@ -1,4 +1,4 @@
-.table-container {
+.subject-table-container{
   background-color: white;
   margin: 1.5rem;
   border-radius: 0.5rem;
@@ -7,8 +7,10 @@
   overflow: hidden;
 }
 
-.table-wrapper {
+.subject-table-wrapper{
   overflow-x: auto;
+  max-height: 30rem; 
+  overflow-y: auto;
 }
 
 .subject-table {
@@ -16,45 +18,42 @@
   border-collapse: collapse;
 }
 
-.table-header-row {
+.subject-table-header-row {
   background-color: #f9fafb;
   border-bottom: 1px solid #e5e7eb;
 }
 
-.table-header {
+.subject-table-header {
   padding: 1rem 1.5rem;
-  text-align: left;
+  text-align: center;
   font-size: 0.875rem;
   font-weight: 600;
   color: #374151;
   white-space: nowrap;
 }
 
-.table-header-center {
-  text-align: center;
+.subject-table-row-left {
+  text-align: left !important;
 }
 
-.table-row {
+.subject-table-header {
   border-bottom: 1px solid #e5e7eb;
   transition: background-color 0.2s;
 }
 
-.table-row:hover {
+.subject-table-header:hover {
   background-color: #f9fafb;
 }
 
-.table-cell {
+.subject-table-cell {
+  text-align: center;
   padding: 1rem 1.5rem;
   font-size: 0.875rem;
   color: #111827;
 }
 
-.table-cell-code {
+.subject-table-cell-code {
   font-weight: 500;
-}
-
-.table-cell-center {
-  text-align: center;
 }
 
 .status-badge {

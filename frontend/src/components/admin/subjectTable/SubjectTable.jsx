@@ -22,28 +22,28 @@ const SubjectTable = ({ subjects, onView, onEdit, onDelete, showView = true, ins
   };
 
   return (
-    <div className="table-container">
-      <div className="table-wrapper">
+    <div className="subject-table-container">
+      <div className="subject-table-wrapper">
         <table className="subject-table">
           <thead>
-            <tr className="table-header-row">
-              <th className="table-header">STT</th>
-              <th className="table-header">Mã môn</th>
-              <th className="table-header">Tên môn học</th>
-              <th className="table-header">Số tín chỉ</th>
-              <th className="table-header">{instructorLabel}</th>
-              <th className="table-header table-header-center">Thao tác</th>
+            <tr className="subject-table-header-row">
+              <th className="subject-table-header ">STT</th>
+              <th className="subject-table-header">Mã môn</th>
+              <th className="subject-table-header subject-table-row-left">Tên môn học</th>
+              <th className="subject-table-header">Số tín chỉ</th>
+              <th className="subject-table-header">{instructorLabel}</th>
+              <th className="subject-table-header table-header-center">Thao tác</th>
             </tr>
           </thead>
           <tbody>
             {subjects.map((subject, index) => (
-              <tr key={subject.id} className="table-row">
-                <td className="table-cell table-cell-center">{index + 1}</td>
-                <td className="table-cell table-cell-code table-cell-center">{subject.subjectCode || subject.code}</td>
-                <td className="table-cell">{subject.name}</td>
-                <td className="table-cell table-cell-center">{subject.creditHour || subject.credits}</td>
-                <td className="table-cell">{subject[instructorKey]}</td>
-                <td className="table-cell">
+              <tr key={subject.id} className="subject-table-row">
+                <td className="subject-table-cell">{index + 1}</td>
+                <td className="subject-table-cell subject-table-cell-code">{subject.subjectCode || subject.code}</td>
+                <td className="subject-table-cell subject-table-row-left">{subject.name}</td>
+                <td className="subject-table-cell">{subject.creditHour || subject.credits}</td>
+                <td className="subject-table-cell">{subject[instructorKey]}</td>
+                <td className="subject-table-cell">
                   <div className="buttons">
                     {showView && (
                       <button
