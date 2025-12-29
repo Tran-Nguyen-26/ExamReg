@@ -9,6 +9,7 @@ import com.examreg.examreg.exceptions.ResourceNotFoundException;
 import com.examreg.examreg.models.Exam;
 import com.examreg.examreg.repository.ExamRepository;
 import com.examreg.examreg.repository.StudentSubjectStatusRepository;
+import com.examreg.examreg.repository.ExamRegistrationRepository;
 import com.examreg.examreg.service.IReportService;
 
 import lombok.RequiredArgsConstructor;
@@ -18,8 +19,9 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class ReportService implements IReportService {
 
-    private final ExamRepository examRepository;
-    private final StudentSubjectStatusRepository studentSubjectStatusRepository;
+        private final ExamRepository examRepository;
+        private final StudentSubjectStatusRepository studentSubjectStatusRepository;
+        private final ExamRegistrationRepository examRegistrationRepository;
 
     @Override
     public ReportStatsDTO getReportStatsByExam(Long examId) {
@@ -30,6 +32,9 @@ public class ReportService implements IReportService {
         Long eligibleCount = studentSubjectStatusRepository.countBySubject_ExamIdAndStatus(examId, EligibilityStatus.ELIGIBLE);
         Long ineligibleCount = studentSubjectStatusRepository.countBySubject_ExamIdAndStatus(examId, EligibilityStatus.INELIGIBLE);
         Long totalCount = eligibleCount + ineligibleCount;
+
+        // Count students who finished registration for this exam
+        Long finishedRegistrationCount = examRegistrationRepository.countByExamSession_ExamId(examId);
         
         // Count subjects for this exam
         Long subjectCount = (long) exam.getSubjects().size();
@@ -45,6 +50,7 @@ public class ReportService implements IReportService {
                 .totalStudents(totalCount)
                 .eligibleStudents(eligibleCount)
                 .ineligibleStudents(ineligibleCount)
+                .finishedRegistrationCount(finishedRegistrationCount)
                 .totalSubjects(subjectCount)
                 .totalExamSessions(examSessionCount)
                 .build();
