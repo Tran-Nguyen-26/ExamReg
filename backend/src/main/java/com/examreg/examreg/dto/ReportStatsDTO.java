@@ -15,6 +15,7 @@ public class ReportStatsDTO {
     private Long totalStudents;
     private Long eligibleStudents;
     private Long ineligibleStudents;
+    private Long finishedRegistrationCount;
     private Long totalSubjects;
     private Long totalExamSessions;
 }

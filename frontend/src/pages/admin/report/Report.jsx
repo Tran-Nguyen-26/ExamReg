@@ -12,6 +12,7 @@ const Report = () => {
         totalStudents: 0,
         eligibleStudents: 0,
         ineligibleStudents: 0,
+        finishedRegistrationCount: 0,
         totalSubjects: 0,
         totalExamSessions: 0
     });
@@ -55,6 +56,7 @@ const Report = () => {
                     totalStudents: response.data.totalStudents || 0,
                     eligibleStudents: response.data.eligibleStudents || 0,
                     ineligibleStudents: response.data.ineligibleStudents || 0,
+                    finishedRegistrationCount: response.data.finishedRegistrationCount || 0,
                     totalSubjects: response.data.totalSubjects || 0,
                     totalExamSessions: response.data.totalExamSessions || 0
                 });
@@ -67,9 +69,9 @@ const Report = () => {
         }
     };
 
-    const chartData = [
-        { name: 'Đủ điều kiện', value: stats.eligibleStudents },
-        { name: 'Không đủ điều kiện', value: stats.ineligibleStudents }
+    const finishedChartData = [
+        { name: 'Hoàn thành đăng ký', value: stats.finishedRegistrationCount },
+        { name: 'Chưa hoàn thành', value: Math.max(stats.totalStudents - stats.finishedRegistrationCount, 0) }
     ];
 
     const COLORS = ['#4CAF50', '#f44336'];
@@ -157,9 +159,37 @@ const Report = () => {
                                 <div className="stat-value">{stats.totalStudents}</div>
                                 <div className="stat-label">Tổng số sinh viên</div>
                             </div>
+                            <div className="stat-card">
+                                <div className="stat-value">
+                                    {stats.totalStudents > 0 ? ((stats.finishedRegistrationCount / stats.totalStudents) * 100).toFixed(1) : 0}%
+                                </div>
+                                <div className="stat-label">Tỷ lệ sinh viên đã hoàn thành đăng ký</div>
+                            </div>
                         </div>
 
-                        {/* Chart removed as requested */}
+                        <div className="chart-container">
+                            <h3 className="chart-title">Tỷ lệ sinh viên đã hoàn thành đăng ký</h3>
+                            <ResponsiveContainer width="100%" height={350}>
+                                <PieChart>
+                                    <Pie
+                                        data={finishedChartData}
+                                        cx="50%"
+                                        cy="50%"
+                                        labelLine={false}
+                                        label={renderCustomLabel}
+                                        outerRadius={120}
+                                        fill="#8884d8"
+                                        dataKey="value"
+                                    >
+                                        {finishedChartData.map((entry, index) => (
+                                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                        ))}
+                                    </Pie>
+                                    <Tooltip />
+                                    <Legend />
+                                </PieChart>
+                            </ResponsiveContainer>
+                        </div>
                     </div>
                 </div>
             </div>
