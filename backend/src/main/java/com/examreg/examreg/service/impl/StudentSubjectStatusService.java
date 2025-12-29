@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import com.examreg.examreg.dto.request.AddStudentSubjectStatusRequest;
 import com.examreg.examreg.dto.response.ConditionResponse;
 import com.examreg.examreg.dto.response.SubjectStatusResponse;
-import com.examreg.examreg.exceptions.BadRequestException;
 import com.examreg.examreg.mapper.ConditionMapper;
 import com.examreg.examreg.mapper.SubjectStatusMapper;
 import com.examreg.examreg.models.Exam;

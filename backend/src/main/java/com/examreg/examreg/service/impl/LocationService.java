@@ -2,7 +2,6 @@ package com.examreg.examreg.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import com.examreg.examreg.dto.response.LocationResponse;
