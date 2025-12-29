@@ -27,6 +27,7 @@ const apiCall = async (endpoint, options = {}, useAuth = true) => {
 
       if (!refreshToken || user.role !== 'ADMIN') {
         logout()
+        window.alert("Phiên đăng nhập đã hết hạn")
         throw new Error('Phiên đăng nhập đã hết hạn')
       }
 

@@ -152,7 +152,9 @@ public class ExamService implements IExamService {
 
     @Override
     public ExamResponse getExamIsOpen() {
-        return examMapper.buildExamResponse(examRepository.findByIsOpenTrue());
+        var exam = examRepository.findByIsOpenTrue();
+        if (exam == null) return null;
+        return examMapper.buildExamResponse(exam);
     }
 
     @Override

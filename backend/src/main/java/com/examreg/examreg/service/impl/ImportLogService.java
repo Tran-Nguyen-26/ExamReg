@@ -85,7 +85,7 @@ public class ImportLogService implements IImportLogService {
           LocalDate dob = LocalDate.parse(row.getCell(8).getStringCellValue(), formatter);
 
           AddStudentRequest student = AddStudentRequest.builder()
-            .code(String.valueOf((long)row.getCell(1).getNumericCellValue()))
+            .code(row.getCell(1).getStringCellValue())
             .name(row.getCell(2).getStringCellValue())
             .email(row.getCell(3).getStringCellValue())
             .className(row.getCell(4).getStringCellValue())
@@ -93,7 +93,7 @@ public class ImportLogService implements IImportLogService {
             .faculty(row.getCell(6).getStringCellValue())
             .gender(gender)
             .dob(dob)
-            .phone(String.valueOf((long)row.getCell(9).getNumericCellValue()))
+            .phone(row.getCell(9).getStringCellValue())
             .build();
           
           studentRequests.add(student);
