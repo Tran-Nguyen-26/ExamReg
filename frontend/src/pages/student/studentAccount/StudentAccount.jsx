@@ -296,7 +296,7 @@ const StudentAccount = () => {
         }
       </div>
     </div>
-    {
+    {/* {
       showChangePasswordFirstTime && 
       <form 
         className='change-password-first-time' 
@@ -338,7 +338,7 @@ const StudentAccount = () => {
         </div>
         <button type='submit'>Xác nhận</button>
       </form>
-    }
+    } */}
     </motion.div>
     </AnimatePresence>
   )
