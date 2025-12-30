@@ -6,7 +6,7 @@ import AddStudentModal from '../addStudentModal/AddStudentModal'
 import ImportStudentModal from "../importStudentModal/ImportStudentModal";
 import { useState } from "react";
 
-const StudentSearchBar = ({ onSearch, onImport, onAdd }) => {
+const StudentSearchBar = ({ onSearch, onImportSuccess, onAdd }) => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showImportModal, setShowImportModal] = useState(false);
 
@@ -56,7 +56,10 @@ const StudentSearchBar = ({ onSearch, onImport, onAdd }) => {
       {showImportModal && (
         <ImportStudentModal
             onClose={() => setShowImportModal(false)}
-            onImport={onImport}
+            onImportSuccess={() => {
+                setShowImportModal(false);
+                onImportSuccess && onImportSuccess();
+            }}
         />
       )}
     </>

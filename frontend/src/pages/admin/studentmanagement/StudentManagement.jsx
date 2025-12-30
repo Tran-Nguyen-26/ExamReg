@@ -136,8 +136,9 @@ const StudentManagement = () => {
         }
     }
 
-    const handleImport = () => {
-        alert('Chức năng Import Excel');
+    // Callback to reload students after import
+    const handleImportSuccess = () => {
+        loadStudents();
     };
         
     return (
@@ -147,9 +148,10 @@ const StudentManagement = () => {
                 <Sidebar/>
                 <div className="content">
                     <StudentSearchBar
-                    onSearch={handleSearch}
-                    onImport={handleImport}
-                    onAdd={handleAddStudent}/>
+                        onSearch={handleSearch}
+                        onImportSuccess={handleImportSuccess}
+                        onAdd={handleAddStudent}
+                    />
                     {loading ? (
                         <div className="loading-container">
                             <div className="loading-spinner"></div>

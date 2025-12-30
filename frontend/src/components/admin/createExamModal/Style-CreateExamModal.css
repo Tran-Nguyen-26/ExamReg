@@ -112,6 +112,11 @@
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
+.create-exam-form-input-fullwidth {
+  width: 100%;
+  box-sizing: border-box;
+}
+
 
 .create-exam-form-textarea {
   resize: vertical;
