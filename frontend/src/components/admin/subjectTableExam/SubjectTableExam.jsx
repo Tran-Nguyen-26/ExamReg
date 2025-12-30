@@ -33,38 +33,38 @@ const SubjectTableExam = ({subjects, onDelete}) => {
     
     return (
         <>
-            <div className='subject-table-container'>
-                <div className='subject-table-wrapper'>
+            <div className='subject-table-exam-container'>
+                <div className='subject-table-exam-wrapper'>
                     <table className='subject-table'>
                         <thead>
-                            <tr className='subject-table-header-row'>
-                                <th className='subject-table-header'>STT</th>
-                                <th className="subject-table-header">Mã môn thi</th>
-                                <th className="subject-table-header subject-table-name">Tên môn thi</th>
-                                <th className='subject-table-header'>Số ca thi</th>
-                                <th className='subject-table-header'>Số tín chỉ</th>
-                                <th className='subject-table-header'>Thời lượng thi</th>
-                                <th className='subject-table-header'>Thao tác</th>
+                            <tr className='subject-table-exam-header-row'>
+                                <th className='subject-table-exam-header'>STT</th>
+                                <th className="subject-table-exam-header">Mã môn thi</th>
+                                <th className="subject-table-exam-header subject-table-exam-name">Tên môn thi</th>
+                                <th className='subject-table-exam-header'>Số ca thi</th>
+                                <th className='subject-table-exam-header'>Số tín chỉ</th>
+                                <th className='subject-table-exam-header'>Thời lượng thi</th>
+                                <th className='subject-table-exam-header'>Thao tác</th>
                             </tr>
                         </thead>
                         <tbody>
                             {currentSubjects.map((subject, index) => (
-                                <tr key={subject.id} className='subject-table-row'>
-                                    <td className='subject-table-cell'>
+                                <tr key={subject.id} className='subject-table-exam-row'>
+                                    <td className='subject-table-exam-cell'>
                                         {startIndex + index + 1}
                                     </td>
-                                    <td className='subject-table-cell subject-code'>
+                                    <td className='subject-table-exam-cell subject-code'>
                                         {subject.subjectCode}
                                     </td>
-                                    <td className='subject-table-cell subject-table-name'>{subject.name}</td>
-                                    <td className='subject-table-cell subject-sessions' onClick={()=>navigate(`/admin/exam-management/exam-info/${examId}/subject/${subject.id}/sessions`)}>{subject.sessions}</td>
-                                    <td className='subject-table-cell'>
+                                    <td className='subject-table-exam-cell subject-table-exam-name'>{subject.name}</td>
+                                    <td className='subject-table-exam-cell subject-sessions' onClick={()=>navigate(`/admin/exam-management/exam-info/${examId}/subject/${subject.id}/sessions`)}>{subject.sessions}</td>
+                                    <td className='subject-table-exam-cell'>
                                         {subject.creditHour}
                                     </td>
-                                    <td className='subject-table-cell'>
+                                    <td className='subject-table-exam-cell'>
                                         {subject.duration}
                                     </td>
-                                    <td className='subject-table-cell subject-action'
+                                    <td className='subject-table-exam-cell subject-action'
                                         onClick={() => onDelete(subject)}
                                     >
                                         Xóa

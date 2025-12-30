@@ -1,4 +1,4 @@
-.subject-table-container {
+.subject-table-exam-container {
   background-color: white;
   margin: 1.5rem;
   border-radius: 0.5rem;
@@ -7,29 +7,28 @@
   overflow: hidden;
 }
 
-.subject-table-wrapper {
+.subject-table-exam-wrapper {
   overflow-x: auto;
-  max-height: 30rem; /* Thêm chiều cao tối đa cho thanh cuộn dọc */
+  max-height: 30rem; 
   overflow-y: auto;
 }
 
-/* Tùy chỉnh thanh cuộn */
-.subject-table-wrapper::-webkit-scrollbar {
+.subject-table-exam-wrapper::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
-.subject-table-wrapper::-webkit-scrollbar-track {
+.subject-table-exam-wrapper::-webkit-scrollbar-track {
   background: #f1f1f1;
   border-radius: 4px;
 }
 
-.subject-table-wrapper::-webkit-scrollbar-thumb {
+.subject-table-exam-wrapper::-webkit-scrollbar-thumb {
   background: #c1c1c1;
   border-radius: 4px;
 }
 
-.subject-table-wrapper::-webkit-scrollbar-thumb:hover {
+.subject-table-exam-wrapper::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8;
 }
 
@@ -38,7 +37,7 @@
   border-collapse: collapse;
 }
 
-.subject-table-header-row {
+.subject-table-exam-header-row {
   background-color: #f9fafb;
   border-bottom: 1px solid #e5e7eb;
   position: sticky;
@@ -46,7 +45,7 @@
   z-index: 10;
 }
 
-.subject-table-header {
+.subject-table-exam-header {
   padding: 1rem 1.5rem;
   text-align: center;
   font-size: 0.875rem;
@@ -55,16 +54,16 @@
   white-space: nowrap;
 }
 
-.subject-table-row {
+.subject-table-exam-row {
   border-bottom: 1px solid #e5e7eb;
   transition: background-color 0.2s;
 }
 
-.subject-table-row:hover {
+.subject-table-exam-row:hover {
   background-color: #f9fafb;
 }
 
-.subject-table-cell {
+.subject-table-exam-cell {
   text-align: center;
   padding: 1rem 1.5rem;
   font-size: 0.875rem;
@@ -73,7 +72,7 @@
 .subject-code {
   font-weight: 500;
 }
-.subject-table-name {
+.subject-table-exam-name {
   text-align: left;
 }
 
