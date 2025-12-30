@@ -2,6 +2,7 @@ package com.examreg.examreg.security.config;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -40,6 +41,9 @@ public class AppConfig {
   private final JwtAuthEntryPoint authEntryPoint;
   private final JwtUtils jwtUtils;
   private final IBlacklistService blacklistService;
+
+  @Value("${frontend.url:http://localhost:5173}")
+  private String frontendUrl;
 
   @Bean
   public PasswordEncoder passwordEncoder() {
@@ -90,10 +94,16 @@ public class AppConfig {
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
+
+    String[] allowedOrigins = frontendUrl.split(",");
+    configuration.setAllowedOrigins(List.of(allowedOrigins));
+
     configuration.setAllowedOrigins(List.of("http://localhost:5173"));
     configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
     configuration.setAllowedHeaders(List.of("*"));
     configuration.setAllowCredentials(true);
+
+    configuration.setExposedHeaders(List.of("Authorization"));
 
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", configuration);
