@@ -1,9 +1,12 @@
+const API_BASE_URL = import.meta.env.VITE_API_URL
+const API_URL = API_BASE_URL + "/api/v1"
+
 
 export const importLogService = {
   importStudentAccounts: async (file) => {
     const formData = new FormData()
     formData.append('file', file)
-    const response = await fetch('http://localhost:8080/api/v1/import/students', {
+    const response = await fetch(`${API_URL}/import/students`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -19,7 +22,7 @@ export const importLogService = {
   importStudentsCondition: async (examId, file) => {
     const formData = new FormData()
     formData.append('file', file)
-    const response = await fetch(`http://localhost:8080/api/v1/import/exam/${examId}`, {
+    const response = await fetch(`${API_URL}/import/exam/${examId}`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`
