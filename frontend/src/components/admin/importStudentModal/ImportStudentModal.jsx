@@ -6,7 +6,7 @@ import { CiImport } from "react-icons/ci";
 import * as XLSX from 'xlsx';
 import { useImportLog } from '../../../hooks/useImportLog';
 
-const ImportStudentModal = ({ onClose, onImport }) => {
+const ImportStudentModal = ({ onClose, onImportSuccess }) => {
 
   const { importStudentAccounts } = useImportLog()
   const [file, setFile] = useState(null);
@@ -105,8 +105,8 @@ const ImportStudentModal = ({ onClose, onImport }) => {
 
     setLoading(true);
     try {
-      const response = await importStudentAccounts(file)
-      onClose()
+      await importStudentAccounts(file);
+      if (onImportSuccess) onImportSuccess();
     } catch (error) {
       console.log(error)
     } finally {
