@@ -46,7 +46,7 @@
 .search-student-btn {
   border: none;
   outline: none;
-  background-color: #DCDCDC; /* xám nhạt */
+  background-color: #DCDCDC; 
   cursor: pointer;
   height: 2.5rem; 
   width: 4rem;
@@ -55,11 +55,8 @@
   justify-content: center;
   transition: background-color 0.2s;
 }
-.search-btn:hover {
-  background-color: #EEECEC; /* xám nhạt khi hover */
-}
 
-.buttons {
+.search-bar-student-buttons {
   display: flex;
   gap: 1rem;
 }

@@ -1,5 +1,5 @@
 .page-account {
-  padding-top: 120px;
+  padding-top: 6rem;
   position: relative;
 }
 
@@ -10,8 +10,8 @@
 
 .student-account {
   width: 95%;
-  height: 700px;
-  margin: 20px auto 20px;
+  height: calc(100vh - 10rem);
+  margin: 2rem auto;
   display: flex;
   border: 1px solid rgb(229, 226, 226);
   box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
@@ -63,7 +63,6 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  row-gap: 40px;
   padding-top: 30px;
   padding-bottom: 30px;
   margin-left: 60px;
@@ -81,14 +80,16 @@
 
 .tab-change-password-content {
   width: 50%;
+  height: 100%;
+  display: flex;
 }
 
 .change-password-form {
   display: flex;
   flex-direction: column;
-  row-gap: 40px;
+  justify-content: space-between;
+  gap: 20px;
   padding-top: 30px;
-  padding-bottom: 30px;
   margin-left: 60px;
   font-size: 16px;
 }
@@ -156,7 +157,6 @@
 }
 
 .tab-change-password-content ul {
-  margin-top: 50px;
   padding: 20px;
   width: 70%;
   background-color: #f8f9fa;
@@ -176,68 +176,4 @@
 
 .tab-change-password-content ul li span {
   margin-left: 10px;
-}
-
-.change-password-first-time {
-  position: absolute;
-  top: 30%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  height: fit-content;
-  width: 30%;
-  background-color: whitesmoke;
-  padding: 20px;
-  border-radius: 10px;
-  font-weight: 600;
-}
-
-.change-password-first-time > p {
-  text-align: center;
-  margin: 0px;
-  margin-bottom: 20px;
-}
-
-.change-password-first-time div {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-  margin-bottom: 10px;
-}
-
-.change-password-first-time div p {
-  position: absolute;
-  left: 190px;
-  top: 40px;
-  font-size: 14px;
-  color: red;
-}
-
-.change-password-first-time div span {
-  width: 200px;
-}
-
-.change-password-first-time div input {
-  width: 70%;
-  color: gray;
-  border: 1px solid rgba(0,0,0,0.5);
-  border-radius: 10px;
-  padding: 5px 10px;
-}
-
-.change-password-first-time button {
-  border: none;
-  font-size: 18px;
-  background-color: rgb(253, 8, 8);
-  color: white;
-  font-weight: bold;
-  border-radius: 5px;
-  width: 100%;
-  cursor: pointer;
-  margin-top: 20px;
-}
-
-.change-password-first-time button:hover {
-  background-color: #dc3b3b;
 }

@@ -3,9 +3,11 @@ package com.examreg.examreg.service.impl;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 import com.examreg.examreg.dto.response.ExamRegistrationResponse;
@@ -52,6 +54,7 @@ public class ExamRegistrationService implements IExamRegistrationService {
   }
 
   @Override
+  // @Cacheable(value = "examRegistrationResponses", key = "#studentId + '_' + #examId")
   public List<ExamRegistrationResponse> getExamRegistrationResponses(Long studentId, Long examId) {
     Map<Long, SubjectStatusResponse> statusMap = statusService
       .getSubjectStatusResponseByStudentIdAndExamId(studentId, examId)
@@ -71,6 +74,10 @@ public class ExamRegistrationService implements IExamRegistrationService {
   }
 
   @Override
+  // @Caching(evict = {
+  //   @CacheEvict(value = "examRegistrationResponses", key = "#studentId + '_' + #examId"),
+  //   @CacheEvict(value = "statusRegisterResponses", key = "#studentId + '_' + #examId")
+  // })
   public void deleteExamRegistration(Long examRegistrationId, Long studentId) {
     boolean alreadyExamRegistration = examRegistrationRepository.existsByIdAndStudentId(examRegistrationId, studentId);
     if (alreadyExamRegistration) {

@@ -2,12 +2,13 @@ import Header from "../../../components/student/header/Header"
 import Schedule from "../../../components/student/schedule/Schedule"
 import './Style-ExamSchedule.css'
 import { motion } from "framer-motion"
-
+import { FaCalendarDays } from "react-icons/fa6";
 import { useContext, useEffect, useRef, useState } from "react"
 import { useExamRegistration } from "../../../hooks/useExamRegistration"
 import MyContext from "../../../context/MyContext"
 import Ticket from "../../../components/student/ticket/Ticket"
 import Spinner from "../../../components/student/spinner/Spinner"
+import { FaInbox } from "react-icons/fa6";
 
 const ExamSchedule = () => {
 
@@ -73,29 +74,55 @@ const ExamSchedule = () => {
     >
     <div className={`exam-schedule ${loading ? 'blur' : ''}`}>
       <Header/>
-      <div className="schedule-header">
-        <div className="part1">
-          <h2>Lịch thi của tôi</h2>
-          <p>Danh sách các ca thi bạn đã đăng ký</p>
-        </div>
-        <div className="part2">
-          <h1>{examRegistrations.length}</h1>
-          <p>Môn thi</p>
+      <div className="schedule-header-wrapper">
+        <div className="schedule-header">
+          <div className="part1">
+            <div className="schedule-header-icon">
+              <FaCalendarDays className="schedule-icon"/>
+            </div>
+            <div className="schedule-header-text">
+              <h1 className="schedule-header-title">Lịch thi của tôi</h1>
+              <p className="schedule-header-subtitle">Học kỳ I - Năm học 2024-2025</p>
+            </div>
+          </div>
+          <div className="part2">
+            <p className="schedule-header-total-session">Số ca thi</p>
+            <h2 className="schedule-header-total-number">{examRegistrations.length}</h2>
+          </div>
         </div>
       </div>
-      <div className="main-card">
-        {
-          examRegistrations.map((examRegistration) => (
-            <Schedule
-              key={examRegistration.id}
-              data={examRegistration}
-              onCancel={handleCancel}
-              onDownload={() => handleExportPdfSchedule(examRegistration, "download")}
-              onPrint={() => handleExportPdfSchedule(examRegistration, "print")}
-            />
-          ))
-        }
-      </div>
+      {examRegistrations.length === 0 ? (
+        <div className="schedule-empty-state">
+          <motion.div 
+            className="schedule-empty-state-content"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="schedule-empty-icon-wrapper">
+              <FaInbox className="schedule-empty-icon"/>
+            </div>
+            <h2 className="schedule-empty-title">Chưa có ca thi nào</h2>
+            <p className="schedule-empty-description">
+              Bạn chưa đăng ký ca thi nào. Hãy đăng ký ca thi để xem lịch thi của bạn tại đây.
+            </p>
+          </motion.div>
+        </div>
+      ) : (
+        <div className="schedule-cards">
+          {
+            examRegistrations.map((examRegistration) => (
+              <Schedule
+                key={examRegistration.id}
+                data={examRegistration}
+                onCancel={handleCancel}
+                onDownload={() => handleExportPdfSchedule(examRegistration, "download")}
+                onPrint={() => handleExportPdfSchedule(examRegistration, "print")}
+              />
+            ))
+          }
+        </div>
+      )}
     </div>
     {
       selectedExamSession && (

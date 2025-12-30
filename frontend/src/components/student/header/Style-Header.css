@@ -22,7 +22,6 @@
   align-items: center;
   justify-content: center;
   background-color: white;
-  cursor: pointer;
 }
 
 .logo_uni {
@@ -30,6 +29,7 @@
   height: 4rem;
   object-fit: contain;
   border-radius: 0.5rem;
+  cursor: pointer;
 }
 
 .hl2 {
@@ -45,6 +45,7 @@
   font-weight: 700;
   color: #1e3a8a;
   letter-spacing: 0.5px;
+  cursor: pointer;
 }
 
 .hl2 .student-name-and-code {

@@ -1,5 +1,7 @@
 .home-container {
   padding-top: 6rem;
+  background-color: #f9fafb;
+  min-height: 100vh;
 }
 
 .notification-wrapper {

@@ -12,14 +12,16 @@ export const useAuth = () => {
     try {
       const authResponse = await authService.login(email, password)
       setUser(authResponse.user)
-      const u = authResponse.user
-      if (u.role === 'STUDENT') {
-        if (u.firstLogin) navigate('/student/student-account')
-        else navigate('/student/exam-schedule')
-      } else if (u.role === 'ADMIN') {
-        navigate('/admin/student-management')
-      }
-      return authResponse
+      // const u = authResponse.user
+      // if (u.role === 'STUDENT') {
+      //   if (u.firstLogin) navigate('/student/student-account')
+      //   else navigate('/student/exam-schedule')
+      // } else if (u.role === 'ADMIN') {
+      //   navigate('/admin/student-management')
+      // }
+      // return authResponse
+
+      return authResponse.user 
     } catch (e) {
       throw new Error(e.message)
     }
