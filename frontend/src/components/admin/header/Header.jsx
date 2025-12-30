@@ -2,9 +2,11 @@ import './Style-Header.css';
 import logo_university from '../../../assets/logo_university.png'; 
 import { LuLogOut } from "react-icons/lu";
 import { useAuth } from '../../../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
 
+  const navigate = useNavigate();
   const { logout } = useAuth()
 
   const handleLogout = async () => {
@@ -17,7 +19,7 @@ const Header = () => {
 
   return (
     <div className="header">
-      <div className="logo-container">
+      <div className="logo-container" onClick={() => navigate('/admin/exam-management')}>
         <img src={logo_university} alt="" className='logo-image'/>
         <span className='logo-text'>UET Exam</span>
       </div>

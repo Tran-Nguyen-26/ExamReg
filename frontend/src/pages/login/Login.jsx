@@ -63,7 +63,7 @@ const Login = () => {
       }
 
       if (loginUser.role === "ADMIN") {
-        navigate("/admin/student-management")
+        navigate("/admin/exam-management")
       }
 
     } catch (err) {
