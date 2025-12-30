@@ -15,7 +15,7 @@ const Notification = ({exam}) => {
         </h2>
         <p>
           <Info className="inline-icon" />
-          Vui lòng chọn môn học để xem lịch thi và đăng ký
+          {exam?.description ? exam.description : "Vui lòng chọn môn học để xem lịch thi và đăng ký"}
         </p>
       </div>
     </div>
