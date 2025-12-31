@@ -120,3 +120,18 @@
   object-fit: contain;
   cursor: pointer;
 }
+
+@media (max-width: 768px) {
+  .registration-button span {
+    display: none;
+  }
+
+  .schedule-button span {
+    display: none;
+  }
+
+  .header-student-screen-left {
+    width: 60%;
+  }
+
+}

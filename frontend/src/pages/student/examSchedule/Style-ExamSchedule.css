@@ -61,13 +61,27 @@
 .schedule-header-total-session {
   margin-bottom: 0.5rem;
 }
+
 .schedule-cards {
   width: 95%;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 50px;
   margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+  .schedule-cards {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 1024px) {
+  .schedule-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .cancel-examsession-spinner {

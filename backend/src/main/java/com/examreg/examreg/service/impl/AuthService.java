@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -52,7 +53,10 @@ public class AuthService implements IAuthService {
   private final ResetTokenRepository resetTokenRepository;
   private final IEmailService emailService;
   private final IRefreshTokenService refreshTokenService;
-  
+
+  @Value("${frontend.url}")
+  private String frontendUrl;
+
   @Override
   public AuthResponse<?> login(UserLoginRequest request) {
     Authentication authentication = authenticationManager
@@ -177,18 +181,30 @@ public class AuthService implements IAuthService {
       .expiryDate(LocalDateTime.now().plusMinutes(15))
       .build();
     resetTokenRepository.save(entity);
-    String link = "http://localhost:5173/login?token=" + token;
-    String emailContent = buildEmailContent(link);
+    String[] frontendUrls = frontendUrl.split(",");
+    String emailContent = buildEmailContent(frontendUrls, token);
     emailService.send(email, "ExamReg: Reset your password", emailContent);
   }
 
-  private String buildEmailContent(String link) {
-    return """
-      <h2>Reset your password</h2>
-      <p>Click the link below để cập nhật mật khẩu:</p>
-      <a href="%s" target="_self">Reset Password</a>
-    """.formatted(link);
+  private String buildEmailContent(String[] frontendUrls, String token) {
+  StringBuilder links = new StringBuilder();
+
+  for (String url : frontendUrls) {
+    String link = url.trim() + "/login?token=" + token;
+    links.append("""
+      <p>
+        <a href="%s" target="_self">%s</a>
+      </p>
+    """.formatted(link, link));
   }
+
+  return """
+    <h2>Reset your password</h2>
+    <p>Chọn đường dẫn dưới đây để đổi mật khẩu:</p>
+    %s
+  """.formatted(links.toString());
+}
+
 
   @Override
   public void updatePassword(String token, String newPassword) {
