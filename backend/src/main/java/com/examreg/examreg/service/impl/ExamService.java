@@ -201,6 +201,7 @@ public class ExamService implements IExamService {
         if (exam.getSubjects() == null || exam.getSubjects().isEmpty()) {
         return;
         }
+        studentSubjectStatusRepository.deleteByExam_IdAndSubject_Id(examId, subjectId);
         examRegistrationRepository.deleteByExamIdAndSubjectId(examId, subjectId);
         examSessionRepository.deleteByExamIdAndSubjectId(examId, subjectId);
         examRepository.deleteExamSubject(examId, subjectId);

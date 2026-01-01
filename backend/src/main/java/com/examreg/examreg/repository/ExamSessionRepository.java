@@ -35,5 +35,7 @@ public interface ExamSessionRepository extends JpaRepository<ExamSession, Long> 
   """, nativeQuery = true)
   void deleteByExamIdAndSubjectId(@Param("examId") Long examId,
                                  @Param("subjectId") Long subjectId);
-                                 
+  @Modifying
+  @Query(value = "DELETE FROM exam_session WHERE subject_id = :subjectId", nativeQuery = true)
+  void deleteBySubjectId(@Param("subjectId") Long subjectId);                               
 }
