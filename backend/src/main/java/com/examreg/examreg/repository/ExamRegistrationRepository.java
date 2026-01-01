@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.examreg.examreg.models.ExamRegistration;
 
@@ -39,6 +40,7 @@ public interface ExamRegistrationRepository extends JpaRepository<ExamRegistrati
          "WHERE er.student.id = :studentId " +
          "ORDER BY es.date ASC, es.startTime ASC")
   List<ExamRegistration> findAllByStudentIdWithDetails(@Param("studentId") Long studentId);
+  void deleteByExamSessionId(Long examSessionId);
   
   @Modifying
   @Query(value = """
@@ -58,5 +60,18 @@ public interface ExamRegistrationRepository extends JpaRepository<ExamRegistrati
   """, nativeQuery = true)
   void deleteByExamIdAndSubjectId(@Param("examId") Long examId,
                                 @Param("subjectId") Long subjectId);
-                                
+
+  @Modifying
+  @Transactional
+  void deleteByStudent_Id(Long studentId);
+  
+  @Modifying
+  @Query(value = """
+      DELETE er
+      FROM exam_registration er
+      JOIN exam_session es ON er.exam_session_id = es.id
+      WHERE es.subject_id = :subjectId
+  """, nativeQuery = true)
+  void deleteBySubjectId(@Param("subjectId") Long subjectId);
+  
 }

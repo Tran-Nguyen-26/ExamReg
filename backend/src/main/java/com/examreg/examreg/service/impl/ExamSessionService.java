@@ -32,6 +32,7 @@ import com.examreg.examreg.models.ExamSession;
 import com.examreg.examreg.models.Room;
 import com.examreg.examreg.models.Subject;
 import com.examreg.examreg.models.Student;
+import com.examreg.examreg.repository.ExamRegistrationRepository;
 import com.examreg.examreg.repository.ExamRepository;
 import com.examreg.examreg.repository.ExamSessionRepository;
 import com.examreg.examreg.repository.RoomRepository;
@@ -56,6 +57,7 @@ public class ExamSessionService implements IExamSessionService {
   private final SubjectRepository subjectRepository;
   private final RoomRepository roomRepository;
   private final ExamRepository examRepository;
+  private final ExamRegistrationRepository examRegistrationRepository;
   
   @Override
   public List<ExamSessionResponseForStudent> getExamSessionResponses(Long studentId, Long examId) {
@@ -235,7 +237,7 @@ public class ExamSessionService implements IExamSessionService {
   public void deleteExamSession(Long id) {
       ExamSession examSession = examSessionRepository.findById(id)
               .orElseThrow(() -> new ResourceNotFoundException("Exam Session not found with id: " + id));
-      
+      examRegistrationRepository.deleteByExamSessionId(id);
       examSessionRepository.delete(examSession);
   }
 

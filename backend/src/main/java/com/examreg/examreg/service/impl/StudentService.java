@@ -16,7 +16,10 @@ import com.examreg.examreg.exceptions.BadRequestException;
 import com.examreg.examreg.exceptions.ResourceNotFoundException;
 import com.examreg.examreg.mapper.StudentMapper;
 import com.examreg.examreg.models.Student;
+import com.examreg.examreg.repository.ExamRegistrationRepository;
+import com.examreg.examreg.repository.ResetTokenRepository;
 import com.examreg.examreg.repository.StudentRepository;
+import com.examreg.examreg.repository.StudentSubjectStatusRepository;
 import com.examreg.examreg.service.IStudentService;
 
 import jakarta.transaction.Transactional;
@@ -29,6 +32,9 @@ public class StudentService implements IStudentService{
   private final StudentRepository studentRepository;
   private final PasswordEncoder passwordEncoder;
   private final StudentMapper studentMapper;
+  private final ExamRegistrationRepository examRegistrationRepository;
+  private final StudentSubjectStatusRepository studentSubjectStatusRepository;
+  private final ResetTokenRepository resetTokenRepository;
 
   @Override
   public Student getStudentById(Long id) {
@@ -112,7 +118,10 @@ public class StudentService implements IStudentService{
   })
   public void deleteStudent(Long id) {
     Student student = studentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Student not found with id: " + id));
-
+    
+    resetTokenRepository.deleteByStudent_Id(id);
+    studentSubjectStatusRepository.deleteByStudent_Id(id);
+    examRegistrationRepository.deleteByStudent_Id(id);
     studentRepository.delete(student);
   }
 }

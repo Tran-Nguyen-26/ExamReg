@@ -13,7 +13,11 @@ import com.examreg.examreg.dto.request.SubjectRequest;
 import com.examreg.examreg.dto.response.SubjectResponse;
 import com.examreg.examreg.exceptions.ResourceNotFoundException;
 import com.examreg.examreg.mapper.SubjectMapper;
+import com.examreg.examreg.models.Exam;
 import com.examreg.examreg.models.Subject;
+import com.examreg.examreg.repository.ExamRegistrationRepository;
+import com.examreg.examreg.repository.ExamSessionRepository;
+import com.examreg.examreg.repository.StudentSubjectStatusRepository;
 import com.examreg.examreg.repository.SubjectRepository;
 import com.examreg.examreg.service.ISubjectService;
 
@@ -25,6 +29,9 @@ public class SubjectService implements ISubjectService {
 
   private final SubjectRepository subjectRepository;
   private final SubjectMapper subjectMapper;
+  private final ExamRegistrationRepository examRegistrationRepository;
+  private final ExamSessionRepository examSessionRepository;
+  private final StudentSubjectStatusRepository studentSubjectStatusRepository;
 
   @Override
   public Subject getSubjectById(Long subjectId) {
@@ -80,6 +87,13 @@ public class SubjectService implements ISubjectService {
   public void deleteSubject(Long id) {
     Subject subject = subjectRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Subject not found with id: " + id));
+    for (Exam exam : subject.getExams()) {
+        exam.getSubjects().remove(subject);
+    }
+    examRegistrationRepository.deleteBySubjectId(id);
+    examSessionRepository.deleteBySubjectId(id);
+    studentSubjectStatusRepository.deleteBySubject_Id(id);
+    subject.getExams().clear();
     subjectRepository.delete(subject);
   }
 

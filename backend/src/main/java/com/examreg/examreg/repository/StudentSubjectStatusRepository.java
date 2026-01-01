@@ -37,4 +37,15 @@ public interface StudentSubjectStatusRepository extends JpaRepository<StudentSub
   @Query("DELETE FROM StudentSubjectStatus s WHERE s.exam.id = :examId")
   void deleteByExamId(@Param("examId") Long examId);
 
+  @Modifying
+  @Transactional
+  void deleteByExam_IdAndSubject_Id(Long examId, Long subjectId);
+
+  @Modifying
+  @Transactional
+  void deleteByStudent_Id(Long studentId);
+
+  @Modifying
+  @Transactional
+  void deleteBySubject_Id(Long subjectId);
 }

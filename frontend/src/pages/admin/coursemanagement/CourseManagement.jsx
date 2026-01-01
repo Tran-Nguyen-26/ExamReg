@@ -155,17 +155,13 @@ const CourseManagement = () => {
     const handleDelete = async (subject) => {
         if (confirm(`Bạn có chắc muốn xóa môn học ${subject.name}?`)) {
             try {
-                const response = await apiCall(`/subjects/${subject.id}`, {
+                await apiCall(`/subjects/${subject.id}`, {
                     method: 'DELETE'
                 }, true);
 
-                if (response.data) {
-                    alert('Xóa môn học thành công!');
-                    // Optimistically update the table
-                    setSubjectsState((prev) => prev.filter((s) => s.id !== subject.id));
-                    // Optionally re-fetch to stay in sync
-                    fetchSubjects();
-                }
+                alert('Xóa môn học thành công!');
+                fetchSubjects();
+
             } catch (err) {
                 alert('Lỗi khi xóa môn học: ' + (err.message || 'Unknown error'));
                 console.error('Error deleting subject:', err);
