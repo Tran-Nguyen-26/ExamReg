@@ -62,8 +62,44 @@
 .guide h3 { margin-top:0 }
 
 @media (max-width: 768px) {
-  .subject-select { min-width: 100%; }
+  .subject-select { min-width: 100%; width: 100%; }
   .content { padding:1rem; margin-left:0 }
+  .main {
+    flex-direction: column;
+  }
+  .sidebar {
+    display: none !important;
+  }
+  .form-row, .actions-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+  .custom-action, .actions-row button, .actions-row input[type="file"] {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+  .card {
+    padding: 0.75rem;
+    max-width: 500px;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+  .table-wrap {
+    margin: 0 -1rem;
+    padding: 0 1rem;
+  }
+  .student-table th, .student-table td {
+    padding: 0.5rem;
+    font-size: 0.95rem;
+  }
+  .form-row {
+    width: 100%;
+    box-sizing: border-box;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+}
 }
 
 /* Drag & drop upload area */
