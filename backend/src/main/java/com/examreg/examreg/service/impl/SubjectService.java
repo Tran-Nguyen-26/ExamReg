@@ -3,6 +3,9 @@ package com.examreg.examreg.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +40,7 @@ public class SubjectService implements ISubjectService {
 
   @Override
   @Transactional
+  @CacheEvict(value = "subjects", allEntries = true)
   public SubjectResponse createSubject(SubjectRequest subjectDTO) {
     Subject subject = new Subject();
     subject.setSubjectCode(subjectDTO.getSubjectCode());
@@ -50,6 +54,10 @@ public class SubjectService implements ISubjectService {
 
   @Override
   @Transactional
+  @Caching(evict = {
+    @CacheEvict(value = "subjects", allEntries = true),
+    @CacheEvict(value = "subjectsOfExam", allEntries = true)
+  })
   public SubjectResponse updateSubject(Long id, SubjectRequest subjectDTO) {
     Subject subject = subjectRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Subject not found with id: " + id));
@@ -65,6 +73,10 @@ public class SubjectService implements ISubjectService {
 
   @Override
   @Transactional
+  @Caching(evict = {
+    @CacheEvict(value = "subjects", allEntries = true),
+    @CacheEvict(value = "subjectsOfExam", allEntries = true)
+  })
   public void deleteSubject(Long id) {
     Subject subject = subjectRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Subject not found with id: " + id));
@@ -72,6 +84,7 @@ public class SubjectService implements ISubjectService {
   }
 
   @Override
+  @Cacheable("subjects")
   public List<SubjectResponse> getAllSubjects() {
     return subjectRepository.findAll().stream()
         .map(subjectMapper::buildSubjectResponse)

@@ -1,5 +1,6 @@
 package com.examreg.examreg.dto.response;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
@@ -11,7 +12,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Data
-public class ExamRegistrationResponse {
+public class ExamRegistrationResponse implements Serializable {
+
+  private static final long serialVersionUID = 1L;
+
   private Long id;
   private Long studentId;
   private LocalDateTime registeredAt;

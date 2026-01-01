@@ -3,6 +3,9 @@ package com.examreg.examreg.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -50,6 +53,7 @@ public class StudentService implements IStudentService{
   }
   
   @Override
+  @CacheEvict(value = "students", allEntries = true)
   public void addStudent(AddStudentRequest request) {
     if (studentRepository.existsByStudentCode(request.getCode())) {
       throw new BadRequestException("Đã tồn tại học sinh với mã sinh viên: " + request.getCode());
@@ -73,6 +77,7 @@ public class StudentService implements IStudentService{
   }
 
   @Override
+  @Cacheable(value = "students")
   public List<StudentResponse> getAllStudents() {
     List<Student> students = studentRepository.findAll();
     return students.stream().map(studentMapper::buildStudentReponse).collect(Collectors.toList());
@@ -80,6 +85,10 @@ public class StudentService implements IStudentService{
 
   @Override
   @Transactional
+  @Caching(evict = {
+    @CacheEvict(value = "students", allEntries = true),
+    @CacheEvict(value = "studentsCondition", allEntries = true)
+  })
   public StudentResponse updateStudent(Long id, AddStudentRequest request) {
     Student student = studentRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Student not found with id: " + id));
     student.setStudentCode(request.getCode());
@@ -97,6 +106,10 @@ public class StudentService implements IStudentService{
   }
 
   @Override
+  @Caching(evict = {
+    @CacheEvict(value = "students", allEntries = true),
+    @CacheEvict(value = "studentsCondition", allEntries = true)
+  })
   public void deleteStudent(Long id) {
     Student student = studentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Student not found with id: " + id));
 

@@ -13,6 +13,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -108,6 +109,7 @@ public class ImportLogService implements IImportLogService {
   }
 
   @Override
+  @CacheEvict(value = "studentsCondition", allEntries = true)
   public void importEligibleStudentsForSubject(MultipartFile file, Long examId) {
     try {
       List<AddStudentSubjectStatusRequest> statusRequests = excelToSssRequest(file.getInputStream(), examId);

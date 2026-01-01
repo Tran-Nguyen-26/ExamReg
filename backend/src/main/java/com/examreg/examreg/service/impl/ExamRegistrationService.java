@@ -54,7 +54,7 @@ public class ExamRegistrationService implements IExamRegistrationService {
   }
 
   @Override
-  // @Cacheable(value = "examRegistrationResponses", key = "#studentId + '_' + #examId")
+  @Cacheable(value = "examRegistrationResponses", key = "#studentId + '_' + #examId")
   public List<ExamRegistrationResponse> getExamRegistrationResponses(Long studentId, Long examId) {
     Map<Long, SubjectStatusResponse> statusMap = statusService
       .getSubjectStatusResponseByStudentIdAndExamId(studentId, examId)
@@ -74,10 +74,7 @@ public class ExamRegistrationService implements IExamRegistrationService {
   }
 
   @Override
-  // @Caching(evict = {
-  //   @CacheEvict(value = "examRegistrationResponses", key = "#studentId + '_' + #examId"),
-  //   @CacheEvict(value = "statusRegisterResponses", key = "#studentId + '_' + #examId")
-  // })
+  @CacheEvict(value = "examRegistrationResponses", allEntries = true)
   public void deleteExamRegistration(Long examRegistrationId, Long studentId) {
     boolean alreadyExamRegistration = examRegistrationRepository.existsByIdAndStudentId(examRegistrationId, studentId);
     if (alreadyExamRegistration) {

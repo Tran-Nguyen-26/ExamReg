@@ -1,5 +1,7 @@
 package com.examreg.examreg.dto.response;
 
+import java.io.Serializable;
+
 import com.examreg.examreg.enums.EligibilityStatus;
 
 import lombok.AllArgsConstructor;
@@ -11,7 +13,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class ConditionResponse {
+public class ConditionResponse implements Serializable {
+
+  private static final long serialVersionUID = 1L;
+
   private Long studentId;
   private String studentCode;
   private String fullname;

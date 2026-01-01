@@ -2,6 +2,7 @@ package com.examreg.examreg.service.impl;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.examreg.examreg.dto.request.AddStudentSubjectStatusRequest;
@@ -67,6 +68,7 @@ public class StudentSubjectStatusService implements IStudentSubjectStatusService
   }
 
   @Override
+  @Cacheable(value = "studentsCondition", key = "#examId + '_' + #subjectId")
   public List<ConditionResponse> getStudentsCondition(Long examId, Long subjectId) {
     List<StudentSubjectStatus> ssStatus = statusRepository.findByExam_IdAndSubject_Id(examId, subjectId);
     return ssStatus.stream()

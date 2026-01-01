@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.examreg.examreg.dto.request.ExamRequest;
@@ -37,6 +39,7 @@ public class ExamService implements IExamService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "exams", allEntries = true)
     public ExamResponse createExam(ExamRequest request) {
         validateDate(request);
         Exam exam = new Exam();
@@ -50,7 +53,9 @@ public class ExamService implements IExamService {
 
         return examMapper.buildExamResponse(savedExam);
     }
+
     @Override
+    @Cacheable("exams")
     public List<ExamResponse> getAllExams() {
         List<Exam> exams = examRepository.findAll();
 
@@ -68,8 +73,10 @@ public class ExamService implements IExamService {
             return res;
         }).collect(Collectors.toList());
     }
+
     @Override
     @Transactional
+    @CacheEvict(value = "exams", allEntries = true)
     public ExamResponse updateExam(Long id, ExamRequest request) {
         Exam exam = examRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Exam not found with id: " + id));
 
@@ -84,6 +91,7 @@ public class ExamService implements IExamService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "exams", allEntries = true)
     public void deleteExam(Long id) {
         Exam exam = examRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Exam not found with id: " + id));
@@ -96,6 +104,7 @@ public class ExamService implements IExamService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "exams", allEntries = true)
     public ExamResponse closeExam(Long id) {
         Exam exam = examRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Exam not found with id: " + id));
@@ -109,6 +118,7 @@ public class ExamService implements IExamService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "exams", allEntries = true)
     public ExamResponse openExam(Long id) {
         Exam exam = examRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Exam not found with id: " + id));
@@ -158,6 +168,7 @@ public class ExamService implements IExamService {
     }
 
     @Override
+    @CacheEvict(value = "subjectsOfExam", key = "#examId")
     public void addSubjectsToExam(Long examId, List<Long> subjectIds) {
         Exam exam = getExamById(examId);
         List<Long> alreadySubjectIds = exam.getSubjects()
@@ -181,6 +192,7 @@ public class ExamService implements IExamService {
     }
 
     @Override
+    @Cacheable(value = "subjectsOfExam", key = "#examId")
     public List<SubjectResponse> getSubjectsOfExam(Long examId) {
         Exam exam = getExamById(examId);
 
@@ -195,6 +207,7 @@ public class ExamService implements IExamService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "subjectsOfExam", key = "#examId")
     public void deleteSubject(Long examId, Long subjectId) {
         Exam exam = getExamById(examId);
 

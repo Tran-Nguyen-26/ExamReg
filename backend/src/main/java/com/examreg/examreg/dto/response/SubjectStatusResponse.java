@@ -1,5 +1,7 @@
 package com.examreg.examreg.dto.response;
 
+import java.io.Serializable;
+
 import com.examreg.examreg.enums.EligibilityStatus;
 
 import lombok.AllArgsConstructor;
@@ -11,7 +13,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Data
-public class SubjectStatusResponse {
+public class SubjectStatusResponse implements Serializable {
+
+  private static final long serialVersionUID = 1L;
+
   private Long id;
   private EligibilityStatus status;
   private SubjectResponse subject;
