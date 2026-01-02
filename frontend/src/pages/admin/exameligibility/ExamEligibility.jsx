@@ -192,10 +192,11 @@ const ExamEligibility = () => {
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
+              onClick={() => fileInputRef.current?.click()}
             >
               <IoMdCloudUpload className="dropzone-icon" />
               <div className="dropzone-text">
-                <strong>Kéo thả file Excel vào đây</strong>
+                <strong>Chọn file Excel hoặc kéo thả vào đây</strong>
                 <span>Hỗ trợ .xlsx, .xls</span>
               </div>
             </div>
@@ -215,14 +216,6 @@ const ExamEligibility = () => {
                 style={{ display: 'none' }}
                 onChange={handleFileInputChange}
               />
-              <button
-                className="btn btn-outline-secondary btn-lg d-flex align-items-center gap-2 custom-action"
-                type="button"
-                onClick={() => fileInputRef.current?.click()}
-              >
-                <i className="fas fa-file-upload"></i>
-                <span>Chọn file</span>
-              </button>
               <button
                 className="btn btn-primary btn-lg d-flex align-items-center gap-2 custom-action"
                 onClick={handleImportCondition}
