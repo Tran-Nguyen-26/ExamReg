@@ -127,3 +127,23 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+@media (max-width: 1024px) {
+  .login {
+    flex-direction: column;
+  }
+  
+  .login-form {
+    margin: 0 auto;
+    justify-content: center;
+  }
+
+  .right-panel {
+    width: 80%;
+  }
+
+  .login-form div {
+    margin: 0 auto;
+    width: 70%;
+  }
+}
