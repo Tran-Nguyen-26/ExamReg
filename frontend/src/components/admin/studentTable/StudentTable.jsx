@@ -38,25 +38,23 @@ const StudentTable = ({ students, onEdit, onDelete }) =>{
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   
-  const totalPages = Math.ceil(students.length / itemsPerPage); //làm tròn lên
+  const totalPages = Math.ceil(students.length / itemsPerPage); 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentStudents = students.slice(startIndex, endIndex); //slice() lấy một phần con của mảng subjects từ startIndex đến endIndex (không tính endIndex)
-  
-  // Xử lý chuyển trang
+  const currentStudents = students.slice(startIndex, endIndex); 
   const goToPage = (page) => {
-      setCurrentPage(page); //khi currentPage thay đổi, render lại trang mới
+      setCurrentPage(page);
   };
   
   const goToPrevious = () => {
       if (currentPage > 1) {
-          setCurrentPage(currentPage - 1); //lùi trang áp dụng từ trang 2
+          setCurrentPage(currentPage - 1);
       }
   };
   
   const goToNext = () => {
       if (currentPage < totalPages) {
-          setCurrentPage(currentPage + 1); //sang trang trừ trang cuối
+          setCurrentPage(currentPage + 1); 
       }
   };
   return (
@@ -117,6 +115,59 @@ const StudentTable = ({ students, onEdit, onDelete }) =>{
         </table>
       </div>
     </div>
+    {totalPages > 1 && ( 
+        <div className='exam-information-pagination'>
+            <div className='exam-information-pagination-info'>
+                Hiển thị {startIndex + 1} - {Math.min(endIndex, students.length)} của {students.length} học sinh 
+            </div>
+            <div className='exam-information-pagination-controls'>
+                <button
+                    onClick={goToPrevious}
+                    disabled={currentPage === 1}
+                    className='exam-information-pagination-btn'
+                    title="Trang trước"
+                >
+                    <FaChevronLeft />
+                </button>
+                
+                {[...Array(totalPages)].map((_, i) => {
+                    const page = i + 1;
+                    if (
+                        page === 1 ||
+                        page === totalPages ||
+                        (page >= currentPage - 2 && page <= currentPage + 2)
+                    ) {
+                        return (
+                            <button
+                                key={page}
+                                onClick={() => goToPage(page)}
+                                className={`exam-information-pagination-number ${
+                                    currentPage === page ? 'active' : ''
+                                }`}
+                            >
+                                {page}
+                            </button>
+                        );
+                    } else if (
+                        page === currentPage - 2 ||
+                        page === currentPage + 2
+                    ) {
+                        return <span key={page} className='exam-information-pagination-dots'>...</span>;
+                    }
+                    return null;
+                })}
+                
+                <button
+                    onClick={goToNext}
+                    disabled={currentPage === totalPages}
+                    className='exam-information-pagination-btn'
+                    title="Trang sau"
+                >
+                    <FaChevronRight />
+                </button>
+            </div>
+        </div>
+    )}   
     {isDetailModalOpen && selectedStudent && (
       <StudentDetailModal 
         student={selectedStudent} 
