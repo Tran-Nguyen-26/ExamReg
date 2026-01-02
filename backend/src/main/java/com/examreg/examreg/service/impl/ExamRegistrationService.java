@@ -74,7 +74,11 @@ public class ExamRegistrationService implements IExamRegistrationService {
   }
 
   @Override
-  @CacheEvict(value = "examRegistrationResponses", allEntries = true)
+  // @CacheEvict(value = "examRegistrationResponses", allEntries = true)
+  @Caching(evict = {
+    @CacheEvict(value = "examRegistrationResponses", allEntries = true),
+    @CacheEvict(value = "statusRegisterResponses", allEntries = true)
+  })
   public void deleteExamRegistration(Long examRegistrationId, Long studentId) {
     boolean alreadyExamRegistration = examRegistrationRepository.existsByIdAndStudentId(examRegistrationId, studentId);
     if (alreadyExamRegistration) {

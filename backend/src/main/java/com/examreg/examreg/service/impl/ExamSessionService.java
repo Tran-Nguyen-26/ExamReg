@@ -110,7 +110,8 @@ public class ExamSessionService implements IExamSessionService {
   @Transactional
   @Caching(evict = {
     @CacheEvict(value = "examRegistrationResponses", allEntries = true),
-    @CacheEvict(value = "statusRegisterResponses", allEntries = true)
+    @CacheEvict(value = "statusRegisterResponses", allEntries = true),
+    @CacheEvict(value = "exams", allEntries = true)
   })
   public void registerExamSession(Long examSessionId, Long studentId) {
     //Lock
@@ -179,6 +180,7 @@ public class ExamSessionService implements IExamSessionService {
   }
   
   @Override
+  @CacheEvict(value = "exams", allEntries = true)
   public ExamSessionResponseForAdmin createExamSession(CreateExamSessionRequest request) {
     Subject subject = subjectRepository.findById(request.getSubjectId())
     .orElseThrow(() -> new ResourceNotFoundException("Subject not found with id: " + request.getSubjectId()));
@@ -234,6 +236,7 @@ public class ExamSessionService implements IExamSessionService {
 
   @Override
   @Transactional
+  @CacheEvict(value = "exams", allEntries = true)
   public void deleteExamSession(Long id) {
       ExamSession examSession = examSessionRepository.findById(id)
               .orElseThrow(() -> new ResourceNotFoundException("Exam Session not found with id: " + id));

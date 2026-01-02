@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.examreg.examreg.dto.request.ExamRequest;
@@ -168,7 +169,10 @@ public class ExamService implements IExamService {
     }
 
     @Override
-    @CacheEvict(value = "subjectsOfExam", key = "#examId")
+    @Caching(evict = {
+        @CacheEvict(value = "exams", allEntries = true),
+        @CacheEvict(value = "subjectsOfExam", key = "#examId")
+    })
     public void addSubjectsToExam(Long examId, List<Long> subjectIds) {
         Exam exam = getExamById(examId);
         List<Long> alreadySubjectIds = exam.getSubjects()
@@ -207,7 +211,11 @@ public class ExamService implements IExamService {
 
     @Override
     @Transactional
-    @CacheEvict(value = "subjectsOfExam", key = "#examId")
+    // @CacheEvict(value = "subjectsOfExam", key = "#examId")
+    @Caching(evict = {
+        @CacheEvict(value = "subjectsOfExam", key = "#examId"),
+        @CacheEvict(value = "exam", allEntries = true)
+    })
     public void deleteSubject(Long examId, Long subjectId) {
         Exam exam = getExamById(examId);
 

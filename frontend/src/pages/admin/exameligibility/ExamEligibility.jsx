@@ -8,6 +8,7 @@ import { Subject } from "../../../models/Subject";
 import { useSubjectStatus } from "../../../hooks/useSubjectStatus";
 import { importLogService } from "../../../services/importLogService";
 import { IoMdCloudUpload, IoMdCheckmarkCircle } from "react-icons/io";
+import Spinner from "../../../components/student/spinner/Spinner";
 
 
 const ExamEligibility = () => {
@@ -24,6 +25,7 @@ const ExamEligibility = () => {
   const [file, setFile] = useState(null)
   const [isDragOver, setIsDragOver] = useState(false)
   const fileInputRef = useRef(null)
+  const [loading, setLoading] = useState(false)
 
 
   useEffect(() => {
@@ -92,7 +94,9 @@ const ExamEligibility = () => {
       return;
     }
     try {
+      setLoading(true)
       await importLogService.importStudentsCondition(exam.id, file)
+      setLoading(false)
       alert('Import thành công')
       setFile(null)
       fetchStudents()
@@ -222,8 +226,15 @@ const ExamEligibility = () => {
                 disabled={!file}
                 title={!file ? 'Vui lòng kéo thả file Excel vào vùng bên dưới' : 'Nhấn để import'}
               >
-                <i className="fas fa-download"></i>
-                <span>Import Excel</span>
+                {
+                  loading ? 
+                    <Spinner/> : (
+                      <>
+                        <i className="fas fa-download"></i>
+                        <span>Import Excel</span>
+                      </>
+                    )
+                }
               </button>
             </div>
 
