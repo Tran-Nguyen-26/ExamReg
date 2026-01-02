@@ -36,7 +36,7 @@ const StudentTable = ({ students, onEdit, onDelete }) =>{
     onEdit(updatedData);
   };
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 50;
   
   const totalPages = Math.ceil(students.length / itemsPerPage); 
   const startIndex = (currentPage - 1) * itemsPerPage;
