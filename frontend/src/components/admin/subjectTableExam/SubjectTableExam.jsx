@@ -9,25 +9,25 @@ const SubjectTableExam = ({subjects, onDelete}) => {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
     
-    const totalPages = Math.ceil(subjects.length / itemsPerPage); //làm tròn lên
+    const totalPages = Math.ceil(subjects.length / itemsPerPage); 
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    const currentSubjects = subjects.slice(startIndex, endIndex); //slice() lấy một phần con của mảng subjects từ startIndex đến endIndex (không tính endIndex)
+    const currentSubjects = subjects.slice(startIndex, endIndex); 
     
     // Xử lý chuyển trang
     const goToPage = (page) => {
-        setCurrentPage(page); //khi currentPage thay đổi, render lại trang mới
+        setCurrentPage(page); 
     };
     
     const goToPrevious = () => {
         if (currentPage > 1) {
-            setCurrentPage(currentPage - 1); //lùi trang áp dụng từ trang 2
+            setCurrentPage(currentPage - 1); 
         }
     };
     
     const goToNext = () => {
         if (currentPage < totalPages) {
-            setCurrentPage(currentPage + 1); //sang trang trừ trang cuối
+            setCurrentPage(currentPage + 1);
         }
     };
     
@@ -76,7 +76,7 @@ const SubjectTableExam = ({subjects, onDelete}) => {
                 </div>
                 
                 {/* Pagination */}
-                {totalPages > 1 && ( //từ 2 trang trở lại mới phân trang
+                {totalPages > 1 && ( 
                     <div className='exam-information-pagination'>
                         <div className='exam-information-pagination-info'>
                             Hiển thị {startIndex + 1} - {Math.min(endIndex, subjects.length)} của {subjects.length} môn thi 
