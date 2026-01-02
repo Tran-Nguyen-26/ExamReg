@@ -155,7 +155,7 @@ public class ImportLogService implements IImportLogService {
             }
 
             AddStudentSubjectStatusRequest ssStatus = AddStudentSubjectStatusRequest.builder()
-              .studentCode(String.valueOf((long)row.getCell(1).getNumericCellValue()))
+              .studentCode(row.getCell(1).getStringCellValue())
               .subjectCode(sheetName)
               .status(status)
               .examId(examId)
