@@ -9,6 +9,9 @@
 
 .table-wrapper {
   overflow-x: auto;
+  overflow-y: auto;
+  max-height: 60vh;
+  position: relative;
 }
 
 .subject-table {
@@ -21,6 +24,10 @@
   border-bottom: 1px solid #e5e7eb;
 }
 
+.table-header-row {
+  background-color: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
 .table-header {
   padding: 1rem 1.5rem;
   text-align: left;
@@ -28,10 +35,10 @@
   font-weight: 600;
   color: #374151;
   white-space: nowrap;
-}
-
-.table-header-center {
-  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background-color: #f9fafb;
 }
 
 .table-row {
