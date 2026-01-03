@@ -71,7 +71,7 @@ const Report = () => {
 
     const finishedChartData = [
         { name: 'Hoàn thành đăng ký', value: stats.finishedRegistrationCount },
-        { name: 'Chưa hoàn thành', value: Math.max(stats.totalStudents - stats.finishedRegistrationCount, 0) }
+        { name: 'Chưa hoàn thành', value: Math.max(stats.eligibleStudents - stats.finishedRegistrationCount, 0) }
     ];
 
     const COLORS = ['#4CAF50', '#f44336'];
@@ -161,7 +161,7 @@ const Report = () => {
                             </div>
                             <div className="stat-card">
                                 <div className="stat-value">
-                                    {stats.totalStudents > 0 ? ((stats.finishedRegistrationCount / stats.totalStudents) * 100).toFixed(1) : 0}%
+                                    {stats.eligibleStudents > 0 ? ((stats.finishedRegistrationCount / stats.eligibleStudents) * 100).toFixed(1) : 0}%
                                 </div>
                                 <div className="stat-label">Tỷ lệ sinh viên đã hoàn thành đăng ký</div>
                             </div>
