@@ -26,7 +26,7 @@ public interface StudentSubjectStatusRepository extends JpaRepository<StudentSub
   
   List<StudentSubjectStatus> findAllByStudentId(Long studentId);
   
-  @Query("SELECT COUNT(DISTINCT sss.student.id) FROM StudentSubjectStatus sss WHERE sss.subject.exam.id = :examId AND sss.status = :status")
+  @Query("SELECT COUNT(DISTINCT sss.student.id) FROM StudentSubjectStatus sss WHERE sss.exam.id = :examId AND sss.status = :status")
   Long countBySubject_ExamIdAndStatus(Long examId, EligibilityStatus status);
 
 }
