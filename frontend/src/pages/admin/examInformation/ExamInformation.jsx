@@ -131,7 +131,7 @@ const ExamInformation = () => {
                         <div className="search-subject-wrapper">
                           <input
                             type="text"
-                            placeholder="Tìm kiếm theo tên, mã sinh viên"
+                            placeholder="Tìm kiếm theo tên, mã môn thi"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             className="search-subject-input"
